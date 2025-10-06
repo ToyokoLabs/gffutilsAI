@@ -1,0 +1,11 @@
+[project]
+name = "gffutilsai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "gffutils>=0.13",
+    "strands-agents[ollama]>=1.10.0",
+    "strands-agents-tools>=0.2.9",
+]
