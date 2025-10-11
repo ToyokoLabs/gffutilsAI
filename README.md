@@ -209,9 +209,10 @@ export OLLAMA_API_KEY="your-ollama-api-key"
 ### Database Management
 
 The agent automatically creates and manages GFF databases:
-- First query creates `annotation.db` from your GFF file
+- First query creates a database file named after your GFF file (e.g., `file.gff` → `file.db`)
 - Subsequent queries reuse the existing database for faster performance
-- Database files are created in the current working directory
+- Database files are created in the same directory as the GFF file
+- Multiple GFF files can have their own separate database files
 
 ## Project Structure
 
