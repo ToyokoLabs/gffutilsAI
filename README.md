@@ -68,11 +68,53 @@ pip install gffutils strands requests
 
 ### Running the Agent
 
+#### Basic Usage (Interactive Mode)
+
 ```bash
+# Use default settings (llama3.1 model on local server)
 python main.py
+
+# Use cloud server with default model (gpt-oss:20b-cloud)
+python main.py --server cloud
+
+# Specify custom model and server
+python main.py --model llama3.1 --server local
+python main.py --model codellama:13b --server local
+python main.py --model gpt-4 --server cloud
 ```
 
-The agent will start and you can interact with it using natural language queries about your GFF files.
+#### Single Query Mode
+
+```bash
+# Run a single query and exit
+python main.py --query "What feature types are in my GFF file?"
+python main.py --model llama3.1 --query "Find all genes on chromosome 1"
+```
+
+#### Command Line Options
+
+- `--model, -m`: Model to use (default: llama3.1 for local, gpt-oss:20b-cloud for cloud)
+- `--server, -s`: Server type - 'local' or 'cloud' (default: local)
+- `--host`: Custom host URL (overrides --server setting)
+- `--query, -q`: Run a single query and exit
+- `--temperature, -t`: Temperature for responses (0.0-1.0, default: 0.1)
+- `--max-tokens`: Maximum tokens for responses (default: 4096)
+- `--system-prompt`: Path to system prompt file (default: system_prompt.txt)
+
+#### Server Options
+
+**Local Server (default):**
+- Uses `http://localhost:11434`
+- Requires Ollama running locally
+- Free and private
+
+**Cloud Server:**
+- Uses `https://ollama.com`
+- Requires `OLLAMA_API_KEY` environment variable
+- May have usage costs
+- **Security restriction**: `file_read` tool is disabled for security
+
+The agent will start in interactive mode where you can ask questions about your GFF files, or use `--query` for single commands.
 
 ### Example Queries
 
@@ -117,22 +159,52 @@ Here are some example questions you can ask the agent:
 
 ### Model Configuration
 
-You can modify the model settings in `main.py`:
+#### Command Line Configuration (Recommended)
 
-```python
-model_id = "llama3.1"  # Change to your preferred model
+Configure the model and server using command line arguments:
 
-ollama_model = OllamaModel(
-    model_id=model_id,
-    host="http://localhost:11434",
-    params={
-        "max_tokens": 4096,
-        "temperature": 0.1,  # Lower for more deterministic responses
-        "top_p": 0.9,
-        "stream": True,
-    },
-)
+```bash
+# Local server with different models
+python main.py --model llama3.1 --server local
+python main.py --model codellama:13b --server local
+python main.py --model mistral:7b --server local
+
+# Cloud server with default model (gpt-oss:20b-cloud)
+export OLLAMA_API_KEY="your-api-key-here"
+python main.py --server cloud
+
+# Cloud server with custom model
+export OLLAMA_API_KEY="your-api-key-here"
+python main.py --model gpt-4 --server cloud
+
+# Custom settings
+python main.py --model llama3.1 --temperature 0.3 --max-tokens 2048
+
+# Use custom system prompt
+python main.py --system-prompt my_custom_prompt.txt
 ```
+
+#### Environment Variables
+
+For cloud server usage, set your API key:
+
+```bash
+export OLLAMA_API_KEY="your-ollama-api-key"
+```
+
+#### Available Models
+
+**Local Models** (require `ollama pull <model>`):
+- `llama3.1` - General purpose, good balance
+- `codellama:13b` - Code-focused, good for technical queries
+- `mistral:7b` - Faster, lighter model
+- `llama2:70b` - Larger, more capable (requires more resources)
+
+**Cloud Models** (via ollama.com):
+- `gpt-oss:20b-cloud` - Default cloud model, good balance of capability and speed
+- `gpt-4` - Most capable, requires API key
+- `gpt-3.5-turbo` - Fast and capable
+- Various other models available through the service
 
 ### Database Management
 
@@ -141,12 +213,22 @@ The agent automatically creates and manages GFF databases:
 - Subsequent queries reuse the existing database for faster performance
 - Database files are created in the current working directory
 
+## Project Structure
+
+```
+├── main.py              # Main application with CLI interface and agent setup
+├── gff_tools.py         # All GFF analysis tool functions
+├── system_prompt.txt    # Editable system prompt for the AI agent
+├── README.md            # This documentation
+└── .kiro/specs/         # Development specifications (optional)
+```
+
 ## Available Tools
 
-The agent has access to 18 specialized tools for GFF analysis:
+The agent has access to 18+ specialized tools for GFF analysis (defined in `gff_tools.py`):
 
 ### File Operations
-- `file_read` - Read and display file contents
+- `file_read` - Read and display file contents (local server only)
 - `file_write` - Write content to files
 - `list_directory` - List directory contents
 
@@ -189,6 +271,38 @@ The agent has access to 18 specialized tools for GFF analysis:
 - **Result Limiting**: Tools support limiting results for very large datasets
 - **Database Reuse**: Subsequent queries on the same GFF file are much faster
 
+### Help and Examples
+
+Get help with command line options:
+
+```bash
+python main.py --help
+```
+
+Example commands:
+
+```bash
+# Interactive mode with local llama3.1
+python main.py
+
+# Interactive mode with cloud default model (gpt-oss:20b-cloud)
+export OLLAMA_API_KEY="your-key"
+python main.py --server cloud
+
+# Interactive mode with cloud GPT-4
+export OLLAMA_API_KEY="your-key"
+python main.py --model gpt-4 --server cloud
+
+# Single query mode
+python main.py --query "What chromosomes are in my GFF file?" --model llama3.1
+
+# Custom temperature for more creative responses
+python main.py --temperature 0.5 --model codellama:13b
+
+# Custom host
+python main.py --host "http://my-server:8080" --model custom-model
+```
+
 ## Troubleshooting
 
 ### Common Issues
@@ -225,6 +339,37 @@ params={
     "verbose": True,  # Add for debugging
 }
 ```
+
+## Development
+
+### Adding New Tools
+
+To add new GFF analysis tools:
+
+1. Add your tool function to `gff_tools.py` with the `@tool` decorator
+2. Import the new tool in `main.py`
+3. Add it to the `tools` list in the Agent initialization
+4. Update `system_prompt.txt` to describe the new capability
+
+### Customizing the System Prompt
+
+The AI agent's behavior is controlled by the system prompt in `system_prompt.txt`. You can:
+
+1. **Edit the default prompt**: Modify `system_prompt.txt` directly
+2. **Use a custom prompt file**: `python main.py --system-prompt my_custom_prompt.txt`
+3. **Customize for specific use cases**: Create different prompt files for different analysis workflows
+
+The system prompt defines:
+- The agent's personality and communication style
+- Available capabilities and how to describe them
+- Example queries users can ask
+- Guidelines for tool usage and error handling
+
+### Project Architecture
+
+- **main.py**: Entry point with CLI argument parsing, model configuration, and agent setup
+- **gff_tools.py**: All tool functions decorated with `@tool` for the AI agent to use
+- **Modular Design**: Tools are separated from the main application logic for better maintainability
 
 ## Contributing
 
