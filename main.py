@@ -1995,6 +1995,7 @@ When using tools:
 Always be helpful, concise, and focus on addressing the user's bioinformatics analysis needs efficiently.
 """
 
+"""
 model_id = (
     "llama3.1"  # You can change this to any model you have pulled with Ollama.
 )
@@ -2011,6 +2012,7 @@ ollama_model = OllamaModel(
     },
 )
 
+
 # Create the agent
 local_agent = Agent(
     system_prompt=system_prompt,
@@ -2022,6 +2024,7 @@ local_agent = Agent(
            get_features_with_attribute, get_intergenic_regions, get_feature_density, get_strand_distribution,
            export_features_to_csv, get_feature_summary_report],
 )
+"""
 
 
 
@@ -2090,13 +2093,19 @@ Always be helpful, concise, and focus on addressing the user's bioinformatics an
 """
 
     model_id = (
-    "llama3.1"  # You can change this to any model you have pulled with Ollama.
+    "gpt-oss:20b-cloud" 
 )
+
+    #host="https://ollama.com",
+    #headers={'Authorization': 'Bearer ' + os.environ.get('OLLAMA_API_KEY')}
+
 
 
     ollama_model = OllamaModel(
     model_id=model_id,
-    host="http://localhost:11434",
+    #host="http://localhost:11434",
+    host="https://ollama.com",
+    headers={'Authorization': 'Bearer ' + os.environ.get('OLLAMA_API_KEY')},
     params={
         "max_tokens": 4096,  # Adjust based on your model's capabilities
         "temperature": 0.1,  # Lower for more deterministic responses, higher for more creative
