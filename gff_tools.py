@@ -123,7 +123,6 @@ def get_gff_feature_types(gffpath: str) -> list:
     """
     try:
         db_filename = get_db_filename(gffpath)
-
         # Check if database exists, create if not
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
@@ -152,7 +151,6 @@ def get_gene_lenght(gffpath: str, gene_id: str) -> list:
     """
     try:
         db_filename = get_db_filename(gffpath)
-
         # Check if database exists, create if not
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
@@ -183,7 +181,6 @@ def get_gene_attributes(gffpath: str, gene_id: str) -> dict:
     """
     try:
         db_filename = get_db_filename(gffpath)
-
         # Check if database exists, create if not
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
@@ -213,7 +210,6 @@ def get_multiple_gene_lenght(gffpath: str, gene_ids: list) -> list:
     """
     try:
         db_filename = get_db_filename(gffpath)
-
         # Check if database exists, create if not
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
@@ -250,7 +246,6 @@ def get_all_attributes(gffpath: str) -> set:
     """
     try:
         db_filename = get_db_filename(gffpath)
-
         # Check if database exists, create if not
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
@@ -282,7 +277,6 @@ def get_protein_product_from_gene(gffpath: str, gene: str) -> list:
     """
     try:
         db_filename = get_db_filename(gffpath)
-
         # Check if database exists, create if not
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
@@ -323,7 +317,6 @@ def get_features_in_region(gffpath: str, chrom: str, start: int, end: int, featu
     """
     try:
         db_filename = get_db_filename(gffpath)
-
         # Check if database exists, create if not
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
@@ -379,7 +372,6 @@ def get_features_at_position(gffpath: str, chrom: str, position: int, feature_ty
     """
     try:
         db_filename = get_db_filename(gffpath)
-
         # Check if database exists, create if not
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
@@ -439,7 +431,6 @@ def get_gene_structure(gffpath: str, gene_id: str) -> dict:
     """
     try:
         db_filename = get_db_filename(gffpath)
-
         # Check if database exists, create if not
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
@@ -734,6 +725,7 @@ def get_chromosome_summary(gffpath: str, chrom: str = None) -> dict:
         FileNotFoundError: If the file doesn't exist
     """
     try:
+        db_filename = get_db_filename(gffpath)
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
@@ -983,6 +975,7 @@ def search_features_by_attribute(gffpath: str, attribute_key: str, attribute_val
         FileNotFoundError: If the file doesn't exist
     """
     try:
+        db_filename = get_db_filename(gffpath)
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
@@ -1048,6 +1041,7 @@ def get_features_with_attribute(gffpath: str, attribute_key: str) -> list:
         FileNotFoundError: If the file doesn't exist
     """
     try:
+        db_filename = get_db_filename(gffpath)
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
@@ -1108,6 +1102,7 @@ def get_intergenic_regions(gffpath: str, chrom: str = None, min_length: int = 0)
         FileNotFoundError: If the file doesn't exist
     """
     try:
+        db_filename = get_db_filename(gffpath)
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
@@ -1198,6 +1193,7 @@ def get_feature_density(gffpath: str, chrom: str, window_size: int, feature_type
         FileNotFoundError: If the file doesn't exist
     """
     try:
+        db_filename = get_db_filename(gffpath)
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
@@ -1286,6 +1282,7 @@ def get_strand_distribution(gffpath: str, feature_type: str = None) -> dict:
         FileNotFoundError: If the file doesn't exist
     """
     try:
+        db_filename = get_db_filename(gffpath)
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
@@ -1389,6 +1386,7 @@ def export_features_to_csv(gffpath: str, output_path: str, feature_type: str = N
         FileNotFoundError: If the file doesn't exist
     """
     try:
+        db_filename = get_db_filename(gffpath)
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
@@ -1487,6 +1485,7 @@ def get_feature_summary_report(gffpath: str) -> str:
         FileNotFoundError: If the file doesn't exist
     """
     try:
+        db_filename = get_db_filename(gffpath)
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:

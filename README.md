@@ -77,10 +77,14 @@ python main.py
 # Use cloud server with default model (gpt-oss:20b-cloud)
 python main.py --server cloud
 
+# Use Anthropic Claude model (default: claude-3-5-haiku-latest)
+python main.py --anthropic
+
 # Specify custom model and server
 python main.py --model llama3.1 --server local
 python main.py --model codellama:13b --server local
 python main.py --model gpt-4 --server cloud
+python main.py --anthropic --model claude-3-5-sonnet-latest
 ```
 
 #### Single Query Mode
@@ -95,6 +99,7 @@ python main.py --model llama3.1 --query "Find all genes on chromosome 1"
 
 - `--model, -m`: Model to use (default: llama3.1 for local, gpt-oss:20b-cloud for cloud)
 - `--server, -s`: Server type - 'local' or 'cloud' (default: local)
+- `--anthropic`: Use Anthropic Claude model (default: claude-3-5-haiku-latest)
 - `--host`: Custom host URL (overrides --server setting)
 - `--query, -q`: Run a single query and exit
 - `--temperature, -t`: Temperature for responses (0.0-1.0, default: 0.1)
@@ -113,6 +118,12 @@ python main.py --model llama3.1 --query "Find all genes on chromosome 1"
 - Requires `OLLAMA_API_KEY` environment variable
 - May have usage costs
 - **Security restriction**: `file_read` tool is disabled for security
+
+**Anthropic Claude:**
+- Uses Anthropic's Claude models via API
+- Requires `ANTHROPIC_API_KEY` environment variable
+- **Security restriction**: `file_read` tool is disabled for security
+- Default model: `claude-3-5-haiku-latest`
 
 The agent will start in interactive mode where you can ask questions about your GFF files, or use `--query` for single commands.
 
@@ -177,6 +188,14 @@ python main.py --server cloud
 export OLLAMA_API_KEY="your-api-key-here"
 python main.py --model gpt-4 --server cloud
 
+# Anthropic Claude with default model (claude-3-5-haiku-latest)
+export ANTHROPIC_API_KEY="your-anthropic-api-key"
+python main.py --anthropic
+
+# Anthropic Claude with custom model
+export ANTHROPIC_API_KEY="your-anthropic-api-key"
+python main.py --anthropic --model claude-3-5-sonnet-latest
+
 # Custom settings
 python main.py --model llama3.1 --temperature 0.3 --max-tokens 2048
 
@@ -192,6 +211,12 @@ For cloud server usage, set your API key:
 export OLLAMA_API_KEY="your-ollama-api-key"
 ```
 
+For Anthropic Claude usage, set your API key:
+
+```bash
+export ANTHROPIC_API_KEY="your-anthropic-api-key"
+```
+
 #### Available Models
 
 **Local Models** (require `ollama pull <model>`):
@@ -205,6 +230,12 @@ export OLLAMA_API_KEY="your-ollama-api-key"
 - `gpt-4` - Most capable, requires API key
 - `gpt-3.5-turbo` - Fast and capable
 - Various other models available through the service
+
+**Anthropic Claude Models**:
+- `claude-3-5-haiku-latest` - Default Anthropic model, fast and efficient
+- `claude-3-5-sonnet-latest` - More capable, balanced performance
+- `claude-3-opus-latest` - Most capable Claude model
+- Various other Claude models available
 
 ### Database Management
 
@@ -293,6 +324,10 @@ python main.py --server cloud
 # Interactive mode with cloud GPT-4
 export OLLAMA_API_KEY="your-key"
 python main.py --model gpt-4 --server cloud
+
+# Interactive mode with Anthropic Claude
+export ANTHROPIC_API_KEY="your-anthropic-key"
+python main.py --anthropic
 
 # Single query mode
 python main.py --query "What chromosomes are in my GFF file?" --model llama3.1

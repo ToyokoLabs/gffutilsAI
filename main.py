@@ -4,6 +4,9 @@ import requests
 
 from strands import Agent
 from strands.models.ollama import OllamaModel
+from strands.models.anthropic import AnthropicModel
+from strands.models.anthropic import AnthropicModel
+
 
 # Import all tool functions from the gff_tools module
 from gff_tools import (
@@ -79,11 +82,19 @@ Examples:
         help="Path to system prompt file (default: system_prompt.txt)"
     )
     
+    parser.add_argument(
+        "--anthropic",
+        action="store_true",
+        help="Use Anthropic Claude model (default: claude-3-5-haiku-latest)"
+    )
+    
     args = parser.parse_args()
     
-    # Set default model based on server if not specified
+    # Set default model based on server/provider if not specified
     if args.model is None:
-        if args.server == "cloud":
+        if args.anthropic:
+            args.model = "claude-3-5-haiku-latest"
+        elif args.server == "cloud":
             args.model = "gpt-oss:20b-cloud"
         else:
             args.model = "llama3.1"
@@ -109,29 +120,24 @@ Examples:
 
 
 
-    # Configure the model
-    ollama_model = OllamaModel(
-        model_id=args.model,
-        host=host_url,
-        params={
-            "max_tokens": args.max_tokens,
-            "temperature": args.temperature,
-            "top_p": 0.9,
-            "stream": True,
-        },
-    )
-    
-    # Add authorization header for cloud server if needed
-    headers = {}
-    if args.server == "cloud" and os.environ.get('OLLAMA_API_KEY'):
-        headers['Authorization'] = 'Bearer ' + os.environ.get('OLLAMA_API_KEY')
-    
-    # Update model configuration with headers if needed
-    if headers:
+    # Configure the model based on provider
+    if args.anthropic:
+        # Use Anthropic Claude model
+        a_model = AnthropicModel(
+            client_args={
+                "api_key": os.environ.get('ANTHROPIC_API_KEY', ""),
+            },
+            max_tokens=args.max_tokens,
+            model_id=args.model,
+            temperature=args.temperature,
+        )
+        model_to_use = a_model
+        print(f"🤖 Using Anthropic Claude model: {args.model}")
+    else:
+        # Use Ollama model
         ollama_model = OllamaModel(
             model_id=args.model,
             host=host_url,
-            headers=headers,
             params={
                 "max_tokens": args.max_tokens,
                 "temperature": args.temperature,
@@ -139,6 +145,28 @@ Examples:
                 "stream": True,
             },
         )
+        
+        # Add authorization header for cloud server if needed
+        headers = {}
+        if args.server == "cloud" and os.environ.get('OLLAMA_API_KEY'):
+            headers['Authorization'] = 'Bearer ' + os.environ.get('OLLAMA_API_KEY')
+        
+        # Update model configuration with headers if needed
+        if headers:
+            ollama_model = OllamaModel(
+                model_id=args.model,
+                host=host_url,
+                headers=headers,
+                params={
+                    "max_tokens": args.max_tokens,
+                    "temperature": args.temperature,
+                    "top_p": 0.9,
+                    "stream": True,
+                },
+            )
+            model_to_use = ollama_model
+        else:
+            model_to_use = ollama_model
 
     # Create tools list based on server type
     base_tools = [
@@ -153,18 +181,21 @@ Examples:
         export_features_to_csv, get_feature_summary_report
     ]
     
-    # Add file_read tool only for local server (security restriction for cloud)
-    if args.server == "local":
+    # Add file_read tool only for local server (security restriction for cloud/anthropic)
+    if args.server == "local" and not args.anthropic:
         tools_list = [file_read] + base_tools
         print("🔓 Local server: file_read tool enabled")
     else:
         tools_list = base_tools
-        print("🔒 Cloud server: file_read tool disabled for security")
+        if args.anthropic:
+            print("🔒 Anthropic: file_read tool disabled for security")
+        else:
+            print("🔒 Cloud server: file_read tool disabled for security")
 
     # Create the agent
     local_agent = Agent(
         system_prompt=system_prompt,
-        model=ollama_model,
+        model=model_to_use,
         tools=tools_list,
     )
 
