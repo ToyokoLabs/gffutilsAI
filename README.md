@@ -105,6 +105,7 @@ python main.py --model llama3.1 --query "Find all genes on chromosome 1"
 - `--temperature, -t`: Temperature for responses (0.0-1.0, default: 0.1)
 - `--max-tokens`: Maximum tokens for responses (default: 4096)
 - `--system-prompt`: Path to system prompt file (default: system_prompt.txt)
+- `--debug`: Show detailed debug information including tool calls and parameters
 
 #### Server Options
 
@@ -201,6 +202,9 @@ python main.py --model llama3.1 --temperature 0.3 --max-tokens 2048
 
 # Use custom system prompt
 python main.py --system-prompt my_custom_prompt.txt
+
+# Enable debug mode to see tool calls and parameters
+python main.py --debug --query "What features are in my GFF file?"
 ```
 
 #### Environment Variables
@@ -364,17 +368,25 @@ python main.py --host "http://my-server:8080" --model custom-model
 
 ### Debug Mode
 
-To enable more detailed logging, modify the Ollama parameters:
+Use the `--debug` flag to see detailed information about tool execution:
 
-```python
-params={
-    "max_tokens": 4096,
-    "temperature": 0.1,
-    "top_p": 0.9,
-    "stream": True,
-    "verbose": True,  # Add for debugging
-}
+```bash
+# Enable debug mode for single query
+python main.py --debug --query "What features are in my GFF file?"
+
+# Enable debug mode for interactive session
+python main.py --debug
+
+# Debug with specific model
+python main.py --debug --anthropic --query "Analyze my GFF file"
 ```
+
+Debug mode shows:
+- **Model Information**: Which model and parameters were used
+- **Tool Calls**: Which tools were executed and with what parameters
+- **Tool Results**: Preview of tool outputs (truncated for readability)
+- **Performance Metrics**: Token usage and execution time (when available)
+- **Error Details**: Full stack traces for troubleshooting
 
 ## Development
 

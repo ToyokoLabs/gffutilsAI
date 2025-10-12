@@ -9,6 +9,7 @@ import os
 import csv
 from strands import tool
 import gffutils
+from Bio import Entrez
 
 
 def get_db_filename(gffpath: str) -> str:
@@ -106,6 +107,58 @@ def list_directory(directory_path: str = ".") -> str:
 
 
 @tool
+def get_organism_info(accession: str) -> dict:
+    """Given an accession id get organism info like specie name00
+
+    Args:
+        accession (str): Accession id like GCF_036512215.1
+
+    Returns:
+        dict: organism and specie information
+
+    """
+
+    def search_refseq_assembly(refseq_accession):
+        # Step 1: Search assembly database for this accession
+        handle = Entrez.esearch(db="assembly", term=refseq_accession)
+        search_results = Entrez.read(handle)
+        handle.close()
+        
+        uid_list = search_results['IdList']
+        return uid_list
+
+
+    def get_assembly_summary(uid):
+        # Step 2: Fetch summary info by UID
+        handle = Entrez.esummary(db="assembly", id=uid)
+        summary = Entrez.read(handle, validate=False)
+        handle.close()
+        return summary
+
+
+    Entrez.email = "example@example.com"
+
+    uids = search_refseq_assembly(accession)
+
+    if uids:
+        uid = uids[0]  # take the first match
+        summary = get_assembly_summary(uid)
+        docsum = summary['DocumentSummarySet']['DocumentSummary'][0]
+    else:
+        print("No assembly found for accession", refseq_accession)
+
+    organism = docsum.get('Organism', 'N/A')
+    taxonomy_id = docsum.get('Taxid', 'N/A')
+    species = docsum.get('SpeciesName', 'N/A')  # Often available
+    return {"organism": organism, "taxonomy_id": taxonomy_id, "species": species}
+
+
+
+
+
+
+
+@tool
 def get_gff_feature_types(gffpath: str) -> list:
     """Given the path of a gff file, generate a database and then get the list of all available features types.
     Sample features are:
@@ -127,7 +180,7 @@ def get_gff_feature_types(gffpath: str) -> list:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         return list(db.featuretypes())
     except FileNotFoundError:
         return f"Error: File '{gffpath}' not found."
@@ -155,7 +208,7 @@ def get_gene_lenght(gffpath: str, gene_id: str) -> list:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         g = db[gene_id]
         return abs(g.start-g.end)
     except FileNotFoundError:
@@ -185,7 +238,7 @@ def get_gene_attributes(gffpath: str, gene_id: str) -> dict:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         g = db[gene_id]
         return dict(g.attributes.items())
     except FileNotFoundError:
@@ -214,7 +267,7 @@ def get_multiple_gene_lenght(gffpath: str, gene_ids: list) -> list:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         out = []
         for gid in gene_ids:
             g = db[gid]
@@ -250,11 +303,48 @@ def get_all_attributes(gffpath: str) -> set:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         attribute_types = set()
         for feature in db.all_features():
             attribute_types.update(feature.attributes.keys())
         return attribute_types
+    except FileNotFoundError:
+        return f"Error: File '{gffpath}' not found."
+    except Exception as e:
+        return f"Error reading file: {str(e)}"
+
+
+@tool
+def get_genes_and_features_from_attribute(gffpath: str, attr: str) -> dict:
+    """Get all genes that has an attribute.
+
+    Args:
+        gffpath (str): Path to the file to read
+        attr (str): The attribute content (for example "regulation of sporulation")
+
+    Returns:
+        Dict (dict): A dictionary with all genes and features where the attribute is present
+
+    Raises:
+        FileNotFoundError: If the file doesn't exist
+    """
+    try:
+        db_filename = get_db_filename(gffpath)
+        # Check if database exists, create if not
+        if os.path.exists(db_filename):
+            db = gffutils.FeatureDB(db_filename)
+        else:
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
+        genes = set()
+        features = []
+        for feature in db.all_features():    
+            if any(attr in val for vals in feature.attributes.values() for val in vals):
+                #print(f"{feature.id}\t{feature.featuretype}\t{feature.attributes}")
+                features.append(feature.id)
+                gene = get_feature_parents(gffpath, feature.id)[0]['id']
+                genes.add(gene)
+
+        return {"genes": genes, "features": features}
     except FileNotFoundError:
         return f"Error: File '{gffpath}' not found."
     except Exception as e:
@@ -281,7 +371,7 @@ def get_protein_product_from_gene(gffpath: str, gene: str) -> list:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Get all children of the gene and look for CDS features
         gene_feature = db[gene]
@@ -321,7 +411,7 @@ def get_features_in_region(gffpath: str, chrom: str, start: int, end: int, featu
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Query features in the region
         features = []
@@ -376,7 +466,7 @@ def get_features_at_position(gffpath: str, chrom: str, position: int, feature_ty
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Query features at the position (using a single position as both start and end)
         features = []
@@ -435,7 +525,7 @@ def get_gene_structure(gffpath: str, gene_id: str) -> dict:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Get the gene feature
         try:
@@ -511,7 +601,7 @@ def get_feature_parents(gffpath: str, feature_id: str) -> list:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Get the feature
         try:
@@ -567,7 +657,7 @@ def get_features_by_type(gffpath: str, feature_type: str, limit: int = None) -> 
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Check if feature type exists in database
         available_types = list(db.featuretypes())
@@ -636,7 +726,7 @@ def get_feature_statistics(gffpath: str) -> dict:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Get all feature types
         feature_types = list(db.featuretypes())
@@ -729,7 +819,7 @@ def get_chromosome_summary(gffpath: str, chrom: str = None) -> dict:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Get all chromosomes or filter to specific one
         all_chromosomes = set()
@@ -853,7 +943,7 @@ def get_length_distribution(gffpath: str, feature_type: str) -> dict:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Check if feature type exists
         available_types = list(db.featuretypes())
@@ -979,7 +1069,7 @@ def search_features_by_attribute(gffpath: str, attribute_key: str, attribute_val
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         matching_features = []
         
@@ -1045,7 +1135,7 @@ def get_features_with_attribute(gffpath: str, attribute_key: str) -> list:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         matching_features = []
         
@@ -1106,7 +1196,7 @@ def get_intergenic_regions(gffpath: str, chrom: str = None, min_length: int = 0)
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Get all chromosomes or filter to specific one
         all_chromosomes = set()
@@ -1197,7 +1287,7 @@ def get_feature_density(gffpath: str, chrom: str, window_size: int, feature_type
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Check if chromosome exists
         all_chromosomes = set()
@@ -1286,7 +1376,7 @@ def get_strand_distribution(gffpath: str, feature_type: str = None) -> dict:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Check if feature type exists (if specified)
         if feature_type:
@@ -1390,7 +1480,7 @@ def export_features_to_csv(gffpath: str, output_path: str, feature_type: str = N
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Collect features based on filters
         features_to_export = []
@@ -1489,7 +1579,7 @@ def get_feature_summary_report(gffpath: str) -> str:
         if os.path.exists(db_filename):
             db = gffutils.FeatureDB(db_filename)
         else:
-            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True)
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         # Get basic statistics
         feature_types = list(db.featuretypes())

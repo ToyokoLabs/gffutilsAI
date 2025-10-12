@@ -8,4 +8,5 @@ dependencies = [
     "gffutils>=0.13",
     "strands-agents[anthropic,ollama]>=1.10.0",
     "strands-agents-tools>=0.2.9",
+    "biopython>=1.85",
 ]

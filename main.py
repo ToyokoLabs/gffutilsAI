@@ -5,7 +5,6 @@ import requests
 from strands import Agent
 from strands.models.ollama import OllamaModel
 from strands.models.anthropic import AnthropicModel
-from strands.models.anthropic import AnthropicModel
 
 
 # Import all tool functions from the gff_tools module
@@ -18,11 +17,19 @@ from gff_tools import (
     get_feature_statistics, get_chromosome_summary, get_length_distribution,
     search_features_by_attribute, get_features_with_attribute,
     get_intergenic_regions, get_feature_density, get_strand_distribution,
-    export_features_to_csv, get_feature_summary_report
+    export_features_to_csv, get_feature_summary_report, get_genes_and_features_from_attribute,
+    get_organism_info
 )
+
+# Global variable to store tool call information for debugging
+tool_call_log = []
+
+
 
 
 def main():
+    global tool_call_log
+    
     # Parse command line arguments
     parser = argparse.ArgumentParser(
         description="GFF Analysis Tools - AI Agent for bioinformatics analysis",
@@ -88,12 +95,18 @@ Examples:
         help="Use Anthropic Claude model (default: claude-3-5-haiku-latest)"
     )
     
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Show detailed debug information including tool calls and parameters"
+    )
+    
     args = parser.parse_args()
     
     # Set default model based on server/provider if not specified
     if args.model is None:
         if args.anthropic:
-            args.model = "claude-3-5-haiku-latest"
+            args.model = "claude-3-5-haiku-latest" # claude-sonnet-4-5-20250929
         elif args.server == "cloud":
             args.model = "gpt-oss:20b-cloud"
         else:
@@ -178,36 +191,52 @@ Examples:
         get_feature_statistics, get_chromosome_summary, get_length_distribution,
         search_features_by_attribute, get_features_with_attribute,
         get_intergenic_regions, get_feature_density, get_strand_distribution,
-        export_features_to_csv, get_feature_summary_report
+        export_features_to_csv, get_feature_summary_report, 
+        get_genes_and_features_from_attribute, get_organism_info
     ]
     
     # Add file_read tool only for local server (security restriction for cloud/anthropic)
     if args.server == "local" and not args.anthropic:
-        tools_list = [file_read] + base_tools
+        all_tools = [file_read] + base_tools
         print("🔓 Local server: file_read tool enabled")
     else:
-        tools_list = base_tools
+        all_tools = base_tools
         if args.anthropic:
             print("🔒 Anthropic: file_read tool disabled for security")
         else:
             print("🔒 Cloud server: file_read tool disabled for security")
 
-    # Create the agent
     local_agent = Agent(
         system_prompt=system_prompt,
         model=model_to_use,
-        tools=tools_list,
+        tools=base_tools,
     )
-
+    
     # Handle single query mode or interactive mode
     if args.query:
         print(f"🔍 Query: {args.query}")
         print("-" * 50)
         try:
+            # Clear previous debug info
+            debug_info['tool_calls'] = []
+            tool_call_log = []  # Clear previous tool calls
+            
+            # Execute the query
             result = local_agent(args.query)
             print(result)
+            
+            # Show debug information if requested
+            if args.debug:
+                show_debug_info(debug_info, local_agent)
+                
         except Exception as e:
             print(f"❌ Error: {str(e)}")
+            if args.debug:
+                import traceback
+                print("\n🔧 DEBUG - Full Error Traceback:")
+                print("-" * 40)
+                traceback.print_exc()
+                print("-" * 40)
     else:
         print("💬 Interactive mode - Type your questions about GFF files")
         print("   Type 'quit' or 'exit' to stop")
@@ -225,9 +254,18 @@ Examples:
                     continue
                 
                 print("-" * 30)
+                
+                # Clear previous debug info
+                
+                # Execute the query
                 result = local_agent(user_input)
-                print(result)
-                print("-" * 30)
+                #print(result)
+                
+                # Show debug information if requested
+                #if args.debug:
+                #    show_debug_info(debug_info, local_agent)
+                
+                print("\n" + "-" * 30)
                 
             except KeyboardInterrupt:
                 print("\n👋 Goodbye!")
