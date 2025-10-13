@@ -18,6 +18,7 @@ from gff_tools import (
     search_features_by_attribute, get_features_with_attribute,
     get_intergenic_regions, get_feature_density, get_strand_distribution,
     export_features_to_csv, get_feature_summary_report, get_genes_and_features_from_attribute,
+    get_tools_list,
     get_organism_info
 )
 
@@ -191,7 +192,7 @@ Examples:
         get_feature_statistics, get_chromosome_summary, get_length_distribution,
         search_features_by_attribute, get_features_with_attribute,
         get_intergenic_regions, get_feature_density, get_strand_distribution,
-        export_features_to_csv, get_feature_summary_report, 
+        export_features_to_csv, get_feature_summary_report, get_tools_list, 
         get_genes_and_features_from_attribute, get_organism_info
     ]
     

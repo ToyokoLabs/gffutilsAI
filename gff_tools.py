@@ -1048,6 +1048,8 @@ def get_length_distribution(gffpath: str, feature_type: str) -> dict:
         return f"Error: File '{gffpath}' not found."
     except Exception as e:
         return f"Error calculating length distribution: {str(e)}"
+
+
 @tool
 def search_features_by_attribute(gffpath: str, attribute_key: str, attribute_value: str, exact_match: bool = True) -> list:
     """Search features by attribute key-value pairs with exact or partial matching.
@@ -1671,3 +1673,41 @@ FEATURE TYPE BREAKDOWN:
         return f"Error: File '{gffpath}' not found."
     except Exception as e:
         return f"Error generating summary report: {str(e)}"
+
+
+@tool
+def get_tools_list() -> list:
+    """Get a list of all available GFF analysis tools with their descriptions.
+
+    Returns:
+        list: List of tuples containing (function_name, description) for each tool
+    """
+    tools_info = [
+        ("file_read", "Read a file and return its content"),
+        ("file_write", "Write content to a file"),
+        ("list_directory", "List files and directories in the specified path"),
+        ("get_gff_feature_types", "Get all available feature types from a GFF file"),
+        ("get_gene_lenght", "Get the length of a specific gene"),
+        ("get_gene_attributes", "Get gene attributes (ID, Note, Name, etc.)"),
+        ("get_multiple_gene_lenght", "Get lengths of multiple genes"),
+        ("get_all_attributes", "Get all available attributes from a GFF file"),
+        ("get_protein_product_from_gene", "Get protein products for a specific gene"),
+        ("get_features_in_region", "Find features overlapping a genomic region"),
+        ("get_features_at_position", "Find features at a specific genomic position"),
+        ("get_gene_structure", "Get gene structure with child features (exons, CDS, UTRs)"),
+        ("get_feature_parents", "Find parent features of a given feature"),
+        ("get_features_by_type", "Get all features of a specific type"),
+        ("get_feature_statistics", "Calculate comprehensive feature statistics"),
+        ("get_chromosome_summary", "Generate per-chromosome feature analysis"),
+        ("get_length_distribution", "Calculate length statistics for a feature type"),
+        ("search_features_by_attribute", "Search features by attribute key-value pairs"),
+        ("get_features_with_attribute", "Find features with a specific attribute key"),
+        ("get_intergenic_regions", "Identify gaps between genes"),
+        ("get_feature_density", "Calculate feature density in genomic windows"),
+        ("get_strand_distribution", "Analyze strand distribution of features"),
+        ("export_features_to_csv", "Export feature data to CSV format"),
+        ("get_feature_summary_report", "Generate human-readable GFF summary report"),
+        ("get_tools_list", "Get list of all available tools with descriptions")
+    ]
+    
+    return tools_info
