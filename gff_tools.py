@@ -108,7 +108,7 @@ def list_directory(directory_path: str = ".") -> str:
 
 @tool
 def get_organism_info(accession: str) -> dict:
-    """Given an accession id get organism info like specie name00
+    """Given an accession id get organism info like specie name
 
     Args:
         accession (str): Accession id like GCF_036512215.1
@@ -151,11 +151,6 @@ def get_organism_info(accession: str) -> dict:
     taxonomy_id = docsum.get('Taxid', 'N/A')
     species = docsum.get('SpeciesName', 'N/A')  # Often available
     return {"organism": organism, "taxonomy_id": taxonomy_id, "species": species}
-
-
-
-
-
 
 
 @tool
@@ -785,6 +780,43 @@ def get_feature_statistics(gffpath: str) -> dict:
         return f"Error: File '{gffpath}' not found."
     except Exception as e:
         return f"Error calculating feature statistics: {str(e)}"
+
+
+
+@tool
+def get_chromosomes_info(gffpath: str) -> list:
+    """Get all chromosome names, use this to get number of chromosomes.
+
+    Args:
+        gffpath (str): Path to the GFF file
+
+    Returns:
+        list: List with the name of all chromosomes
+
+    Raises:
+        FileNotFoundError: If the file doesn't exist
+    """
+    try:
+        db_filename = get_db_filename(gffpath)
+        if os.path.exists(db_filename):
+            db = gffutils.FeatureDB(db_filename)
+        else:
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
+        
+        # Get all chromosomes or filter to specific one
+        all_chromosomes = set()
+        for feature in db.all_features():
+            all_chromosomes.add(feature.chrom)
+        
+
+
+        
+        return list(all_chromosomes)
+        
+    except FileNotFoundError:
+        return f"Error: File '{gffpath}' not found."
+    except Exception as e:
+        return f"Error calculating chromosome summary: {str(e)}"
 
 
 @tool

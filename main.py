@@ -18,8 +18,7 @@ from gff_tools import (
     search_features_by_attribute, get_features_with_attribute,
     get_intergenic_regions, get_feature_density, get_strand_distribution,
     export_features_to_csv, get_feature_summary_report, get_genes_and_features_from_attribute,
-    get_tools_list,
-    get_organism_info
+    get_tools_list, get_organism_info, get_chromosomes_info
 )
 
 # Global variable to store tool call information for debugging
@@ -193,7 +192,7 @@ Examples:
         search_features_by_attribute, get_features_with_attribute,
         get_intergenic_regions, get_feature_density, get_strand_distribution,
         export_features_to_csv, get_feature_summary_report, get_tools_list, 
-        get_genes_and_features_from_attribute, get_organism_info
+        get_genes_and_features_from_attribute, get_organism_info, get_chromosomes_info
     ]
     
     # Add file_read tool only for local server (security restriction for cloud/anthropic)
