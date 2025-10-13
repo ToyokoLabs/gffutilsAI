@@ -18,7 +18,8 @@ from gff_tools import (
     search_features_by_attribute, get_features_with_attribute,
     get_intergenic_regions, get_feature_density, get_strand_distribution,
     export_features_to_csv, get_feature_summary_report, get_genes_and_features_from_attribute,
-    get_tools_list, get_organism_info, get_chromosomes_info
+    get_tools_list, get_organism_info, get_chromosomes_info, 
+    search_genes_by_go_function_attribute
 )
 
 # Global variable to store tool call information for debugging
@@ -192,7 +193,8 @@ Examples:
         search_features_by_attribute, get_features_with_attribute,
         get_intergenic_regions, get_feature_density, get_strand_distribution,
         export_features_to_csv, get_feature_summary_report, get_tools_list, 
-        get_genes_and_features_from_attribute, get_organism_info, get_chromosomes_info
+        get_genes_and_features_from_attribute, get_organism_info, get_chromosomes_info,
+        search_genes_by_go_function_attribute
     ]
     
     # Add file_read tool only for local server (security restriction for cloud/anthropic)
@@ -255,14 +257,12 @@ Examples:
                 
                 print("-" * 30)
                 
-                # Clear previous debug info
-                
                 # Execute the query
                 result = local_agent(user_input)
-                #print(result)
                 
                 # Show debug information if requested
-                #if args.debug:
+                if args.debug:
+                    print(result)
                 #    show_debug_info(debug_info, local_agent)
                 
                 print("\n" + "-" * 30)

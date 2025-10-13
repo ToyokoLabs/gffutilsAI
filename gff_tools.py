@@ -694,6 +694,7 @@ def get_features_by_type(gffpath: str, feature_type: str, limit: int = None) -> 
 @tool
 def get_feature_statistics(gffpath: str) -> dict:
     """Calculate comprehensive feature statistics including counts and length statistics per feature type.
+    Use this function to get ammount of genes, exons, CDNs, chromosomes, and so on.
 
     Args:
         gffpath (str): Path to the GFF file
@@ -1141,6 +1142,69 @@ def search_features_by_attribute(gffpath: str, attribute_key: str, attribute_val
         
         # Sort results by chromosome and start position
         matching_features.sort(key=lambda x: (x['chrom'], x['start']))
+        
+        return matching_features
+        
+    except FileNotFoundError:
+        return f"Error: File '{gffpath}' not found."
+    except Exception as e:
+        return f"Error searching features by attribute: {str(e)}"
+
+
+
+#search_features_by_attribute("GCA_050947715.1_ASM5094771v1_genomic.gff", "go_function", "transmembrane", False)
+
+
+@tool
+def search_genes_by_go_function_attribute(gffpath: str, attribute_value: str, exact_match: bool = True) -> list:
+    """Search genes by matching go function (GO: Gene Ontology) with exact or partial matching.
+    Use this function when asked about genes that encodes a specific protein.
+
+    Args:
+        gffpath (str): Path to the GFF file
+        attribute_value (str): The attribute value to match
+        exact_match (bool): If True, performs exact matching; if False, performs partial matching
+
+    Returns:
+        list: List of string with the gene id
+
+    Raises:
+        FileNotFoundError: If the file doesn't exist
+    """
+    try:
+        db_filename = get_db_filename(gffpath)
+        if os.path.exists(db_filename):
+            db = gffutils.FeatureDB(db_filename)
+        else:
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
+        
+        matching_features = []
+        
+        # Iterate through all features to search for matching attributes
+        for feature in db.all_features():
+            # Check if the feature has the specified attribute key
+            if "go_function" in feature.attributes:
+                # Get the attribute values (attributes are stored as lists)
+                attr_values = feature.attributes["go_function"]
+                
+                # Check if any of the attribute values match our search criteria
+                match_found = False
+                for attr_val in attr_values:
+                    if exact_match:
+                        if attr_val == attribute_value:
+                            match_found = True
+                            break
+                    else:
+                        if attribute_value.lower() in attr_val.lower():
+                            match_found = True
+                            break
+                
+                if match_found:
+                    #feature_dict = {
+                    #    'id': feature.id,
+                    #    'attributes': feature.attributes["go_function"],
+                    #}
+                    matching_features.append(feature.id)
         
         return matching_features
         
@@ -1729,7 +1793,8 @@ def get_tools_list() -> list:
         ("get_gene_structure", "Get gene structure with child features (exons, CDS, UTRs)"),
         ("get_feature_parents", "Find parent features of a given feature"),
         ("get_features_by_type", "Get all features of a specific type"),
-        ("get_feature_statistics", "Calculate comprehensive feature statistics"),
+        ("get_feature_statistics", "Calculate comprehensive feature statistics. "
+        "Use this function to get ammount of genes, exons, CDNs, chromosomes, and so on"),
         ("get_chromosome_summary", "Generate per-chromosome feature analysis"),
         ("get_length_distribution", "Calculate length statistics for a feature type"),
         ("search_features_by_attribute", "Search features by attribute key-value pairs"),
