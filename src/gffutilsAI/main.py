@@ -152,35 +152,14 @@ Examples:
         ollama_model = OllamaModel(
             model_id=args.model,
             host=host_url,
-            params={
-                "max_tokens": args.max_tokens,
-                "temperature": args.temperature,
-                "top_p": 0.9,
-                "stream": True,
-            },
+            max_tokens=args.max_tokens,
+            temperature=args.temperature,
+            top_p=0.9,
         )
+        model_to_use = ollama_model
         
-        # Add authorization header for cloud server if needed
-        headers = {}
-        if args.server == "cloud" and os.environ.get('OLLAMA_API_KEY'):
-            headers['Authorization'] = 'Bearer ' + os.environ.get('OLLAMA_API_KEY')
-        
-        # Update model configuration with headers if needed
-        if headers:
-            ollama_model = OllamaModel(
-                model_id=args.model,
-                host=host_url,
-                headers=headers,
-                params={
-                    "max_tokens": args.max_tokens,
-                    "temperature": args.temperature,
-                    "top_p": 0.9,
-                    "stream": True,
-                },
-            )
-            model_to_use = ollama_model
-        else:
-            model_to_use = ollama_model
+        # Note: For cloud server authentication, you may need to set OLLAMA_API_KEY
+        # as an environment variable or configure it differently based on the SDK version
 
     # Create tools list based on server type
     base_tools = [
