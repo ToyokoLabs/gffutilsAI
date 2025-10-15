@@ -428,7 +428,7 @@ This project follows a specification-driven development approach. See the `.kiro
 
 ## License
 
-[Add your license information here]
+GPL-3.0
 
 ## Acknowledgments
 
