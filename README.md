@@ -167,6 +167,138 @@ Here are some example questions you can ask the agent:
 - "Generate a summary report of this GFF file"
 - "Save gene information to a CSV file"
 
+#### Sample session
+
+
+```
+$ uv run python src/gffutilsAI/main.py -s cloud -m glm-4.6:cloud
+🤖 GFF Analysis AI Agent
+📊 Model: glm-4.6:cloud
+🌐 Server: cloud (https://ollama.com)
+🌡️  Temperature: 0.1
+--------------------------------------------------
+📝 System prompt loaded from: system_prompt.txt
+🔒 Cloud server: file_read tool disabled for security
+💬 Interactive mode - Type your questions about GFF files
+   Type 'quit' or 'exit' to stop
+--------------------------------------------------
+
+🧬 GFF Query: list files in src/gffutilsAI/data/
+------------------------------
+
+Tool #1: list_directory
+The directory `src/gffutilsAI/data/` contains the following files:
+
+1. **GCF_040556925.1_ASM4055692v1_genomic.gff**
+2. **subset_4percent.gff**
+
+Both appear to be GFF (General Feature Format) files, which are commonly used for genome annotation data. Would you like me to analyze either of these files or perform any specific operations on them?
+------------------------------
+
+🧬 GFF Query: how many chromosomes are there in GCF_040556925.1_ASM4055692v1_genomic.gff
+------------------------------
+
+Tool #2: get_chromosomes_info
+The GFF file `GCF_040556925.1_ASM4055692v1_genomic.gff` contains **1 chromosome**:
+
+- **NZ_CP159789.1**
+
+This appears to be a bacterial genome assembly, as indicated by the "NZ_CP" prefix which is typically used for RefSeq complete bacterial genomes.
+------------------------------
+
+🧬 GFF Query: which species it is?
+------------------------------
+
+Tool #3: get_organism_info
+The GFF file `GCF_040556925.1_ASM4055692v1_genomic.gff` contains the genome of **Mycoplasmoides genitalium**, which is a bacterial species (taxonomy ID: 2097).
+
+This is consistent with the fact that there's only one chromosome (NZ_CP159789.1) in the file, as bacteria typically have a single circular chromosome.
+------------------------------
+
+🧬 GFF Query: how many genes there are?
+------------------------------
+
+Tool #4: get_feature_statistics
+The Mycoplasmoides genitalium genome contains **545 genes**.
+
+Here's a breakdown of the genomic features in this assembly:
+
+- **Genes**: 545
+- **CDS (coding sequences)**: 524
+- **Pseudogenes**: 21
+- **tRNA**: 36
+- **rRNA**: 3
+- **Other RNA features**: 4 (RNase_P_RNA, SRP_RNA, tmRNA)
+- **Exons**: 42
+- **Total features**: 1,175
+
+The genome has a total length of 1,706,785 base pairs (~1.7 Mb), which is typical for Mycoplasma species, which have some of the smallest known bacterial genomes.
+------------------------------
+
+🧬 GFF Query: how many membrane genes? 
+------------------------------
+
+Tool #5: search_genes_by_go_function_attribute
+
+Tool #6: search_genes_by_go_function_attribute
+
+Tool #7: search_genes_by_go_function_attribute
+
+Tool #8: search_genes_by_go_function_attribute
+
+Tool #9: search_features_by_attribute
+
+Tool #10: search_features_by_attribute
+Based on my analysis of the Mycoplasmoides genitalium genome, I found **approximately 35-40 membrane-related genes**. Here's the breakdown:
+
+## Membrane Genes Found:
+
+### Transporters (Primary Category):
+- **ABC transporters**: ~20 genes (ATP-binding proteins, permeases, substrate-binding proteins)
+- **Energy-coupling factor (ECF) transporters**: ~5 genes
+- **MFS transporters**: 1 gene
+- **MATE family efflux transporter**: 1 gene
+- **PTS transporters**: ~3 genes (phosphotransferase system)
+
+### Other Membrane Proteins:
+- **Membrane protein insertase YidC**: 1 gene
+- **Lysylphosphatidylglycerol synthase**: 1 gene (membrane domain-containing)
+- **Replication initiation and membrane attachment protein**: 1 gene
+
+## Key Findings:
+- **Total membrane-related genes**: ~35-40 out of 545 total genes (~6-7% of genome)
+- **Transporters dominate**: ~30 genes are involved in various transport processes
+- **ABC transporters are most abundant**: ~20 genes for importing nutrients and exporting waste
+- **ECF transporters**: Specialized for vitamin and micronutrient uptake
+
+This is typical for Mycoplasma species, which have reduced genomes and rely heavily on transport systems to import nutrients from their host environment since they lack many metabolic pathways.
+------------------------------
+
+🧬 GFF Query: can you write a CSV file with gene name, position and description? call it membrane_genes.csv
+------------------------------
+
+Tool #11: file_write
+I've successfully created the CSV file `membrane_genes.csv` with **37 membrane-related genes** from the Mycoplasmoides genitalium genome. The file contains:
+
+**Columns:**
+- `gene_name`: Locus tag (e.g., ABS333_RS00080)
+- `chromosome`: Chromosome identifier (NZ_CP159789.1)
+- `start`: Start position in the genome
+- `end`: End position in the genome  
+- `description`: Protein description
+
+**Summary of the data:**
+- **37 total membrane genes** included
+- **ABC transporters**: 20 genes (most abundant category)
+- **ECF transporters**: 5 genes
+- **PTS transporters**: 3 genes
+- **Other membrane proteins**: 9 genes (including YidC, MFS transporter, MATE efflux transporter, etc.)
+
+The file is now ready for use in downstream analysis, visualization, or further bioinformatics work. You can open it in Excel, R, Python, or any spreadsheet program to work with the membrane gene data.
+------------------------------
+
+```
+
 ## Configuration
 
 ### Model Configuration
