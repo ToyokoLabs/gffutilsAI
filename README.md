@@ -87,6 +87,19 @@ python main.py --model gpt-4 --server cloud
 python main.py --anthropic --model claude-3-5-sonnet-latest
 ```
 
+If you are going to use a cloud model you need to export the api key.
+
+For Ollama:
+
+```export OLLAMA_API_KEY="XXXXXXXXXXXXXX"
+```
+
+For Anthropic:
+
+```export ANTHROPIC_API_KEY="XXXXXXXXXXXXX"
+```
+
+
 #### Single Query Mode
 
 ```bash
