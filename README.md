@@ -91,12 +91,14 @@ If you are going to use a cloud model you need to export the api key.
 
 For Ollama:
 
-```export OLLAMA_API_KEY="XXXXXXXXXXXXXX"
+```
+export OLLAMA_API_KEY="XXXXXXXXXXXXXX"
 ```
 
 For Anthropic:
 
-```export ANTHROPIC_API_KEY="XXXXXXXXXXXXX"
+```
+export ANTHROPIC_API_KEY="XXXXXXXXXXXXX"
 ```
 
 
