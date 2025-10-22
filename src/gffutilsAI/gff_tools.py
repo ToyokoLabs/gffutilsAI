@@ -275,7 +275,7 @@ def get_multiple_gene_lenght(gffpath: str, gene_ids: list) -> list:
 
 
 @tool
-def get_all_attributes(gffpath: str) -> set:
+def get_all_attributes(gffpath: str, start_record: int = 1, end_record: int = 10) -> dict:
     """Given the path of a gff file, generate a database and then get the list of all available attributes.
     Sample attributes are:
     'Dbxref', 'ID', 'Is_circular', 'Name', 'Note', 'Ontology_term', 'Parent', 'anticodon', 'collection-date', 'country',
@@ -285,9 +285,20 @@ def get_all_attributes(gffpath: str) -> set:
 
     Args:
         gffpath (str): Path to the file to read
+        start_record (int): Starting record number (1-based, default: 1)
+        end_record (int): Ending record number (1-based, default: 10)
 
     Returns:
-        set: All available attributes
+        dict: Dictionary containing attributes and pagination info
+              Format: {
+                  'attributes': set,
+                  'pagination': {
+                      'start_record': int,
+                      'end_record': int,
+                      'total_features_processed': int,
+                      'note': str
+                  }
+              }
 
     Raises:
         FileNotFoundError: If the file doesn't exist
@@ -299,10 +310,28 @@ def get_all_attributes(gffpath: str) -> set:
             db = gffutils.FeatureDB(db_filename)
         else:
             db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
+        
         attribute_types = set()
+        count = 0
+        processed = 0
+        
         for feature in db.all_features():
-            attribute_types.update(feature.attributes.keys())
-        return attribute_types
+            count += 1
+            if count >= start_record and count <= end_record:
+                attribute_types.update(feature.attributes.keys())
+                processed += 1
+            elif count > end_record:
+                break
+        
+        return {
+            'attributes': attribute_types,
+            'pagination': {
+                'start_record': start_record,
+                'end_record': end_record,
+                'total_features_processed': processed,
+                'note': f"Processed features {start_record} to {min(count, end_record)}. Use different start_record/end_record to get more attributes from other features."
+            }
+        }
     except FileNotFoundError:
         return f"Error: File '{gffpath}' not found."
     except Exception as e:
@@ -310,15 +339,17 @@ def get_all_attributes(gffpath: str) -> set:
 
 
 @tool
-def get_genes_and_features_from_attribute(gffpath: str, attr: str) -> dict:
+def get_genes_and_features_from_attribute(gffpath: str, attr: str, start_record: int = 1, end_record: int = 10) -> dict:
     """Get all genes that has an attribute.
 
     Args:
         gffpath (str): Path to the file to read
         attr (str): The attribute content (for example "regulation of sporulation")
+        start_record (int): Starting record number (1-based, default: 1)
+        end_record (int): Ending record number (1-based, default: 10)
 
     Returns:
-        Dict (dict): A dictionary with all genes and features where the attribute is present
+        Dict (dict): A dictionary with all genes and features where the attribute is present, with pagination info
 
     Raises:
         FileNotFoundError: If the file doesn't exist
@@ -330,16 +361,40 @@ def get_genes_and_features_from_attribute(gffpath: str, attr: str) -> dict:
             db = gffutils.FeatureDB(db_filename)
         else:
             db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
+        
         genes = set()
         features = []
+        matching_count = 0
+        returned_count = 0
+        
         for feature in db.all_features():    
             if any(attr in val for vals in feature.attributes.values() for val in vals):
-                #print(f"{feature.id}\t{feature.featuretype}\t{feature.attributes}")
-                features.append(feature.id)
-                gene = get_feature_parents(gffpath, feature.id)[0]['id']
-                genes.add(gene)
+                matching_count += 1
+                if matching_count >= start_record and matching_count <= end_record:
+                    features.append(feature.id)
+                    try:
+                        parents = get_feature_parents(gffpath, feature.id)
+                        if parents and len(parents) > 0:
+                            gene = parents[0]['id']
+                            genes.add(gene)
+                    except:
+                        # If no parent found, skip adding to genes
+                        pass
+                    returned_count += 1
+                elif matching_count > end_record:
+                    break
 
-        return {"genes": genes, "features": features}
+        return {
+            "genes": list(genes),
+            "features": features,
+            "pagination": {
+                "start_record": start_record,
+                "end_record": end_record,
+                "returned_count": returned_count,
+                "total_matching_found": matching_count,
+                "note": f"Returned {returned_count} features matching '{attr}' (records {start_record}-{min(matching_count, end_record)}). Total matching features found so far: {matching_count}"
+            }
+        }
     except FileNotFoundError:
         return f"Error: File '{gffpath}' not found."
     except Exception as e:
@@ -631,16 +686,27 @@ def get_feature_parents(gffpath: str, feature_id: str) -> list:
 
 
 @tool
-def get_features_by_type(gffpath: str, feature_type: str, limit: int = None) -> list:
-    """Get all features of a specific type using efficient iteration.
+def get_features_by_type(gffpath: str, feature_type: str, start_record: int = 1, end_record: int = 10) -> dict:
+    """Get all features of a specific type using efficient iteration with pagination.
 
     Args:
         gffpath (str): Path to the GFF file
         feature_type (str): The feature type to query (e.g., 'gene', 'exon', 'CDS')
-        limit (int, optional): Maximum number of features to return (for large datasets)
+        start_record (int): Starting record number (1-based, default: 1)
+        end_record (int): Ending record number (1-based, default: 10)
 
     Returns:
-        list: List of dictionaries containing feature details
+        dict: Dictionary containing features and pagination info
+              Format: {
+                  'features': list,
+                  'pagination': {
+                      'start_record': int,
+                      'end_record': int,
+                      'returned_count': int,
+                      'total_processed': int,
+                      'note': str
+                  }
+              }
 
     Raises:
         FileNotFoundError: If the file doesn't exist
@@ -659,31 +725,42 @@ def get_features_by_type(gffpath: str, feature_type: str, limit: int = None) -> 
         if feature_type not in available_types:
             return f"Error: Feature type '{feature_type}' not found. Available types: {available_types}"
         
-        # Get features of the specified type
+        # Get features of the specified type with pagination
         features = []
         count = 0
+        returned_count = 0
         
         for feature in db.features_of_type(feature_type):
-            if limit and count >= limit:
-                break
-                
-            feature_dict = {
-                'id': feature.id,
-                'chrom': feature.chrom,
-                'start': feature.start,
-                'end': feature.end,
-                'strand': feature.strand,
-                'feature_type': feature.featuretype,
-                'attributes': dict(feature.attributes.items()),
-                'length': abs(feature.end - feature.start)
-            }
-            features.append(feature_dict)
             count += 1
+            if count >= start_record and count <= end_record:
+                feature_dict = {
+                    'id': feature.id,
+                    'chrom': feature.chrom,
+                    'start': feature.start,
+                    'end': feature.end,
+                    'strand': feature.strand,
+                    'feature_type': feature.featuretype,
+                    'attributes': dict(feature.attributes.items()),
+                    'length': abs(feature.end - feature.start)
+                }
+                features.append(feature_dict)
+                returned_count += 1
+            elif count > end_record:
+                break
         
         # Sort features by chromosome and start position
         features.sort(key=lambda x: (x['chrom'], x['start']))
         
-        return features
+        return {
+            'features': features,
+            'pagination': {
+                'start_record': start_record,
+                'end_record': end_record,
+                'returned_count': returned_count,
+                'total_processed': count,
+                'note': f"Returned {returned_count} features of type '{feature_type}' (records {start_record}-{min(count, end_record)}). Total features of this type processed: {count}"
+            }
+        }
         
     except FileNotFoundError:
         return f"Error: File '{gffpath}' not found."
@@ -1084,7 +1161,7 @@ def get_length_distribution(gffpath: str, feature_type: str) -> dict:
 
 
 @tool
-def search_features_by_attribute(gffpath: str, attribute_key: str, attribute_value: str, exact_match: bool = True) -> list:
+def search_features_by_attribute(gffpath: str, attribute_key: str, attribute_value: str, exact_match: bool = True, start_record: int = 1, end_record: int = 10) -> dict:
     """Search features by attribute key-value pairs with exact or partial matching.
 
     Args:
@@ -1092,9 +1169,11 @@ def search_features_by_attribute(gffpath: str, attribute_key: str, attribute_val
         attribute_key (str): The attribute key to search for (e.g., 'Name', 'ID', 'Note')
         attribute_value (str): The attribute value to match
         exact_match (bool): If True, performs exact matching; if False, performs partial matching
+        start_record (int): Starting record number (1-based, default: 1)
+        end_record (int): Ending record number (1-based, default: 10)
 
     Returns:
-        list: List of dictionaries containing matching features with complete attribute information
+        dict: Dictionary containing matching features and pagination info
 
     Raises:
         FileNotFoundError: If the file doesn't exist
@@ -1107,6 +1186,8 @@ def search_features_by_attribute(gffpath: str, attribute_key: str, attribute_val
             db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         matching_features = []
+        matching_count = 0
+        returned_count = 0
         
         # Iterate through all features to search for matching attributes
         for feature in db.all_features():
@@ -1128,22 +1209,36 @@ def search_features_by_attribute(gffpath: str, attribute_key: str, attribute_val
                             break
                 
                 if match_found:
-                    feature_dict = {
-                        'id': feature.id,
-                        'chrom': feature.chrom,
-                        'start': feature.start,
-                        'end': feature.end,
-                        'strand': feature.strand,
-                        'feature_type': feature.featuretype,
-                        'attributes': dict(feature.attributes.items()),
-                        'length': abs(feature.end - feature.start)
-                    }
-                    matching_features.append(feature_dict)
+                    matching_count += 1
+                    if matching_count >= start_record and matching_count <= end_record:
+                        feature_dict = {
+                            'id': feature.id,
+                            'chrom': feature.chrom,
+                            'start': feature.start,
+                            'end': feature.end,
+                            'strand': feature.strand,
+                            'feature_type': feature.featuretype,
+                            'attributes': dict(feature.attributes.items()),
+                            'length': abs(feature.end - feature.start)
+                        }
+                        matching_features.append(feature_dict)
+                        returned_count += 1
+                    elif matching_count > end_record:
+                        break
         
         # Sort results by chromosome and start position
         matching_features.sort(key=lambda x: (x['chrom'], x['start']))
         
-        return matching_features
+        return {
+            'features': matching_features,
+            'pagination': {
+                'start_record': start_record,
+                'end_record': end_record,
+                'returned_count': returned_count,
+                'total_matching_found': matching_count,
+                'note': f"Found {matching_count} features with {attribute_key}='{attribute_value}' (exact_match={exact_match}). Returned records {start_record}-{min(matching_count, end_record)}"
+            }
+        }
         
     except FileNotFoundError:
         return f"Error: File '{gffpath}' not found."
@@ -1156,7 +1251,7 @@ def search_features_by_attribute(gffpath: str, attribute_key: str, attribute_val
 
 
 @tool
-def search_genes_by_go_function_attribute(gffpath: str, attribute_value: str, exact_match: bool = True) -> list:
+def search_genes_by_go_function_attribute(gffpath: str, attribute_value: str, exact_match: bool = True, start_record: int = 1, end_record: int = 10) -> dict:
     """Search genes by matching go function (GO: Gene Ontology) with exact or partial matching.
     Use this function when asked about genes that encodes a specific protein.
 
@@ -1164,9 +1259,11 @@ def search_genes_by_go_function_attribute(gffpath: str, attribute_value: str, ex
         gffpath (str): Path to the GFF file
         attribute_value (str): The attribute value to match
         exact_match (bool): If True, performs exact matching; if False, performs partial matching
+        start_record (int): Starting record number (1-based, default: 1)
+        end_record (int): Ending record number (1-based, default: 10)
 
     Returns:
-        list: List of string with the gene id
+        dict: Dictionary containing matching gene IDs and pagination info
 
     Raises:
         FileNotFoundError: If the file doesn't exist
@@ -1179,6 +1276,8 @@ def search_genes_by_go_function_attribute(gffpath: str, attribute_value: str, ex
             db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         matching_features = []
+        matching_count = 0
+        returned_count = 0
         
         # Iterate through all features to search for matching attributes
         for feature in db.all_features():
@@ -1200,13 +1299,23 @@ def search_genes_by_go_function_attribute(gffpath: str, attribute_value: str, ex
                             break
                 
                 if match_found:
-                    #feature_dict = {
-                    #    'id': feature.id,
-                    #    'attributes': feature.attributes["go_function"],
-                    #}
-                    matching_features.append(feature.id)
+                    matching_count += 1
+                    if matching_count >= start_record and matching_count <= end_record:
+                        matching_features.append(feature.id)
+                        returned_count += 1
+                    elif matching_count > end_record:
+                        break
         
-        return matching_features
+        return {
+            'gene_ids': matching_features,
+            'pagination': {
+                'start_record': start_record,
+                'end_record': end_record,
+                'returned_count': returned_count,
+                'total_matching_found': matching_count,
+                'note': f"Found {matching_count} genes with go_function='{attribute_value}' (exact_match={exact_match}). Returned records {start_record}-{min(matching_count, end_record)}"
+            }
+        }
         
     except FileNotFoundError:
         return f"Error: File '{gffpath}' not found."
@@ -1215,15 +1324,17 @@ def search_genes_by_go_function_attribute(gffpath: str, attribute_value: str, ex
 
 
 @tool
-def get_features_with_attribute(gffpath: str, attribute_key: str) -> list:
+def get_features_with_attribute(gffpath: str, attribute_key: str, start_record: int = 1, end_record: int = 10) -> dict:
     """Find all features that have a specific attribute key present.
 
     Args:
         gffpath (str): Path to the GFF file
         attribute_key (str): The attribute key to search for (e.g., 'Name', 'ID', 'Note')
+        start_record (int): Starting record number (1-based, default: 1)
+        end_record (int): Ending record number (1-based, default: 10)
 
     Returns:
-        list: List of dictionaries containing features with the specified attribute
+        dict: Dictionary containing features and pagination info
 
     Raises:
         FileNotFoundError: If the file doesn't exist
@@ -1236,26 +1347,42 @@ def get_features_with_attribute(gffpath: str, attribute_key: str) -> list:
             db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         matching_features = []
+        matching_count = 0
+        returned_count = 0
         
         # Iterate through all features to find those with the specified attribute key
         for feature in db.all_features():
             if attribute_key in feature.attributes:
-                feature_dict = {
-                    'id': feature.id,
-                    'chrom': feature.chrom,
-                    'start': feature.start,
-                    'end': feature.end,
-                    'strand': feature.strand,
-                    'feature_type': feature.featuretype,
-                    'attributes': dict(feature.attributes.items()),
-                    'length': abs(feature.end - feature.start)
-                }
-                matching_features.append(feature_dict)
+                matching_count += 1
+                if matching_count >= start_record and matching_count <= end_record:
+                    feature_dict = {
+                        'id': feature.id,
+                        'chrom': feature.chrom,
+                        'start': feature.start,
+                        'end': feature.end,
+                        'strand': feature.strand,
+                        'feature_type': feature.featuretype,
+                        'attributes': dict(feature.attributes.items()),
+                        'length': abs(feature.end - feature.start)
+                    }
+                    matching_features.append(feature_dict)
+                    returned_count += 1
+                elif matching_count > end_record:
+                    break
         
         # Sort results by chromosome and start position
         matching_features.sort(key=lambda x: (x['chrom'], x['start']))
         
-        return matching_features
+        return {
+            'features': matching_features,
+            'pagination': {
+                'start_record': start_record,
+                'end_record': end_record,
+                'returned_count': returned_count,
+                'total_matching_found': matching_count,
+                'note': f"Found {matching_count} features with attribute '{attribute_key}'. Returned records {start_record}-{min(matching_count, end_record)}"
+            }
+        }
         
     except FileNotFoundError:
         return f"Error: File '{gffpath}' not found."
