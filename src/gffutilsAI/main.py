@@ -37,10 +37,21 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python main.py --model llama3.1 --server local
-  python main.py --model gpt-4 --server cloud
-  python main.py --model codellama:13b --server local --query "What features are in my GFF file?"
+  gffai --model llama3.1 --server local
+  gffai --model gpt-4 --server cloud
+  gffai --model codellama:13b --server local --query "What features are in my GFF file?"
+  
+  From source:
+  uv run gffai --model llama3.1 --server local
+
+  Note: To use cloud models you need to set the API key as an environment variable. See README.md for more information.
         """
+    )
+    
+    parser.add_argument(
+        "--version", "-v",
+        action="version",
+        version="gffutilsai 0.1.6"
     )
     
     parser.add_argument(

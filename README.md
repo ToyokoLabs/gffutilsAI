@@ -105,13 +105,13 @@ gffai --anthropic --model claude-3-5-sonnet-latest
 **If running from source:**
 ```bash
 # Use default settings (llama3.1 model on local server)
-python main.py
+uv run gffai
 
 # Use cloud server with default model (gpt-oss:20b-cloud)
-python main.py --server cloud
+uv run gffai --server cloud
 
 # Use Anthropic Claude model (default: claude-3-5-haiku-latest)
-python main.py --anthropic
+uv run gffai --anthropic
 ```
 
 If you are going to use a cloud model you need to export the api key.
@@ -133,8 +133,12 @@ export ANTHROPIC_API_KEY="XXXXXXXXXXXXX"
 
 ```bash
 # Run a single query and exit
-python main.py --query "What feature types are in my GFF file?"
-python main.py --model llama3.1 --query "Find all genes on chromosome 1"
+gffai --query "What feature types are in my GFF file?"
+gffai --model llama3.1 --query "Find all genes on chromosome 1"
+
+# Or if running from source:
+uv run gffai --query "What feature types are in my GFF file?"
+uv run gffai --model llama3.1 --query "Find all genes on chromosome 1"
 ```
 
 #### Command Line Options
@@ -213,7 +217,7 @@ Here are some example questions you can ask the agent:
 
 
 ```
-$ uv run python src/gffutilsAI/main.py -s cloud -m glm-4.6:cloud
+$ uv run gffai -s cloud -m glm-4.6:cloud
 🤖 GFF Analysis AI Agent
 📊 Model: glm-4.6:cloud
 🌐 Server: cloud (https://ollama.com)
@@ -351,34 +355,37 @@ Configure the model and server using command line arguments:
 
 ```bash
 # Local server with different models
-python main.py --model llama3.1 --server local
-python main.py --model codellama:13b --server local
-python main.py --model mistral:7b --server local
+gffai --model llama3.1 --server local
+gffai --model codellama:13b --server local
+gffai --model mistral:7b --server local
 
 # Cloud server with default model (gpt-oss:20b-cloud)
 export OLLAMA_API_KEY="your-api-key-here"
-python main.py --server cloud
+gffai --server cloud
 
 # Cloud server with custom model
 export OLLAMA_API_KEY="your-api-key-here"
-python main.py --model gpt-4 --server cloud
+gffai --model gpt-4 --server cloud
 
 # Anthropic Claude with default model (claude-3-5-haiku-latest)
 export ANTHROPIC_API_KEY="your-anthropic-api-key"
-python main.py --anthropic
+gffai --anthropic
 
 # Anthropic Claude with custom model
 export ANTHROPIC_API_KEY="your-anthropic-api-key"
-python main.py --anthropic --model claude-3-5-sonnet-latest
+gffai --anthropic --model claude-3-5-sonnet-latest
 
 # Custom settings
-python main.py --model llama3.1 --temperature 0.3 --max-tokens 2048
+gffai --model llama3.1 --temperature 0.3 --max-tokens 2048
 
 # Use custom system prompt
-python main.py --system-prompt my_custom_prompt.txt
+gffai --system-prompt my_custom_prompt.txt
 
 # Enable debug mode to see tool calls and parameters
-python main.py --debug --query "What features are in my GFF file?"
+gffai --debug --query "What features are in my GFF file?"
+
+# If running from source, prefix with 'uv run':
+uv run gffai --model llama3.1 --server local
 ```
 
 #### Environment Variables
@@ -486,35 +493,39 @@ The agent has access to 18+ specialized tools for GFF analysis (defined in `gff_
 Get help with command line options:
 
 ```bash
-python main.py --help
+gffai --help
 ```
 
 Example commands:
 
 ```bash
 # Interactive mode with local llama3.1
-python main.py
+gffai
 
 # Interactive mode with cloud default model (gpt-oss:20b-cloud)
 export OLLAMA_API_KEY="your-key"
-python main.py --server cloud
+gffai --server cloud
 
 # Interactive mode with cloud GPT-4
 export OLLAMA_API_KEY="your-key"
-python main.py --model gpt-4 --server cloud
+gffai --model gpt-4 --server cloud
 
 # Interactive mode with Anthropic Claude
 export ANTHROPIC_API_KEY="your-anthropic-key"
-python main.py --anthropic
+gffai --anthropic
 
 # Single query mode
-python main.py --query "What chromosomes are in my GFF file?" --model llama3.1
+gffai --query "What chromosomes are in my GFF file?" --model llama3.1
 
 # Custom temperature for more creative responses
-python main.py --temperature 0.5 --model codellama:13b
+gffai --temperature 0.5 --model codellama:13b
 
 # Custom host
-python main.py --host "http://my-server:8080" --model custom-model
+gffai --host "http://my-server:8080" --model custom-model
+
+# If running from source, prefix with 'uv run':
+uv run gffai --help
+uv run gffai --server cloud
 ```
 
 ## Troubleshooting
@@ -546,13 +557,16 @@ Use the `--debug` flag to see detailed information about tool execution:
 
 ```bash
 # Enable debug mode for single query
-python main.py --debug --query "What features are in my GFF file?"
+gffai --debug --query "What features are in my GFF file?"
 
 # Enable debug mode for interactive session
-python main.py --debug
+gffai --debug
 
 # Debug with specific model
-python main.py --debug --anthropic --query "Analyze my GFF file"
+gffai --debug --anthropic --query "Analyze my GFF file"
+
+# If running from source:
+uv run gffai --debug --query "What features are in my GFF file?"
 ```
 
 Debug mode shows:
@@ -578,7 +592,7 @@ To add new GFF analysis tools:
 The AI agent's behavior is controlled by the system prompt in `system_prompt.txt`. You can:
 
 1. **Edit the default prompt**: Modify `system_prompt.txt` directly
-2. **Use a custom prompt file**: `python main.py --system-prompt my_custom_prompt.txt`
+2. **Use a custom prompt file**: `gffai --system-prompt my_custom_prompt.txt` (or `uv run gffai --system-prompt my_custom_prompt.txt` from source)
 3. **Customize for specific use cases**: Create different prompt files for different analysis workflows
 
 The system prompt defines:
