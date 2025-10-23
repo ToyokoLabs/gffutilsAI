@@ -42,12 +42,26 @@ This AI agent provides an intuitive interface for bioinformatics researchers to 
 
 ## Installation
 
-### Prerequisites
+### Option 1: Install from PyPI (Recommended)
 
-- Python 3.8+
+```bash
+pip install gffutilsai
+```
+
+After installation, you can use the command:
+
+```bash
+gffai --help
+```
+
+### Option 2: Development Installation
+
+#### Prerequisites
+
+- Python 3.12+
 - Ollama (for running local LLM models)
 
-### Dependencies
+#### Dependencies
 
 Install the required Python packages:
 
@@ -70,6 +84,25 @@ pip install gffutils strands requests
 
 #### Basic Usage (Interactive Mode)
 
+**If installed via pip:**
+```bash
+# Use default settings (llama3.1 model on local server)
+gffai
+
+# Use cloud server with default model (gpt-oss:20b-cloud)
+gffai --server cloud
+
+# Use Anthropic Claude model (default: claude-3-5-haiku-latest)
+gffai --anthropic
+
+# Specify custom model and server
+gffai --model llama3.1 --server local
+gffai --model codellama:13b --server local
+gffai --model gpt-4 --server cloud
+gffai --anthropic --model claude-3-5-sonnet-latest
+```
+
+**If running from source:**
 ```bash
 # Use default settings (llama3.1 model on local server)
 python main.py
@@ -79,12 +112,6 @@ python main.py --server cloud
 
 # Use Anthropic Claude model (default: claude-3-5-haiku-latest)
 python main.py --anthropic
-
-# Specify custom model and server
-python main.py --model llama3.1 --server local
-python main.py --model codellama:13b --server local
-python main.py --model gpt-4 --server cloud
-python main.py --anthropic --model claude-3-5-sonnet-latest
 ```
 
 If you are going to use a cloud model you need to export the api key.
