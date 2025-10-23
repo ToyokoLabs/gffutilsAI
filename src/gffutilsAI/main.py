@@ -8,7 +8,7 @@ from strands.models.anthropic import AnthropicModel
 
 
 # Import all tool functions from the gff_tools module
-from gff_tools import (
+from .gff_tools import (
     file_read, file_write, list_directory,
     get_gff_feature_types, get_gene_lenght, get_gene_attributes, get_multiple_gene_lenght,
     get_all_attributes, get_protein_product_from_gene,
