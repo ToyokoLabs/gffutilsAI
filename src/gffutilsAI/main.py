@@ -35,8 +35,11 @@ tool_call_log = []
 def main():
     global tool_call_log
     
-    # Parse command line arguments first to get env-file option
+    # Check if --version is being used (don't load env vars for version check)
     import sys
+    is_version_check = "--version" in sys.argv or "-v" in sys.argv
+    
+    # Parse command line arguments first to get env-file option
     env_file_path = None
     if "--env-file" in sys.argv:
         try:
@@ -46,18 +49,20 @@ def main():
         except (ValueError, IndexError):
             pass
     
-    # Load environment variables from .env file
+    # Load environment variables from .env file (but don't show message for version check)
     if env_file_path:
         load_dotenv(env_file_path)
-        if os.path.exists(env_file_path):
-            print(f"🔧 Loaded environment variables from: {env_file_path}")
-        else:
-            print(f"⚠️  Warning: .env file not found: {env_file_path}")
+        if not is_version_check:
+            if os.path.exists(env_file_path):
+                print(f"🔧 Loaded environment variables from: {env_file_path}")
+            else:
+                print(f"⚠️  Warning: .env file not found: {env_file_path}")
     else:
         # Try to load from default .env file
         if os.path.exists(".env"):
             load_dotenv()
-            print("🔧 Loaded environment variables from: .env")
+            if not is_version_check:
+                print("🔧 Loaded environment variables from: .env")
     
     # Parse command line arguments
     parser = argparse.ArgumentParser(
@@ -88,7 +93,7 @@ Examples:
     parser.add_argument(
         "--version", "-v",
         action="version",
-        version="gffutilsai 0.1.8"
+        version="gffutilsai 0.1.9"
     )
     
     parser.add_argument(
