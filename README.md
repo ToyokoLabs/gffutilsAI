@@ -95,6 +95,12 @@ gffai --server cloud
 # Use Anthropic Claude model (default: claude-3-5-haiku-latest)
 gffai --anthropic
 
+# Use Google Gemini model (default: gemini-2.0-flash-exp)
+gffai --gemini
+
+# Use OpenAI model (default: gpt-4o-mini)
+gffai --openai
+
 # Specify custom model and server
 gffai --model llama3.1 --server local
 gffai --model codellama:13b --server local
@@ -112,6 +118,12 @@ uv run gffai --server cloud
 
 # Use Anthropic Claude model (default: claude-3-5-haiku-latest)
 uv run gffai --anthropic
+
+# Use Google Gemini model (default: gemini-2.0-flash-exp)
+uv run gffai --gemini
+
+# Use OpenAI model (default: gpt-4o-mini)
+uv run gffai --openai
 ```
 
 If you are going to use a cloud model you need to export the api key.
@@ -146,11 +158,15 @@ uv run gffai --model llama3.1 --query "Find all genes on chromosome 1"
 - `--model, -m`: Model to use (default: llama3.1 for local, gpt-oss:20b-cloud for cloud)
 - `--server, -s`: Server type - 'local' or 'cloud' (default: local)
 - `--anthropic`: Use Anthropic Claude model (default: claude-3-5-haiku-latest)
+- `--gemini`: Use Google Gemini model (default: gemini-2.0-flash-exp)
+- `--openai`: Use OpenAI model (default: gpt-4o-mini)
 - `--host`: Custom host URL (overrides --server setting)
 - `--query, -q`: Run a single query and exit
 - `--temperature, -t`: Temperature for responses (0.0-1.0, default: 0.1)
 - `--max-tokens`: Maximum tokens for responses (default: 4096)
 - `--system-prompt`: Path to system prompt file (default: system_prompt.txt)
+- `--env-file`: Path to .env file (default: .env in current directory)
+- `--version, -v`: Show version information
 - `--debug`: Show detailed debug information including tool calls and parameters
 
 #### Server Options
@@ -171,6 +187,18 @@ uv run gffai --model llama3.1 --query "Find all genes on chromosome 1"
 - Requires `ANTHROPIC_API_KEY` environment variable
 - **Security restriction**: `file_read` tool is disabled for security
 - Default model: `claude-3-5-haiku-latest`
+
+**Google Gemini:**
+- Uses Google's Gemini models via API
+- Requires `GEMINI_API_KEY` environment variable
+- **Security restriction**: `file_read` tool is disabled for security
+- Default model: `gemini-2.0-flash-exp`
+
+**OpenAI:**
+- Uses OpenAI's models via API
+- Requires `OPENAI_API_KEY` environment variable
+- **Security restriction**: `file_read` tool is disabled for security
+- Default model: `gpt-4o-mini`
 
 The agent will start in interactive mode where you can ask questions about your GFF files, or use `--query` for single commands.
 
@@ -375,6 +403,22 @@ gffai --anthropic
 export ANTHROPIC_API_KEY="your-anthropic-api-key"
 gffai --anthropic --model claude-3-5-sonnet-latest
 
+# Google Gemini with default model (gemini-2.0-flash-exp)
+export GEMINI_API_KEY="your-gemini-api-key"
+gffai --gemini
+
+# Google Gemini with custom model
+export GEMINI_API_KEY="your-gemini-api-key"
+gffai --gemini --model gemini-1.5-pro
+
+# OpenAI with default model (gpt-4o-mini)
+export OPENAI_API_KEY="your-openai-api-key"
+gffai --openai
+
+# OpenAI with custom model
+export OPENAI_API_KEY="your-openai-api-key"
+gffai --openai --model gpt-4o
+
 # Custom settings
 gffai --model llama3.1 --temperature 0.3 --max-tokens 2048
 
@@ -390,17 +434,33 @@ uv run gffai --model llama3.1 --server local
 
 #### Environment Variables
 
-For cloud server usage, set your API key:
+You can set environment variables in three ways:
 
+**1. Using a .env file (Recommended):**
+
+Create a `.env` file in your working directory:
+```bash
+# .env file
+OLLAMA_API_KEY=your_ollama_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+**2. Using a custom .env file:**
+```bash
+gffai --env-file path/to/your.env --server cloud
+```
+
+**3. Using export commands:**
 ```bash
 export OLLAMA_API_KEY="your-ollama-api-key"
-```
-
-For Anthropic Claude usage, set your API key:
-
-```bash
 export ANTHROPIC_API_KEY="your-anthropic-api-key"
+export GEMINI_API_KEY="your-gemini-api-key"
+export OPENAI_API_KEY="your-openai-api-key"
 ```
+
+The application will automatically load variables from a `.env` file in the current directory if it exists. You can also specify a custom .env file path using the `--env-file` parameter.
 
 #### Available Models
 
@@ -421,6 +481,19 @@ export ANTHROPIC_API_KEY="your-anthropic-api-key"
 - `claude-3-5-sonnet-latest` - More capable, balanced performance
 - `claude-3-opus-latest` - Most capable Claude model
 - Various other Claude models available
+
+**Google Gemini Models**:
+- `gemini-2.0-flash-exp` - Default Gemini model, fast and efficient
+- `gemini-1.5-pro` - More capable, balanced performance
+- `gemini-1.5-flash` - Fast and lightweight
+- Various other Gemini models available
+
+**OpenAI Models**:
+- `gpt-4o-mini` - Default OpenAI model, fast and cost-effective
+- `gpt-4o` - Most capable OpenAI model, balanced performance
+- `gpt-4-turbo` - Fast and capable
+- `gpt-3.5-turbo` - Lightweight and fast
+- Various other OpenAI models available
 
 ### Database Management
 
@@ -513,6 +586,14 @@ gffai --model gpt-4 --server cloud
 # Interactive mode with Anthropic Claude
 export ANTHROPIC_API_KEY="your-anthropic-key"
 gffai --anthropic
+
+# Interactive mode with Google Gemini
+export GEMINI_API_KEY="your-gemini-key"
+gffai --gemini
+
+# Interactive mode with OpenAI
+export OPENAI_API_KEY="your-openai-key"
+gffai --openai
 
 # Single query mode
 gffai --query "What chromosomes are in my GFF file?" --model llama3.1

@@ -1,10 +1,14 @@
 import os
 import argparse
 import requests
+from importlib import resources
+from dotenv import load_dotenv
 
 from strands import Agent
 from strands.models.ollama import OllamaModel
 from strands.models.anthropic import AnthropicModel
+from strands.models.gemini import GeminiModel
+from strands.models.openai import OpenAIModel
 
 
 # Import all tool functions from the gff_tools module
@@ -31,6 +35,30 @@ tool_call_log = []
 def main():
     global tool_call_log
     
+    # Parse command line arguments first to get env-file option
+    import sys
+    env_file_path = None
+    if "--env-file" in sys.argv:
+        try:
+            env_file_index = sys.argv.index("--env-file")
+            if env_file_index + 1 < len(sys.argv):
+                env_file_path = sys.argv[env_file_index + 1]
+        except (ValueError, IndexError):
+            pass
+    
+    # Load environment variables from .env file
+    if env_file_path:
+        load_dotenv(env_file_path)
+        if os.path.exists(env_file_path):
+            print(f"🔧 Loaded environment variables from: {env_file_path}")
+        else:
+            print(f"⚠️  Warning: .env file not found: {env_file_path}")
+    else:
+        # Try to load from default .env file
+        if os.path.exists(".env"):
+            load_dotenv()
+            print("🔧 Loaded environment variables from: .env")
+    
     # Parse command line arguments
     parser = argparse.ArgumentParser(
         description="GFF Analysis Tools - AI Agent for bioinformatics analysis",
@@ -43,15 +71,24 @@ Examples:
   
   From source:
   uv run gffai --model llama3.1 --server local
-
-  Note: To use cloud models you need to set the API key as an environment variable. See README.md for more information.
+  
+  Environment variables:
+  gffai --env-file my.env --server cloud
+  
+  Provider examples:
+  gffai --anthropic --model claude-3-5-sonnet-latest
+  gffai --gemini --model gemini-2.0-flash-exp
+  gffai --openai --model gpt-4o
+  
+  Note: To use cloud models you need to set the API key as an environment variable. 
+  You can use a .env file or export the variables directly. See README.md for more information.
         """
     )
     
     parser.add_argument(
         "--version", "-v",
         action="version",
-        version="gffutilsai 0.1.6"
+        version="gffutilsai 0.1.8"
     )
     
     parser.add_argument(
@@ -108,6 +145,24 @@ Examples:
     )
     
     parser.add_argument(
+        "--gemini",
+        action="store_true",
+        help="Use Google Gemini model (default: gemini-2.0-flash-exp)"
+    )
+    
+    parser.add_argument(
+        "--openai",
+        action="store_true",
+        help="Use OpenAI model (default: gpt-4o-mini)"
+    )
+    
+    parser.add_argument(
+        "--env-file",
+        type=str,
+        help="Path to .env file (default: .env in current directory)"
+    )
+    
+    parser.add_argument(
         "--debug",
         action="store_true",
         help="Show detailed debug information including tool calls and parameters"
@@ -119,6 +174,10 @@ Examples:
     if args.model is None:
         if args.anthropic:
             args.model = "claude-3-5-haiku-latest" # claude-sonnet-4-5-20250929
+        elif args.gemini:
+            args.model = "gemini-2.5-flash"
+        elif args.openai:
+            args.model = "gpt-4.1-mini"
         elif args.server == "cloud":
             args.model = "gpt-oss:20b-cloud"
         else:
@@ -134,14 +193,37 @@ Examples:
     
     print(f"🤖 GFF Analysis AI Agent")
     print(f"📊 Model: {args.model}")
-    print(f"🌐 Server: {args.server} ({host_url})")
+    if args.gemini:
+        print(f"� Provitder: Google Gemini")
+    elif args.anthropic:
+        print(f"🌐 Provider: Anthropic")
+    elif args.openai:
+        print(f"🌐 Provider: OpenAI")
+    else:
+        print(f"🌐 Server: {args.server} ({host_url})")
     print(f"🌡️  Temperature: {args.temperature}")
     print("-" * 50)
     
     # Load system prompt from file
-    with open(args.system_prompt, "r", encoding="utf-8") as f:
-        system_prompt = f.read().strip()
-    print(f"📝 System prompt loaded from: {args.system_prompt}")
+    try:
+        # First try to open the file as specified (for custom prompts or development)
+        with open(args.system_prompt, "r", encoding="utf-8") as f:
+            system_prompt = f.read().strip()
+        print(f"📝 System prompt loaded from: {args.system_prompt}")
+    except FileNotFoundError:
+        # If default system_prompt.txt not found, try to load from package resources
+        if args.system_prompt == "system_prompt.txt":
+            try:
+                with resources.open_text("gffutilsAI", "system_prompt.txt") as f:
+                    system_prompt = f.read().strip()
+                print(f"📝 System prompt loaded from package resources")
+            except FileNotFoundError:
+                print(f"❌ Error: Could not find system prompt file: {args.system_prompt}")
+                print("   Make sure the file exists or use --system-prompt to specify a custom file.")
+                return
+        else:
+            print(f"❌ Error: Could not find system prompt file: {args.system_prompt}")
+            return
 
 
 
@@ -158,6 +240,36 @@ Examples:
         )
         model_to_use = a_model
         print(f"🤖 Using Anthropic Claude model: {args.model}")
+    elif args.gemini:
+        # Use Google Gemini model
+        gemini_model = GeminiModel(
+            client_args={
+                "api_key": os.environ.get('GEMINI_API_KEY', ""),
+            },
+            model_id=args.model,
+            params={
+                "temperature": args.temperature,
+                "max_output_tokens": args.max_tokens,
+                "top_p": 0.9,
+                "top_k": 40,
+            }
+        )
+        model_to_use = gemini_model
+        print(f"🤖 Using Google Gemini model: {args.model}")
+    elif args.openai:
+        # Use OpenAI model
+        openai_model = OpenAIModel(
+            client_args={
+                "api_key": os.environ.get('OPENAI_API_KEY', ""),
+            },
+            model_id=args.model,
+            params={
+                "temperature": args.temperature,
+                "max_tokens": args.max_tokens,
+            }
+        )
+        model_to_use = openai_model
+        print(f"🤖 Using OpenAI model: {args.model}")
     else:
         # Use Ollama model
         ollama_model = OllamaModel(
@@ -187,14 +299,18 @@ Examples:
         search_genes_by_go_function_attribute
     ]
     
-    # Add file_read tool only for local server (security restriction for cloud/anthropic)
-    if args.server == "local" and not args.anthropic:
+    # Add file_read tool only for local server (security restriction for cloud/anthropic/gemini/openai)
+    if args.server == "local" and not args.anthropic and not args.gemini and not args.openai:
         all_tools = [file_read] + base_tools
         print("🔓 Local server: file_read tool enabled")
     else:
         all_tools = base_tools
         if args.anthropic:
             print("🔒 Anthropic: file_read tool disabled for security")
+        elif args.gemini:
+            print("🔒 Gemini: file_read tool disabled for security")
+        elif args.openai:
+            print("🔒 OpenAI: file_read tool disabled for security")
         else:
             print("🔒 Cloud server: file_read tool disabled for security")
 
@@ -209,17 +325,11 @@ Examples:
         print(f"🔍 Query: {args.query}")
         print("-" * 50)
         try:
-            # Clear previous debug info
-            debug_info['tool_calls'] = []
-            tool_call_log = []  # Clear previous tool calls
-            
             # Execute the query
             result = local_agent(args.query)
-            print(result)
-            
-            # Show debug information if requested
             if args.debug:
-                show_debug_info(debug_info, local_agent)
+                print(result)
+                print("***********************************")
                 
         except Exception as e:
             print(f"❌ Error: {str(e)}")
@@ -250,10 +360,7 @@ Examples:
                 # Execute the query
                 result = local_agent(user_input)
                 
-                # Show debug information if requested
-                if args.debug:
-                    print(result)
-                #    show_debug_info(debug_info, local_agent)
+                #print(result)
                 
                 print("\n" + "-" * 30)
                 
