@@ -70,7 +70,7 @@ def file_write(file_path: str, content: str) -> str:
 
 
 @tool
-def list_directory(directory_path: str = ".") -> str:
+def list_files(directory_path: str = ".") -> str:
     """List files and directories in the specified path.
 
     Args:
@@ -107,15 +107,18 @@ def list_directory(directory_path: str = ".") -> str:
 
 
 @tool
-def get_organism_info(accession: str) -> dict:
-    """Given an accession id get organism info like specie name
+def get_organism_info(accession: str = None, taxonomy_id: str = None) -> dict:
+    """Given an accession id or taxonomy id, get organism info like species name
 
     Args:
-        accession (str): Accession id like GCF_036512215.1
+        accession (str, optional): Accession id like GCF_036512215.1
+        taxonomy_id (str, optional): NCBI taxonomy ID like 2097
 
     Returns:
-        dict: organism and specie information
+        dict: organism and species information
 
+    Note:
+        Provide either accession OR taxonomy_id, not both.
     """
 
     def search_refseq_assembly(refseq_accession):
@@ -127,7 +130,6 @@ def get_organism_info(accession: str) -> dict:
         uid_list = search_results['IdList']
         return uid_list
 
-
     def get_assembly_summary(uid):
         # Step 2: Fetch summary info by UID
         handle = Entrez.esummary(db="assembly", id=uid)
@@ -135,22 +137,82 @@ def get_organism_info(accession: str) -> dict:
         handle.close()
         return summary
 
+    def get_taxonomy_info(tax_id):
+        # Get organism info from taxonomy database
+        handle = Entrez.efetch(db="taxonomy", id=tax_id, retmode="xml")
+        records = Entrez.read(handle)
+        handle.close()
+        return records
 
     Entrez.email = "example@example.com"
 
-    uids = search_refseq_assembly(accession)
+    # Validate input parameters
+    if accession and taxonomy_id:
+        raise ValueError("Provide either accession OR taxonomy_id, not both")
+    if not accession and not taxonomy_id:
+        raise ValueError("Must provide either accession or taxonomy_id")
 
-    if uids:
-        uid = uids[0]  # take the first match
-        summary = get_assembly_summary(uid)
-        docsum = summary['DocumentSummarySet']['DocumentSummary'][0]
-    else:
-        print("No assembly found for accession", refseq_accession)
+    if accession:
+        # Handle accession-based lookup
+        uids = search_refseq_assembly(accession)
 
-    organism = docsum.get('Organism', 'N/A')
-    taxonomy_id = docsum.get('Taxid', 'N/A')
-    species = docsum.get('SpeciesName', 'N/A')  # Often available
-    return {"organism": organism, "taxonomy_id": taxonomy_id, "species": species}
+        if uids:
+            uid = uids[0]  # take the first match
+            summary = get_assembly_summary(uid)
+            docsum = summary['DocumentSummarySet']['DocumentSummary'][0]
+            
+            organism = docsum.get('Organism', 'N/A')
+            taxonomy_id_result = docsum.get('Taxid', 'N/A')
+            species = docsum.get('SpeciesName', 'N/A')
+            
+            return {
+                "organism": organism, 
+                "taxonomy_id": taxonomy_id_result, 
+                "species": species,
+                "source": "assembly_database"
+            }
+        else:
+            return {
+                "error": f"No assembly found for accession {accession}",
+                "organism": "N/A",
+                "taxonomy_id": "N/A", 
+                "species": "N/A",
+                "source": "assembly_database"
+            }
+    
+    elif taxonomy_id:
+        # Handle taxonomy ID-based lookup
+        try:
+            records = get_taxonomy_info(taxonomy_id)
+            
+            if records:
+                record = records[0]
+                organism = record.get('ScientificName', 'N/A')
+                # For species, we can try to get it from the lineage or use the scientific name
+                species = organism  # In most cases, ScientificName is the species name
+                
+                return {
+                    "organism": organism,
+                    "taxonomy_id": taxonomy_id,
+                    "species": species,
+                    "source": "taxonomy_database"
+                }
+            else:
+                return {
+                    "error": f"No taxonomy record found for ID {taxonomy_id}",
+                    "organism": "N/A",
+                    "taxonomy_id": taxonomy_id,
+                    "species": "N/A",
+                    "source": "taxonomy_database"
+                }
+        except Exception as e:
+            return {
+                "error": f"Error fetching taxonomy info: {str(e)}",
+                "organism": "N/A",
+                "taxonomy_id": taxonomy_id,
+                "species": "N/A",
+                "source": "taxonomy_database"
+            }
 
 
 @tool
@@ -1909,6 +1971,7 @@ def get_tools_list() -> list:
         ("file_read", "Read a file and return its content"),
         ("file_write", "Write content to a file"),
         ("list_directory", "List files and directories in the specified path"),
+        ("get_organism_info", "Get organism information given an accession id or taxonomy id"),
         ("get_gff_feature_types", "Get all available feature types from a GFF file"),
         ("get_gene_lenght", "Get the length of a specific gene"),
         ("get_gene_attributes", "Get gene attributes (ID, Note, Name, etc.)"),

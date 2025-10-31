@@ -13,7 +13,7 @@ from strands.models.openai import OpenAIModel
 
 # Import all tool functions from the gff_tools module
 from .gff_tools import (
-    file_read, file_write, list_directory,
+    file_read, file_write, list_files,
     get_gff_feature_types, get_gene_lenght, get_gene_attributes, get_multiple_gene_lenght,
     get_all_attributes, get_protein_product_from_gene,
     get_features_in_region, get_features_at_position, get_gene_structure, 
@@ -291,7 +291,7 @@ Examples:
 
     # Create tools list based on server type
     base_tools = [
-        file_write, list_directory,
+        file_write, list_files,
         get_gff_feature_types, get_gene_lenght, get_gene_attributes, get_multiple_gene_lenght,
         get_all_attributes, get_protein_product_from_gene,
         get_features_in_region, get_features_at_position, get_gene_structure, 
