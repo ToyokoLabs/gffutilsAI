@@ -337,7 +337,7 @@ def get_multiple_gene_lenght(gffpath: str, gene_ids: list) -> list:
 
 
 @tool
-def get_all_attributes(gffpath: str, start_record: int = 1, end_record: int = 10) -> dict:
+def get_all_attributes(gffpath: str) -> dict:
     """Given the path of a gff file, generate a database and then get the list of all available attributes.
     Sample attributes are:
     'Dbxref', 'ID', 'Is_circular', 'Name', 'Note', 'Ontology_term', 'Parent', 'anticodon', 'collection-date', 'country',
@@ -357,8 +357,7 @@ def get_all_attributes(gffpath: str, start_record: int = 1, end_record: int = 10
                   'pagination': {
                       'start_record': int,
                       'end_record': int,
-                      'total_features_processed': int,
-                      'note': str
+                      'total_features_processed': int
                   }
               }
 
@@ -378,21 +377,15 @@ def get_all_attributes(gffpath: str, start_record: int = 1, end_record: int = 10
         processed = 0
         
         for feature in db.all_features():
-            count += 1
-            if count >= start_record and count <= end_record:
-                attribute_types.update(feature.attributes.keys())
-                processed += 1
-            elif count > end_record:
-                break
+            attribute_types.update(feature.attributes.keys())
         
         return {
             'attributes': attribute_types,
             'pagination': {
                 'start_record': start_record,
                 'end_record': end_record,
-                'total_features_processed': processed,
-                'note': f"Processed features {start_record} to {min(count, end_record)}. Use different start_record/end_record to get more attributes from other features."
-            }
+                'total_features_processed': total_processed
+                }
         }
     except FileNotFoundError:
         return f"Error: File '{gffpath}' not found."
