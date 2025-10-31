@@ -93,7 +93,7 @@ Examples:
     parser.add_argument(
         "--version", "-v",
         action="version",
-        version="gffutilsai 0.1.11"
+        version="gffutilsai 0.1.12"
     )
     
     parser.add_argument(

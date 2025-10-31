@@ -351,15 +351,7 @@ def get_all_attributes(gffpath: str) -> dict:
         end_record (int): Ending record number (1-based, default: 10)
 
     Returns:
-        dict: Dictionary containing attributes and pagination info
-              Format: {
-                  'attributes': set,
-                  'pagination': {
-                      'start_record': int,
-                      'end_record': int,
-                      'total_features_processed': int
-                  }
-              }
+        set: Set containing attributes
 
     Raises:
         FileNotFoundError: If the file doesn't exist
@@ -379,14 +371,7 @@ def get_all_attributes(gffpath: str) -> dict:
         for feature in db.all_features():
             attribute_types.update(feature.attributes.keys())
         
-        return {
-            'attributes': attribute_types,
-            'pagination': {
-                'start_record': start_record,
-                'end_record': end_record,
-                'total_features_processed': total_processed
-                }
-        }
+        return attribute_types
     except FileNotFoundError:
         return f"Error: File '{gffpath}' not found."
     except Exception as e:
