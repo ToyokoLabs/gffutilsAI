@@ -1,0 +1,6 @@
+I want a list of all attributes in GCA_050947715.1_ASM5094771v1_genomic.gff
+Tell me which species it is
+What is the geographical origin of this genome?
+Give me the number of chromosomes
+Give me the number of genes on each chromosome
+List all vacuolar proteins and their protein_id

@@ -13,7 +13,7 @@ from strands.models.openai import OpenAIModel
 
 # Import all tool functions from the gff_tools module
 from .gff_tools import (
-    file_read, file_write, list_files,
+    file_read, file_write, list_files, get_country_or_region,
     get_gff_feature_types, get_gene_lenght, get_gene_attributes, get_multiple_gene_lenght,
     get_all_attributes, get_protein_product_from_gene,
     get_features_in_region, get_features_at_position, get_gene_structure, 
@@ -85,6 +85,9 @@ Examples:
   gffai --gemini --model gemini-2.0-flash-exp
   gffai --openai --model gpt-4o
   
+  Batch mode (for benchmarking):
+  gffai --batch queries.txt --model llama3.1
+  
   Note: To use cloud models you need to set the API key as an environment variable. 
   You can use a .env file or export the variables directly. See README.md for more information.
         """
@@ -93,7 +96,7 @@ Examples:
     parser.add_argument(
         "--version", "-v",
         action="version",
-        version="gffutilsai 0.1.12"
+        version="gffutilsai 0.1.13"
     )
     
     parser.add_argument(
@@ -120,6 +123,12 @@ Examples:
         "--query", "-q",
         type=str,
         help="Run a single query and exit"
+    )
+    
+    parser.add_argument(
+        "--batch", "-b",
+        type=str,
+        help="Run queries from a file (one query per line) for benchmarking"
     )
     
     parser.add_argument(
@@ -199,14 +208,14 @@ Examples:
     print(f"🤖 GFF Analysis AI Agent")
     print(f"📊 Model: {args.model}")
     if args.gemini:
-        print(f"� Provitder: Google Gemini")
+        print(f"� Provider: Google Gemini")
     elif args.anthropic:
         print(f"🌐 Provider: Anthropic")
     elif args.openai:
         print(f"🌐 Provider: OpenAI")
     else:
         print(f"🌐 Server: {args.server} ({host_url})")
-    print(f"🌡️  Temperature: {args.temperature}")
+    print(f"🌡️ Temperature: {args.temperature}")
     print("-" * 50)
     
     # Load system prompt from file
@@ -241,7 +250,9 @@ Examples:
             },
             max_tokens=args.max_tokens,
             model_id=args.model,
-            temperature=args.temperature,
+            params={
+                "temperature": args.temperature,
+            }
         )
         model_to_use = a_model
         print(f"🤖 Using Anthropic Claude model: {args.model}")
@@ -325,7 +336,7 @@ Examples:
         tools=base_tools,
     )
     
-    # Handle single query mode or interactive mode
+    # Handle single query mode, batch mode, or interactive mode
     if args.query:
         print(f"🔍 Query: {args.query}")
         print("-" * 50)
@@ -344,6 +355,63 @@ Examples:
                 print("-" * 40)
                 traceback.print_exc()
                 print("-" * 40)
+    elif args.batch:
+        # Batch mode - process queries from file
+        print(f"📋 Batch mode - Processing queries from: {args.batch}")
+        print("-" * 50)
+        
+        try:
+            with open(args.batch, 'r', encoding='utf-8') as f:
+                queries = [line.strip() for line in f if line.strip() and not line.strip().startswith('#')]
+            
+            if not queries:
+                print("⚠️  Warning: No queries found in file")
+                return
+            
+            print(f"📊 Found {len(queries)} queries to process\n")
+            
+            results = []
+            for i, query in enumerate(queries, 1):
+                print(f"\n{'='*60}")
+                print(f"Query {i}/{len(queries)}: {query}")
+                print('='*60)
+                
+                try:
+                    result = local_agent(query)
+                    results.append({
+                        'query': query,
+                        'result': result,
+                        'status': 'success'
+                    })
+                except Exception as e:
+                    error_msg = str(e)
+                    print(f"❌ Error: {error_msg}")
+                    results.append({
+                        'query': query,
+                        'error': error_msg,
+                        'status': 'error'
+                    })
+                    if args.debug:
+                        import traceback
+                        traceback.print_exc()
+            
+            # Print summary
+            print(f"\n{'='*60}")
+            print("📊 Batch Processing Summary")
+            print('='*60)
+            successful = sum(1 for r in results if r['status'] == 'success')
+            failed = sum(1 for r in results if r['status'] == 'error')
+            print(f"✅ Successful: {successful}/{len(queries)}")
+            print(f"❌ Failed: {failed}/{len(queries)}")
+            print('='*60)
+            
+        except FileNotFoundError:
+            print(f"❌ Error: File not found: {args.batch}")
+        except Exception as e:
+            print(f"❌ Error reading batch file: {str(e)}")
+            if args.debug:
+                import traceback
+                traceback.print_exc()
     else:
         print("💬 Interactive mode - Type your questions about GFF files")
         print("   Type 'quit' or 'exit' to stop")

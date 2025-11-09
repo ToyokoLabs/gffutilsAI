@@ -153,6 +153,47 @@ uv run gffai --query "What feature types are in my GFF file?"
 uv run gffai --model llama3.1 --query "Find all genes on chromosome 1"
 ```
 
+#### Batch Mode (for Benchmarking)
+
+Process multiple queries from a file, one query per line. This is useful for benchmarking and automated testing.
+
+```bash
+# Create a queries file (one query per line)
+cat > queries.txt << EOF
+What feature types are available in my GFF file?
+How many genes are in the genome?
+List all chromosomes in the GFF file
+EOF
+
+# Run in batch mode
+gffai --batch queries.txt --model llama3.1
+
+# Or if running from source:
+uv run gffai --batch queries.txt --model llama3.1
+
+# With different providers
+gffai --batch queries.txt --anthropic
+gffai --batch queries.txt --openai --model gpt-4o
+```
+
+**Batch file format:**
+- One query per line
+- Lines starting with `#` are treated as comments and ignored
+- Empty lines are ignored
+- Results are printed for each query with a summary at the end
+
+**Example batch file (`example_queries.txt`):**
+```
+# Basic information queries
+What feature types are available in my GFF file?
+How many genes are in the genome?
+List all chromosomes in the GFF file
+
+# Statistical queries
+Calculate feature statistics for this GFF file
+What's the length distribution of genes?
+```
+
 #### Command Line Options
 
 - `--model, -m`: Model to use (default: llama3.1 for local, gpt-oss:20b-cloud for cloud)
@@ -162,6 +203,7 @@ uv run gffai --model llama3.1 --query "Find all genes on chromosome 1"
 - `--openai`: Use OpenAI model (default: gpt-4o-mini)
 - `--host`: Custom host URL (overrides --server setting)
 - `--query, -q`: Run a single query and exit
+- `--batch, -b`: Run queries from a file (one query per line) for benchmarking
 - `--temperature, -t`: Temperature for responses (0.0-1.0, default: 0.1)
 - `--max-tokens`: Maximum tokens for responses (default: 4096)
 - `--system-prompt`: Path to system prompt file (default: system_prompt.txt)
@@ -597,6 +639,9 @@ gffai --openai
 
 # Single query mode
 gffai --query "What chromosomes are in my GFF file?" --model llama3.1
+
+# Batch mode for benchmarking
+gffai --batch queries.txt --model llama3.1
 
 # Custom temperature for more creative responses
 gffai --temperature 0.5 --model codellama:13b

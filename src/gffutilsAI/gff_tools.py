@@ -337,7 +337,7 @@ def get_multiple_gene_lenght(gffpath: str, gene_ids: list) -> list:
 
 
 @tool
-def get_all_attributes(gffpath: str) -> dict:
+def get_all_attributes(gffpath: str) -> set:
     """Given the path of a gff file, generate a database and then get the list of all available attributes.
     Sample attributes are:
     'Dbxref', 'ID', 'Is_circular', 'Name', 'Note', 'Ontology_term', 'Parent', 'anticodon', 'collection-date', 'country',
@@ -365,9 +365,6 @@ def get_all_attributes(gffpath: str) -> dict:
             db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
         
         attribute_types = set()
-        count = 0
-        processed = 0
-        
         for feature in db.all_features():
             attribute_types.update(feature.attributes.keys())
         
@@ -1431,6 +1428,41 @@ def get_features_with_attribute(gffpath: str, attribute_key: str, start_record: 
 
 
 @tool
+def get_country_or_region(gffpath: str) -> set:
+    """Find the region/country of origin of this organism. This will work only if the gff file
+    has the Contry arribute.
+
+    Args:
+        gffpath (str): Path to the GFF file
+
+    Returns:
+        set: Set of strings with countries. eg.: set(["Brazil", "Australia"])
+
+    Raises:
+        FileNotFoundError: If the file doesn't exist
+    """
+    try:
+        db_filename = get_db_filename(gffpath)
+        if os.path.exists(db_filename):
+            db = gffutils.FeatureDB(db_filename)
+        else:
+            db = gffutils.create_db(gffpath, dbfn=db_filename, force=True, keep_order=True, merge_strategy="create_unique")
+        
+        countries = set()
+        
+        # Iterate through all features to find those with the specified attribute key
+        for feature in db.all_features():
+            if "Country" in feature.attributes:
+                countries.update(feature['Country'])
+        return countries
+        
+    except FileNotFoundError:
+        return f"Error: File '{gffpath}' not found."
+    except Exception as e:
+        return f"Error finding features with attribute: {str(e)}"
+
+
+@tool
 def get_intergenic_regions(gffpath: str, chrom: str = None, min_length: int = 0) -> list:
     """Identify gaps between genes with filtering by minimum length and chromosome.
 
@@ -1949,6 +1981,7 @@ def get_tools_list() -> list:
         ("file_read", "Read a file and return its content"),
         ("file_write", "Write content to a file"),
         ("list_directory", "List files and directories in the specified path"),
+        ("get_country_or_region", "Get region or country of origin"),
         ("get_organism_info", "Get organism information given an accession id or taxonomy id"),
         ("get_gff_feature_types", "Get all available feature types from a GFF file"),
         ("get_gene_lenght", "Get the length of a specific gene"),
