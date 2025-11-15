@@ -1,0 +1,221 @@
+🔧 Loaded environment variables from: .env
+🤖 GFF Analysis AI Agent
+📊 Model: gemini-2.5-pro
+� Provitder: Google Gemini
+🌡️  Temperature: 0.1
+--------------------------------------------------
+📝 System prompt loaded from package resources
+🤖 Using Google Gemini model: gemini-2.5-pro
+🔒 Gemini: file_read tool disabled for security
+💬 Interactive mode - Type your questions about GFF files
+   Type 'quit' or 'exit' to stop
+--------------------------------------------------
+
+🧬 GFF Query: I want a list of all attributes in GCA_050947715.1_ASM5094771v1_genomic.gff
+------------------------------
+
+Tool #1: get_all_attributes
+Here is the list of all attributes in the GFF file:
+
+- chromosome
+- isolation-source
+- gbkey
+- locus_tag
+- gene
+- product
+- collection-date
+- go_process
+- strain
+- Name
+- Parent
+- genome
+- partial
+- gene_biotype
+- orig_protein_id
+- Note
+- orig_transcript_id
+- Dbxref
+- go_component
+- start_range
+- go_function
+- Ontology_term
+- ID
+- end_range
+- country
+- protein_id
+- mol_type
+------------------------------
+
+🧬 GFF Query: Tell me which species it is
+------------------------------
+
+Tool #2: get_organism_info
+This GFF file belongs to the species *Hanseniaspora uvarum*, which is a type of budding yeast.
+------------------------------
+
+🧬 GFF Query: What is the geographical origin of this genome?
+------------------------------
+
+Tool #3: get_features_with_attribute
+Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x7a4740df6630>, 351.067181986)])']
+connector: <aiohttp.connector.TCPConnector object at 0x7a4742018890>
+Based on the GFF file, the geographical origin of this genome is **Australia**. The strain, identified as AWRI5759_A6, was collected in 2014.
+------------------------------
+
+🧬 GFF Query: Give me the number of chromosomes
+------------------------------
+
+Tool #4: get_chromosomes_info
+This genome has 7 chromosomes.
+------------------------------
+
+🧬 GFF Query: Give me the number of genes on each chromosome
+------------------------------
+
+Tool #5: get_chromosome_summary
+Of course, here is the number of genes on each chromosome:
+
+* **CM116924.1:** 294 genes
+* **CM116925.1:** 434 genes
+* **CM116926.1:** 478 genes
+* **CM116927.1:** 594 genes
+* **CM116928.1:** 699 genes
+* **CM116929.1:** 710 genes
+* **CM116930.1:** 905 genes
+------------------------------
+
+🧬 GFF Query: List all vacuolar proteins and its protein_id
+------------------------------
+
+Tool #6: search_features_by_attribute
+Here is a list of vacuolar proteins and their corresponding protein IDs from the GFF file:
+
+| Protein Product | Protein ID |
+|---|---|
+| hypothetical protein | KAL6951498.1 |
+| GTPase-activating protein S23 | KAL6951519.1 |
+| hypothetical protein | KAL6951520.1 |
+| dolichol-P-mannose synthesis | KAL6951522.1 |
+| hypothetical protein | KAL6951540.1 |
+| hypothetical protein | KAL6951541.1 |
+| hypothetical protein | KAL6951553.1 |
+| hypothetical protein | KAL6951596.1 |
+| hypothetical protein | KAL6951617.1 |
+| hypothetical protein | KAL6951618.1 |
+| hypothetical protein | KAL6951619.1 |
+| hypothetical protein | KAL6951620.1 |
+| hypothetical protein | KAL6951636.1 |
+| hypothetical protein | KAL6951649.1 |
+| hypothetical protein | KAL6951654.1 |
+| hypothetical protein | KAL6951663.1 |
+| Nuclear transport factor 2 | KAL6951669.1 |
+| hypothetical protein | KAL6951673.1 |
+| hypothetical protein | KAL6951679.1 |
+| hypothetical protein | KAL6951684.1 |
+| hypothetical protein | KAL6951714.1 |
+| hypothetical protein | KAL6951732.1 |
+| hypothetical protein | KAL6951740.1 |
+| hypothetical protein | KAL6951759.1 |
+| hypothetical protein | KAL6951762.1 |
+| hypothetical protein | KAL6951767.1 |
+| hypothetical protein | KAL6951073.1 |
+| hypothetical protein | KAL6951076.1 |
+| hypothetical protein | KAL6951099.1 |
+| hypothetical protein | KAL6951103.1 |
+| Ran GTPase-binding protein yrb1 | KAL6951115.1 |
+| hypothetical protein | KAL6951117.1 |
+| Diacylglycerol kinase | KAL6951128.1 |
+| hypothetical protein | KAL6951131.1 |
+| hypothetical protein | KAL6951134.1 |
+| transport between ER and Golgi ATPase protein | KAL6951139.1 |
+| hypothetical protein | KAL6951156.1 |
+| hypothetical protein | KAL6951158.1 |
+| Mannan polymerase I complex van1 subunit | KAL6951162.1 |
+| phosphatidate cytidylyltransferase | KAL6951175.1 |
+| hypothetical protein | KAL6951184.1 |
+| hypothetical protein | KAL6951188.1 |
+| hypothetical protein | KAL6951188.1 |
+| H(+)-transporting V1 sector ATPase subunit A | KAL6951195.1 |
+| hypothetical protein | KAL6951203.1 |
+| hypothetical protein | KAL6951221.1 |
+| hypothetical protein | KAL6951224.1 |
+| hypothetical protein | KAL6951234.1 |
+| hypothetical protein | KAL6951234.1 |
+| hypothetical protein | KAL6951243.1 |
+| GTP-binding protein gtr1 | KAL6951244.1 |
+| hypothetical protein | KAL6951266.1 |
+| hypothetical protein | KAL6951271.1 |
+| hypothetical protein | KAL6951277.1 |
+| hypothetical protein | KAL6951292.1 |
+| hypothetical protein | KAL6951292.1 |
+| hypothetical protein | KAL6951306.1 |
+| hypothetical protein | KAL6951318.1 |
+| hypothetical protein | KAL6951320.1 |
+| hypothetical protein | KAL6951320.1 |
+| hypothetical protein | KAL6951320.1 |
+| hypothetical protein | KAL6951320.1 |
+| sphingolipid homeostasis protein orm1 | KAL6951339.1 |
+| High affinity Ca2+/Mn2+ P-type ATPase-like protein | KAL6951352.1 |
+| hypothetical protein | KAL6951365.1 |
+| hypothetical protein | KAL6951370.1 |
+| GTP-binding protein | KAL6951379.1 |
+| hypothetical protein | KAL6951388.1 |
+| hypothetical protein | KAL6951397.1 |
+| hypothetical protein | KAL6951419.1 |
+| hypothetical protein | KAL6951422.1 |
+| hypothetical protein | KAL6951426.1 |
+| hypothetical protein | KAL6951427.1 |
+| hypothetical protein | KAL6951439.1 |
+| hypothetical protein | KAL6951453.1 |
+| hypothetical protein | KAL6951455.1 |
+| hypothetical protein | KAL6951455.1 |
+| hypothetical protein | KAL6951466.1 |
+| hypothetical protein | KAL6950255.1 |
+| hypothetical protein | KAL6950255.1 |
+| hypothetical protein | KAL6950259.1 |
+| hypothetical protein | KAL6950268.1 |
+| hypothetical protein | KAL6950275.1 |
+| hypothetical protein | KAL6950278.1 |
+| hypothetical protein | KAL6950283.1 |
+| monovalent cation:H+ antiporter, CPA1 (nhx1) | KAL6950284.1 |
+| hypothetical protein | KAL6950285.1 |
+| hypothetical protein | KAL6950285.1 |
+| GDP-mannose transporter 1 | KAL6950303.1 |
+| hypothetical protein | KAL6950329.1 |
+| hypothetical protein | KAL6950329.1 |
+| hypothetical protein | KAL6950330.1 |
+| hypothetical protein | KAL6950344.1 |
+| hypothetical protein | KAL6950366.1 |
+| hypothetical protein | KAL6950377.1 |
+| hypothetical protein | KAL6950398.1 |
+| hypothetical protein | KAL6950407.1 |
+| hypothetical protein | KAL6950413.1 |
+| hypothetical protein | KAL6950423.1 |
+| H(+)-transporting V1 sector ATPase subunit D | KAL6950430.1 |
+------------------------------
+
+🧬 GFF Query: why are you including as vacuolar, hypothetical proteins like hypothetical protein | KAL6951498.1 ?
+------------------------------
+That's an excellent question, and it points to a very important aspect of bioinformatics and genome annotation.
+
+Here's the breakdown of why a protein can be labeled both "hypothetical" and "vacuolar":
+
+1.  **"Hypothetical Protein"**: This label is used for the `product` attribute when a gene sequence is predicted to code for a protein, but there is no direct experimental evidence to prove what that protein does or what its specific function is. It's essentially a placeholder name indicating "we think this is a protein, but we haven't studied it in a lab yet."
+
+2.  **"Vacuolar" Classification**: This classification comes from a different source of information: **automated computational analysis**. In the GFF file, for the protein `KAL6951498.1`, we can see an attribute called `go_component` (Gene Ontology Component).
+
+For that specific protein, the `go_component` attribute includes several terms that explicitly link it to the vacuole, such as:
+*   `vacuolar membrane|0005774||IEA`
+*   `lytic vacuole|0000323||IEA`
+*   `vacuole|0005773||IEA`
+
+These annotations are based on computational predictions. The programs that generate these annotations look for patterns in the protein's sequence (like specific domains or targeting signals) that are similar to other, well-studied proteins known to be located in the vacuole.
+
+The key part is the **"IEA"** tag at the end of each term. This is an evidence code that stands for **"Inferred from Electronic Annotation."** It means the "vacuolar" location was assigned automatically by a computer program, not by a human curator looking at experimental results.
+
+**In summary:** The protein is called **"hypothetical"** because its function has not been experimentally confirmed, and it is classified as **"vacuolar"** because computational models predict it has features that would send it to the vacuole. Both labels reflect that our knowledge about this protein is based on prediction, not direct laboratory proof.
+------------------------------
+
+🧬 GFF Query: quit
+👋 Goodbye!

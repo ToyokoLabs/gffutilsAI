@@ -1,6 +1,7 @@
 import os
 import argparse
 import requests
+import time
 from importlib import resources
 from dotenv import load_dotenv
 
@@ -28,8 +29,6 @@ from .gff_tools import (
 
 # Global variable to store tool call information for debugging
 tool_call_log = []
-
-
 
 
 def main():
@@ -96,7 +95,7 @@ Examples:
     parser.add_argument(
         "--version", "-v",
         action="version",
-        version="gffutilsai 0.1.13"
+        version="gffutilsai 0.1.14"
     )
     
     parser.add_argument(
@@ -191,7 +190,8 @@ Examples:
         elif args.gemini:
             args.model = "gemini-2.5-flash"
         elif args.openai:
-            args.model = "gpt-4.1-mini"
+            # old gpt-4.1-mini
+            args.model = "gpt-5-nano"
         elif args.server == "cloud":
             args.model = "gpt-oss:20b-cloud"
         else:
@@ -215,7 +215,10 @@ Examples:
         print(f"🌐 Provider: OpenAI")
     else:
         print(f"🌐 Server: {args.server} ({host_url})")
-    print(f"🌡️ Temperature: {args.temperature}")
+    if args.model.startswith("gpt-5"):
+        print(f"🌡️ Temperature: 1")
+    else:
+        print(f"🌡️ Temperature: {args.temperature}")
     print("-" * 50)
     
     # Load system prompt from file
@@ -274,16 +277,29 @@ Examples:
         print(f"🤖 Using Google Gemini model: {args.model}")
     elif args.openai:
         # Use OpenAI model
-        openai_model = OpenAIModel(
-            client_args={
-                "api_key": os.environ.get('OPENAI_API_KEY', ""),
-            },
-            model_id=args.model,
-            params={
-                "temperature": args.temperature,
-                "max_tokens": args.max_tokens,
-            }
-        )
+        if args.model.startswith("gpt-4"):
+            openai_model = OpenAIModel(
+                client_args={
+                    "api_key": os.environ.get('OPENAI_API_KEY', ""),
+                },
+                model_id=args.model,
+                params={
+                    "temperature": args.temperature,
+                    "max_tokens": args.max_tokens,
+                }
+            )
+        else:
+            # for 5 and better
+            openai_model = OpenAIModel(
+                client_args={
+                    "api_key": os.environ.get('OPENAI_API_KEY', ""),
+                },
+                model_id=args.model,
+                params={
+                    "temperature": 1,
+                    "max_completion_tokens": args.max_tokens,
+                }
+            )
         model_to_use = openai_model
         print(f"🤖 Using OpenAI model: {args.model}")
     else:
@@ -394,6 +410,8 @@ Examples:
                     if args.debug:
                         import traceback
                         traceback.print_exc()
+                # wait time to avoid rate limit error
+                time.sleep(2)
             
             # Print summary
             print(f"\n{'='*60}")

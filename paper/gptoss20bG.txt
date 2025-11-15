@@ -1,0 +1,127 @@
+🔧 Loaded environment variables from: .env
+🤖 GFF Analysis AI Agent
+📊 Model: gpt-oss:20b-cloud
+🌐 Server: cloud (https://ollama.com)
+🌡️ Temperature: 0.1
+--------------------------------------------------
+📝 System prompt loaded from package resources
+🔒 Cloud server: file_read tool disabled for security
+📋 Batch mode - Processing queries from: batch6.txt
+--------------------------------------------------
+📊 Found 6 queries to process
+
+
+============================================================
+Query 1/6: I want a list of all attributes in GCA_050947715.1_ASM5094771v1_genomic.gff
+============================================================
+
+Tool #1: list_files
+
+Tool #2: get_all_attributes
+Here are all the distinct attribute keys that appear in **GCA_050947715.1_ASM5094771v1_genomic.gff**:
+
+| Attribute Key |
+|---------------|
+| genome |
+| isolation-source |
+| mol_type |
+| gbkey |
+| Parent |
+| locus_tag |
+| strain |
+| protein_id |
+| orig_protein_id |
+| country |
+| Ontology_term |
+| Note |
+| go_function |
+| gene_biotype |
+| gene |
+| partial |
+| Name |
+| end_range |
+| collection-date |
+| product |
+| ID |
+| start_range |
+| go_process |
+| Dbxref |
+| chromosome |
+| orig_transcript_id |
+| go_component |
+
+These are the unique keys found in the attributes column of the GFF file. If you need further filtering (e.g., only attributes that appear on genes, or a count of how many times each appears), just let me know!
+============================================================
+Query 2/6: Tell me which species it is
+============================================================
+
+Tool #3: get_organism_info
+The GFF file corresponds to **_Hanseniaspora uvarum_** (budding yeast).
+============================================================
+Query 3/6: What is the geographical origin of this genome?
+============================================================
+
+Tool #4: get_features_with_attribute
+The genome was isolated in **Australia**. All the “region” features in the GFF list the attribute `country = Australia`.
+============================================================
+Query 4/6: Give me the number of chromosomes
+============================================================
+
+Tool #5: get_chromosomes_info
+The assembly contains **7 chromosomes**:
+
+```
+CM116924.1
+CM116925.1
+CM116926.1
+CM116927.1
+CM116928.1
+CM116929.1
+CM116930.1
+```
+
+So the genome is a 7‑chromosome haploid yeast.
+============================================================
+Query 5/6: Give me the number of genes on each chromosome
+============================================================
+
+Tool #6: get_features_by_type
+cycle failed
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 189, in event_loop_cycle
+    async for tool_event in tool_events:
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 531, in _handle_tool_execution
+    async for event in events:
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 277, in recurse_event_loop
+    async for event in events:
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 152, in event_loop_cycle
+    async for model_event in model_events:
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 396, in _handle_model_execution
+    raise e
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 337, in _handle_model_execution
+    async for event in stream_messages(
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/streaming.py", line 454, in stream_messages
+    async for event in process_stream(chunks, start_time):
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/streaming.py", line 388, in process_stream
+    async for chunk in chunks:
+  File "/usr/local/lib/python3.12/dist-packages/strands/models/ollama.py", line 323, in stream
+    async for event in response:
+  File "/usr/local/lib/python3.12/dist-packages/ollama/_client.py", line 741, in inner
+    raise ResponseError(e.response.text, e.response.status_code) from None
+ollama._types.ResponseError: {"error": {"message": "prompt too long, limit is 131072 tokens"}}{"model":"gpt-oss:20b","created_at":"2025-11-09T22:57:05.031195559Z","message":{"role":"assistant","content":""},"done":true,"done_reason":"stop","total_duration":1446336382}
+ (status code: 400)
+❌ Error: {"error": {"message": "prompt too long, limit is 131072 tokens"}}{"model":"gpt-oss:20b","created_at":"2025-11-09T22:57:05.031195559Z","message":{"role":"assistant","content":""},"done":true,"done_reason":"stop","total_duration":1446336382}
+ (status code: 400)
+
+============================================================
+Query 6/6: List all vacuolar proteins and their protein_id
+============================================================
+❌ Error: {"error": {"message": "prompt too long, limit is 131072 tokens"}}{"model":"gpt-oss:20b","created_at":"2025-11-09T22:57:06.926250291Z","message":{"role":"assistant","content":""},"done":true,"done_reason":"stop","total_duration":1420751505}
+ (status code: 400)
+
+============================================================
+📊 Batch Processing Summary
+============================================================
+✅ Successful: 4/6
+❌ Failed: 2/6
+============================================================
