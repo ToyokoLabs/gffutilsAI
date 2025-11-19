@@ -1463,13 +1463,14 @@ def get_country_or_region(gffpath: str) -> set:
 
 
 @tool
-def get_intergenic_regions(gffpath: str, chrom: str = None, min_length: int = 0) -> list:
+def get_intergenic_regions(gffpath: str, chrom: str = None, min_length: int = 0, sort_by: str = "position") -> list:
     """Identify gaps between genes with filtering by minimum length and chromosome.
 
     Args:
         gffpath (str): Path to the GFF file
         chrom (str, optional): Specific chromosome to analyze. If None, analyzes all chromosomes.
         min_length (int): Minimum length of intergenic regions to include (default: 0)
+        sort_by (str): Sort the list by position or by length (default: position)
 
     Returns:
         list: List of dictionaries containing intergenic region information

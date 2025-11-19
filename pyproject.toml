@@ -1,6 +1,6 @@
 [project]
 name = "gffutilsai"
-version = "0.1.14"
+version = "0.1.15"
 description = "Using gffutil Python module with AI"
 readme = "README.md"
 requires-python = ">=3.12"
