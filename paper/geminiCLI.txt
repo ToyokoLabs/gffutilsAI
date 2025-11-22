@@ -1,0 +1,1054 @@
+███            █████████  ██████████ ██████   ██████ █████ ██████   █████ █████
+░░░███         ███░░░░░███░░███░░░░░█░░██████ ██████ ░░███ ░░██████ ░░███ ░░███
+  ░░░███      ███     ░░░  ░███  █ ░  ░███░█████░███  ░███  ░███░███ ░███  ░███
+    ░░░███   ░███          ░██████    ░███░░███ ░███  ░███  ░███░░███░███  ░███
+     ███░    ░███    █████ ░███░░█    ░███ ░░░  ░███  ░███  ░███ ░░██████  ░███
+   ███░      ░░███  ░░███  ░███ ░   █ ░███      ░███  ░███  ░███  ░░█████  ░███
+ ███░         ░░█████████  ██████████ █████     █████ █████ █████  ░░█████ █████
+░░░            ░░░░░░░░░  ░░░░░░░░░░ ░░░░░     ░░░░░ ░░░░░ ░░░░░    ░░░░░ ░░░░░
+
+Tips for getting started:
+1. Ask questions, edit files, or run commands.
+2. Be specific for the best results.
+3. Create GEMINI.md files to customize your interactions with Gemini.
+4. /help for more information.
+
+ ███            █████████  ██████████ ██████   ██████ █████ ██████   █████ █████
+░░░███         ███░░░░░███░░███░░░░░█░░██████ ██████ ░░███ ░░██████ ░░███ ░░███
+  ░░░███      ███     ░░░  ░███  █ ░  ░███░█████░███  ░███  ░███░███ ░███  ░███
+    ░░░███   ░███          ░██████    ░███░░███ ░███  ░███  ░███░░███░███  ░███
+     ███░    ░███    █████ ░███░░█    ░███ ░░░  ░███  ░███  ░███ ░░██████  ░███
+   ███░      ░░███  ░░███  ░███ ░   █ ░███      ░███  ░███  ░███  ░░█████  ░███
+ ███░         ░░█████████  ██████████ █████     █████ █████ █████  ░░█████ █████
+░░░            ░░░░░░░░░  ░░░░░░░░░░ ░░░░░     ░░░░░ ░░░░░ ░░░░░    ░░░░░ ░░░░░
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Gemini 3 is now available.                                                                                                               │
+│ Join the waitlist at https://goo.gle/enable-preview-features                                                                             │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Tips for getting started:
+1. Ask questions, edit files, or run commands.
+2. Be specific for the best results.
+3. Create GEMINI.md files to customize your interactions with Gemini.
+4. /help for more information.
+
+> I want a list of all attributes in GCA_050947715.1_ASM5094771v1_genomic.gff
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  ReadFile GCA_050947715.1_...71v1_genomic.gff                                                                                          │
+│                                                                                                                                          │
+│ Read lines 1-2000 of 17156 from GCA_050947715.1_ASM5094771v1_genomic.gff (some lines were shortened)                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ The file is large and only a portion has been read. I will extract all unique attribute keys from the provided content. If this does not
+  yield all attributes, I will read the entire file in chunks to ensure comprehensive extraction.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell awk -F'\t' '{if ($0 !~ /^#/) {split($9, a, ";"); for (i in a) {split(a[i], b, "="); print b[1]}}}' GCA_050947715.1_ASM5094771v… │
+│                                                                                                                                          │
+│ chromosome                                                                                                                               │
+│ collection-date                                                                                                                          │
+│ country                                                                                                                                  │
+│ Dbxref                                                                                                                                   │
+│ end_range                                                                                                                                │
+│ gbkey                                                                                                                                    │
+│ gene                                                                                                                                     │
+│ gene_biotype                                                                                                                             │
+│ genome                                                                                                                                   │
+│ go_component                                                                                                                             │
+│ go_function                                                                                                                              │
+│ go_process                                                                                                                               │
+│ ID                                                                                                                                       │
+│ isolation-source                                                                                                                         │
+│ locus_tag                                                                                                                                │
+│ mol_type                                                                                                                                 │
+│ Name                                                                                                                                     │
+│ Note                                                                                                                                     │
+│ Ontology_term                                                                                                                            │
+│ orig_protein_id                                                                                                                          │
+│ orig_transcript_id                                                                                                                       │
+│ Parent                                                                                                                                   │
+│ partial                                                                                                                                  │
+│ product                                                                                                                                  │
+│ protein_id                                                                                                                               │
+│ start_range                                                                                                                              │
+│ strain                                                                                                                                   │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ Here are all the unique attributes from the GFF file:
+
+   * chromosome
+   * collection-date
+   * country
+   * Dbxref
+   * end_range
+   * gbkey
+   * gene
+   * gene_biotype
+   * genome
+   * go_component
+   * go_function
+   * go_process
+   * ID
+   * isolation-source
+   * locus_tag
+   * mol_type
+   * Name
+   * Note
+   * Ontology_term
+   * orig_protein_id
+   * orig_transcript_id
+   * Parent
+   * partial
+   * product
+   * protein_id
+   * start_range
+   * strain
+
+> Tell me which species it is
+
+✦ To identify the species, I'll examine the ##species line in the GFF file's header. This line typically contains a URL that can provide the
+  scientific name, or I can use the Dbxref taxon ID found in the data lines for a direct NCBI Taxonomy query. I'll start by extracting and
+  parsing the ##species line.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell grep "^##species" GCA_050947715.1_ASM5094771v1_genomic.gff [current working directory /home/ran2/projects/test] (Extracting th… │
+│                                                                                                                                          │
+│ ##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=29833                                                              │
+│ ##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=29833                                                              │
+│ ##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=29833                                                              │
+│ ##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=29833                                                              │
+│ ##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=29833                                                              │
+│ ##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=29833                                                              │
+│ ##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=29833                                                              │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ Species URL extracted. Using web_fetch to retrieve species name from the URL.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  WebFetch Processing URLs and instructions from prompt: "Get the scientific name from the NCBI Taxonomy page: https://www.ncbi.nlm.ni… │
+│                                                                                                                                          │
+│ Content processed from prompt.                                                                                                           │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ The species is Hanseniaspora uvarum.
+
+> What is the geographical origin of this genome?
+
+✦ I'll grep the GFF file for "country" and "isolation-source" attributes to determine the genome's geographical origin and extract their
+  values.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell grep -m 1 -oP 'country=[^;]*|isolation-source=[^;]*' GCA_050947715.1_ASM5094771v1_genomic.gff [current working directory /home… │
+│                                                                                                                                          │
+│ country=Australia                                                                                                                        │
+│ isolation-source=FOODON_00001071                                                                                                         │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ Geographical origin: Australia.
+  Isolation source: FOODON_00001071.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell grep -oP 'isolation-source=[^;]*' GCA_050947715.1_ASM5094771v1_genomic.gff | head -n 1 [current working directory /home/ran2/p… │
+│                                                                                                                                          │
+│ isolation-source=FOODON_00001071                                                                                                         │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ FOODON_00001071 appears to be a FOODON identifier. I'll use a web search to find out what it means, adding context to the geographical
+  origin.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  GoogleSearch Searching the web for: "FOODON_00001071"                                                                                 │
+│                                                                                                                                          │
+│ Search results for "FOODON_00001071" returned.                                                                                           │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ The genome originated in Australia, isolated from a chicken egg (FOODON_00001071).
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell grep -oP 'country=[^;]*' GCA_050947715.1_ASM5094771v1_genomic.gff | head -n 1 [current working directory /home/ran2/projects/t… │
+│                                                                                                                                          │
+│ country=Australia                                                                                                                        │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ The geographical origin of this genome is Australia. It was isolated from a chicken egg.
+
+> Give me the number of chromosomes
+
+✦ Okay, I need to find the unique values for the 'chromosome' attribute in the GFF file. I'll extract those values now.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell awk -F'\t' '{if ($0 !~ /^#/) {split($9, a, ";"); for (i in a) {if (b[1] = split(a[i], b, "=") == 2 && b[1] == "chromosome") pr… │
+│                                                                                                                                          │
+│ 7                                                                                                                                        │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ There are 7 unique chromosome identifiers in the GFF file. The number of chromosomes is 7.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell awk -F'\t' '{if ($0 !~ /^#/) {split($9, a, ";"); for (i in a) {if (b[1] = split(a[i], b, "=") == 2 && b[1] == "chromosome") pr… │
+│                                                                                                                                          │
+│ 1                                                                                                                                        │
+│ 2                                                                                                                                        │
+│ 3                                                                                                                                        │
+│ 4                                                                                                                                        │
+│ 5                                                                                                                                        │
+│ 6                                                                                                                                        │
+│ 7                                                                                                                                        │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ The number of chromosomes is 7. They are labeled 1 through 7.
+
+> Give me the number of genes on each chromosome
+
+✦ I need to count genes per chromosome. I'll use awk to filter for "gene" in the third column of the GFF file, printing the chromosome ID
+  from the first column. Then, I'll sort the chromosome IDs and use uniq -c to count the occurrences of each, giving me the gene count per
+  chromosome. I will execute this command now.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell awk -F'\t' '$3 == "gene" {print $1}' GCA_050947715.1_ASM5094771v1_genomic.gff | sort | uniq -c [current working directory /hom… │
+│                                                                                                                                          │
+│     294 CM116924.1                                                                                                                       │
+│     434 CM116925.1                                                                                                                       │
+│     478 CM116926.1                                                                                                                       │
+│     594 CM116927.1                                                                                                                       │
+│     699 CM116928.1                                                                                                                       │
+│     710 CM116929.1                                                                                                                       │
+│     905 CM116930.1                                                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ The gene counts per sequence ID are clear, but I need to map those IDs to chromosome numbers. My initial file read shows CM116924.1 is
+  chromosome 1, and so on. I will now format the gene counts with their corresponding chromosome numbers for the user.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell awk -F'\t' '{if($3=="region" && $9 ~ /chromosome=/) {split($9,a,";"); for(i in a) {if(a[i] ~ /chromosome=/) {split(a[i],b,"=")… │
+│                                                                                                                                          │
+│ awk: line 1: extra '}'                                                                                                                   │
+│ awk: line 1: syntax error at or near end of line                                                                                         │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ The awk command failed due to a syntax error, an extra curly brace. I've located and removed it. The second part of the command appears
+  correct. I will now re-execute the corrected command.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell awk -F'\t' '{if($3=="region" && $9 ~ /chromosome=/) {split($9,a,";"); for(i in a) {if(a[i] ~ /chromosome=/) {split(a[i],b,"=")… │
+│                                                                                                                                          │
+│ Chromosome : 4114 genes                                                                                                                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ The last command failed, likely due to a file parsing issue. I'll simplify my approach by first using awk to create a clear mapping of
+  sequence IDs to chromosome numbers, and then I'll process each chromosome individually to count its genes, avoiding the complexities of
+  the previous command.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell awk -F'\t' '{if($3=="region" && $9 ~ /chromosome=/) {split($9,a,";"); for(i in a) {if(a[i] ~ /chromosome=/) {split(a[i],b,"=")… │
+│                                                                                                                                          │
+│ CM116924.1 1                                                                                                                             │
+│ CM116925.1 2                                                                                                                             │
+│ CM116926.1 3                                                                                                                             │
+│ CM116927.1 4                                                                                                                             │
+│ CM116928.1 5                                                                                                                             │
+│ CM116929.1 6                                                                                                                             │
+│ CM116930.1 7                                                                                                                             │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ Okay, I have the chromosome-to-sequence ID and gene count-per-sequence ID mappings. I will now combine them to provide the gene count for
+  each chromosome.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell awk -F'\t' '  BEGIN {    # Create a mapping from sequ…                                                                          │
+│                                                                                                                                          │
+│ awk: 4: unexpected character '\'                                                                                                         │
+│ awk: 4: unexpected character '\'                                                                                                         │
+│ awk: 4: unexpected character '\'                                                                                                         │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ My awk command is failing due to character escaping issues. I'll revert to my previous, successful commands to get gene counts per
+  sequence and the sequence-to-chromosome mapping, then I will manually combine them to provide the final gene counts per chromosome without
+  further command execution. I have all the data I need.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell # This is a comment and will not be executed.# I am providing the fi…                                                           │
+│                                                                                                                                          │
+│ I have already processed the information and can provide the answer.                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ Here is the number of genes on each chromosome:
+
+   * Chromosome 1: 294 genes
+   * Chromosome 2: 434 genes
+   * Chromosome 3: 478 genes
+   * Chromosome 4: 594 genes
+   * Chromosome 5: 699 genes
+   * Chromosome 6: 710 genes
+   * Chromosome 7: 905 genes
+
+> List all vacuolar proteins and their protein_id
+
+✦ I need to identify vacuolar proteins and their IDs from the GFF file. I'll use awk to filter lines where the product or go_component
+  attribute contains "vacuole", then extract the product (protein name) and protein_id from those filtered lines. I've formulated an awk
+  script to perform this extraction and will execute it.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell awk -F'\t' '{    if ($9 ~ /(product=[^;]*vacuole[^;]*|go_component=[^;]*vacuole[^;]*)/) {        product_name = "N/A";        … │
+│                                                                                                                                          │
+│ ... first 278 lines hidden ...                                                                                                           │
+│ Protein: hypothetical protein, Protein ID: KAL6945603.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945609.1                                                                                  │
+│ Protein: serine palmitoyltransferase component, Protein ID: KAL6945633.1                                                                 │
+│ Protein: hypothetical protein, Protein ID: KAL6945638.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945647.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945660.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945699.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945702.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945706.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945708.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945714.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945737.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945750.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945786.1                                                                                  │
+│ Protein: 3-keto-steroid reductase, Protein ID: KAL6945797.1                                                                              │
+│ Protein: hypothetical protein, Protein ID: KAL6945812.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945825.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945834.1                                                                                  │
+│ Protein: Protein ccc1, Protein ID: KAL6945850.1                                                                                          │
+│ Protein: hypothetical protein, Protein ID: KAL6945855.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945857.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945863.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945863.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945866.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945872.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945884.1                                                                                  │
+│ Protein: Arf GTPase arl1, Protein ID: KAL6945892.1                                                                                       │
+│ Protein: hypothetical protein, Protein ID: KAL6945897.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945900.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945924.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945939.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945956.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945959.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945962.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945963.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945977.1                                                                                  │
+│ Protein: p24 complex component, Protein ID: KAL6945979.1                                                                                 │
+│ Protein: hypothetical protein, Protein ID: KAL6945986.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946007.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946014.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946020.1                                                                                  │
+│ Protein: C-24(28) sterol reductase, Protein ID: KAL6946024.1                                                                             │
+│ Protein: hypothetical protein, Protein ID: KAL6946046.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946059.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946070.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946070.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946085.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946085.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946086.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946087.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946090.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946107.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946125.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946133.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946138.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946139.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946144.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946150.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946157.1                                                                                  │
+│ Protein: Vacuolar protein sorting-associated protein 74, Protein ID: KAL6946162.1                                                        │
+│ Protein: hypothetical protein, Protein ID: KAL6946179.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946188.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946194.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946208.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943331.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943346.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943347.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943352.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943355.1                                                                                  │
+│ Protein: translocon subunit, Protein ID: KAL6943365.1                                                                                    │
+│ Protein: hypothetical protein, Protein ID: KAL6943372.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943384.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943406.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943455.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943460.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943478.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943478.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943497.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943497.1                                                                                  │
+│ Protein: alpha-1%2C2-mannosyltransferase ktr1, Protein ID: KAL6943509.1                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943512.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943530.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943553.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943559.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943565.1                                                                                  │
+│ Protein: Prenylated Rab acceptor 1, Protein ID: KAL6943566.1                                                                             │
+│ Protein: hypothetical protein, Protein ID: KAL6943571.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943571.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943575.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943588.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943593.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943611.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943620.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943638.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943641.1                                                                                  │
+│ Protein: Golgi to ER traffic-related protein, Protein ID: KAL6943648.1                                                                   │
+│ Protein: hypothetical protein, Protein ID: KAL6943652.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943681.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943687.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943687.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943697.1                                                                                  │
+│ Protein: fatty acid alpha-hydroxylase, Protein ID: KAL6943700.1                                                                          │
+│ Protein: hypothetical protein, Protein ID: KAL6943713.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943734.1                                                                                  │
+│ Protein: Dolichyl-phosphate-mannose--protein mannosyltransferase 2, Protein ID: KAL6943735.1                                             │
+│ Protein: hypothetical protein, Protein ID: KAL6943752.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943758.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943759.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943761.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943761.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943769.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943777.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943790.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943803.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943812.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943817.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943824.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943846.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943847.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943869.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943881.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943885.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943887.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943904.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943940.1                                                                                  │
+│ Protein: COPII coat GTPase, Protein ID: KAL6943943.1                                                                                     │
+│ Protein: hypothetical protein, Protein ID: KAL6943947.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943967.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943973.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943974.1                                                                                  │
+│ Protein: Rab GTPase ypt7, Protein ID: KAL6943987.1                                                                                       │
+│ Protein: hypothetical protein, Protein ID: KAL6943990.1                                                                                  │
+│ Protein: COPII-coated vesicle protein, Protein ID: KAL6944009.1                                                                          │
+│ Protein: stearoyl-CoA 9-desaturase, Protein ID: KAL6944013.1                                                                             │
+│ Protein: hypothetical protein, Protein ID: KAL6944028.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944029.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944043.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944045.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944052.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944056.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944059.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944069.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944075.1                                                                                  │
+│ Protein: erg24%2C C-14 sterol reductase, Protein ID: KAL6944079.1                                                                        │
+│ Protein: hypothetical protein, Protein ID: KAL6944080.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944093.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944096.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944100.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944114.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944117.1                                                                                  │
+│ Protein: beta-glucan synthesis-associated protein, Protein ID: KAL6944119.1                                                              │
+│ Protein: hypothetical protein, Protein ID: KAL6944147.1                                                                                  │
+│ Protein: Scramblase any1, Protein ID: KAL6944148.1                                                                                       │
+│ Protein: hypothetical protein, Protein ID: KAL6944170.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944171.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944175.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944190.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6944192.1                                                                                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ I've extracted the vacuole-related proteins and their IDs. Presenting the list now.
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓  Shell echo "Here is the list of vacuolar proteins and their protein IDs:"                                                             │
+│                                                                                                                                          │
+│ ... first 192 lines hidden ...                                                                                                           │
+│ Protein: hypothetical protein, Protein ID: KAL6949680.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6949681.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6949681.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6949681.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6949693.1                                                                                  │
+│ Protein: saccharopepsin, Protein ID: KAL6947815.1                                                                                        │
+│ Protein: hypothetical protein, Protein ID: KAL6947818.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947831.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947837.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947846.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947855.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947873.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947877.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947894.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947906.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947908.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947911.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947919.1                                                                                  │
+│ Protein: Golgi mannosyltransferase complex subunit, Protein ID: KAL6947926.1                                                             │
+│ Protein: hypothetical protein, Protein ID: KAL6947927.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947928.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947935.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947936.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947943.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947956.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947961.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947964.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947996.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6947999.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948009.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948009.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948013.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948024.1                                                                                  │
+│ Protein: ditrans%2Cpolycis-polyprenyl diphosphate synthase, Protein ID: KAL6948026.1                                                     │
+│ Protein: hypothetical protein, Protein ID: KAL6948032.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948043.1                                                                                  │
+│ Protein: AAA ATPase cdc48, Protein ID: KAL6948046.1                                                                                      │
+│ Protein: hypothetical protein, Protein ID: KAL6948098.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948109.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948109.1                                                                                  │
+│ Protein: vacuolar transporter chaperone, Protein ID: KAL6948115.1                                                                        │
+│ Protein: hypothetical protein, Protein ID: KAL6948120.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948123.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948131.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948139.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948156.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948157.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948198.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948201.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948208.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948220.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948223.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948224.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948231.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948235.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948237.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948261.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948294.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948298.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948302.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948315.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948330.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948356.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948357.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948360.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948361.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948366.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948369.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948372.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948383.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948388.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948392.1                                                                                  │
+│ Protein: putative cation-transporting ATPase 1, Protein ID: KAL6948399.1                                                                 │
+│ Protein: Mannan polymerase II complex anp1 subunit, Protein ID: KAL6948402.1                                                             │
+│ Protein: hypothetical protein, Protein ID: KAL6948410.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948410.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948445.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6948455.1                                                                                  │
+│ Protein: Delta(24)-sterol C-methyltransferase, Protein ID: KAL6945546.1                                                                  │
+│ Protein: Delta(24)-sterol C-methyltransferase, Protein ID: KAL6945546.1                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945556.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945560.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945562.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945576.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945589.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945596.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945596.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945603.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945609.1                                                                                  │
+│ Protein: serine palmitoyltransferase component, Protein ID: KAL6945633.1                                                                 │
+│ Protein: hypothetical protein, Protein ID: KAL6945638.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945647.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945660.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945699.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945702.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945706.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945708.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945714.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945737.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945750.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945786.1                                                                                  │
+│ Protein: 3-keto-sterol reductase, Protein ID: KAL6945797.1                                                                               │
+│ Protein: hypothetical protein, Protein ID: KAL6945812.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945825.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945834.1                                                                                  │
+│ Protein: Protein ccc1, Protein ID: KAL6945850.1                                                                                          │
+│ Protein: hypothetical protein, Protein ID: KAL6945855.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945857.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945863.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945863.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945866.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945872.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945884.1                                                                                  │
+│ Protein: Arf GTPase arl1, Protein ID: KAL6945892.1                                                                                       │
+│ Protein: hypothetical protein, Protein ID: KAL6945897.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945900.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945924.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945939.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945956.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945959.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945962.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945963.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6945977.1                                                                                  │
+│ Protein: p24 complex component, Protein ID: KAL6945979.1                                                                                 │
+│ Protein: hypothetical protein, Protein ID: KAL6945986.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946007.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946014.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946020.1                                                                                  │
+│ Protein: C-24(28) sterol reductase, Protein ID: KAL6946024.1                                                                             │
+│ Protein: hypothetical protein, Protein ID: KAL6946046.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946059.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946070.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946070.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946085.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946085.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946086.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946087.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946090.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946107.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946125.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946133.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946138.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946139.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946144.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946150.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946157.1                                                                                  │
+│ Protein: Vacuolar protein sorting-associated protein 74, Protein ID: KAL6946162.1                                                        │
+│ Protein: hypothetical protein, Protein ID: KAL6946179.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946188.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946194.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6946208.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943331.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943346.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943347.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943352.1                                                                                  │
+│ Protein: hypothetical protein, Protein ID: KAL6943355.1                                                                                  │
+│ Protein: translocon subunit, Protein ID: KAL6943365.1                                                                                    │
+│ Protein: hypothetical protein, Protein ID: KAL6943                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+✦ Here is the list of vacuolar proteins and their protein IDs found in the GFF file:
+
+   * Protein: hypothetical protein, Protein ID: KAL6951498.1
+   * Protein: GTPase-activating protein S23, Protein ID: KAL6951519.1
+   * Protein: hypothetical protein, Protein ID: KAL6951520.1
+   * Protein: dolichol-P-mannose synthesis, Protein ID: KAL6951522.1
+   * Protein: hypothetical protein, Protein ID: KAL6951540.1
+   * Protein: hypothetical protein, Protein ID: KAL6951541.1
+   * Protein: hypothetical protein, Protein ID: KAL6951553.1
+   * Protein: hypothetical protein, Protein ID: KAL6951596.1
+   * Protein: hypothetical protein, Protein ID: KAL6951617.1
+   * Protein: hypothetical protein, Protein ID: KAL6951618.1
+   * Protein: hypothetical protein, Protein ID: KAL6951619.1
+   * Protein: hypothetical protein, Protein ID: KAL6951620.1
+   * Protein: hypothetical protein, Protein ID: KAL6951636.1
+   * Protein: hypothetical protein, Protein ID: KAL6951649.1
+   * Protein: hypothetical protein, Protein ID: KAL6951654.1
+   * Protein: hypothetical protein, Protein ID: KAL6951663.1
+   * Protein: Nuclear transport factor 2, Protein ID: KAL6951669.1
+   * Protein: hypothetical protein, Protein ID: KAL6951673.1
+   * Protein: hypothetical protein, Protein ID: KAL6951679.1
+   * Protein: hypothetical protein, Protein ID: KAL6951684.1
+   * Protein: hypothetical protein, Protein ID: KAL6951714.1
+   * Protein: hypothetical protein, Protein ID: KAL6951732.1
+   * Protein: hypothetical protein, Protein ID: KAL6951740.1
+   * Protein: hypothetical protein, Protein ID: KAL6951759.1
+   * Protein: hypothetical protein, Protein ID: KAL6951762.1
+   * Protein: hypothetical protein, Protein ID: KAL6951767.1
+   * Protein: hypothetical protein, Protein ID: KAL6951073.1
+   * Protein: hypothetical protein, Protein ID: KAL6951076.1
+   * Protein: hypothetical protein, Protein ID: KAL6951099.1
+   * Protein: hypothetical protein, Protein ID: KAL6951103.1
+   * Protein: Ran GTPase-binding protein yrb1, Protein ID: KAL6951115.1
+   * Protein: hypothetical protein, Protein ID: KAL6951117.1
+   * Protein: Diacylglycerol kinase, Protein ID: KAL6951128.1
+   * Protein: hypothetical protein, Protein ID: KAL6951131.1
+   * Protein: hypothetical protein, Protein ID: KAL6951134.1
+   * Protein: transport between ER and Golgi ATPase protein, Protein ID: KAL6951139.1
+   * Protein: hypothetical protein, Protein ID: KAL6951156.1
+   * Protein: hypothetical protein, Protein ID: KAL6951158.1
+   * Protein: Mannan polymerase I complex van1 subunit, Protein ID: KAL6951162.1
+   * Protein: phosphatidate cytidylyltransferase, Protein ID: KAL6951175.1
+   * Protein: hypothetical protein, Protein ID: KAL6951184.1
+   * Protein: hypothetical protein, Protein ID: KAL6951188.1
+   * Protein: hypothetical protein, Protein ID: KAL6951188.1
+   * Protein: H(+)-transporting V1 sector ATPase subunit A, Protein ID: KAL6951195.1
+   * Protein: hypothetical protein, Protein ID: KAL6951203.1
+   * Protein: hypothetical protein, Protein ID: KAL6951221.1
+   * Protein: hypothetical protein, Protein ID: KAL6951224.1
+   * Protein: hypothetical protein, Protein ID: KAL6951234.1
+   * Protein: hypothetical protein, Protein ID: KAL6951234.1
+   * Protein: hypothetical protein, Protein ID: KAL6951243.1
+   * Protein: GTP-binding protein gtr1, Protein ID: KAL6951244.1
+   * Protein: hypothetical protein, Protein ID: KAL6951266.1
+   * Protein: hypothetical protein, Protein ID: KAL6951271.1
+   * Protein: hypothetical protein, Protein ID: KAL6951277.1
+   * Protein: hypothetical protein, Protein ID: KAL6951292.1
+   * Protein: hypothetical protein, Protein ID: KAL6951292.1
+   * Protein: hypothetical protein, Protein ID: KAL6951306.1
+   * Protein: hypothetical protein, Protein ID: KAL6951318.1
+   * Protein: hypothetical protein, Protein ID: KAL6951320.1
+   * Protein: hypothetical protein, Protein ID: KAL6951320.1
+   * Protein: hypothetical protein, Protein ID: KAL6951320.1
+   * Protein: hypothetical protein, Protein ID: KAL6951320.1
+   * Protein: sphingolipid homeostasis protein orm1, Protein ID: KAL6951339.1
+   * Protein: High affinity Ca2+/Mn2+ P-type ATPase-like protein, Protein ID: KAL6951352.1
+   * Protein: hypothetical protein, Protein ID: KAL6951365.1
+   * Protein: hypothetical protein, Protein ID: KAL6951370.1
+   * Protein: GTP-binding protein, Protein ID: KAL6951379.1
+   * Protein: hypothetical protein, Protein ID: KAL6951388.1
+   * Protein: hypothetical protein, Protein ID: KAL6951397.1
+   * Protein: hypothetical protein, Protein ID: KAL6951419.1
+   * Protein: hypothetical protein, Protein ID: KAL6951422.1
+   * Protein: hypothetical protein, Protein ID: KAL6951426.1
+   * Protein: hypothetical protein, Protein ID: KAL6951427.1
+   * Protein: hypothetical protein, Protein ID: KAL6951439.1
+   * Protein: hypothetical protein, Protein ID: KAL6951453.1
+   * Protein: hypothetical protein, Protein ID: KAL6951455.1
+   * Protein: hypothetical protein, Protein ID: KAL6951455.1
+   * Protein: hypothetical protein, Protein ID: KAL6951466.1
+   * Protein: hypothetical protein, Protein ID: KAL6950255.1
+   * Protein: hypothetical protein, Protein ID: KAL6950255.1
+   * Protein: hypothetical protein, Protein ID: KAL6950259.1
+   * Protein: hypothetical protein, Protein ID: KAL6950268.1
+   * Protein: hypothetical protein, Protein ID: KAL6950275.1
+   * Protein: hypothetical protein, Protein ID: KAL6950278.1
+   * Protein: hypothetical protein, Protein ID: KAL6950283.1
+   * Protein: monovalent cation:H+ antiporter, CPA1 (nhx1), Protein ID: KAL6950284.1
+   * Protein: hypothetical protein, Protein ID: KAL6950285.1
+   * Protein: hypothetical protein, Protein ID: KAL6950285.1
+   * Protein: GDP-mannose transporter 1, Protein ID: KAL6950303.1
+   * Protein: hypothetical protein, Protein ID: KAL6950329.1
+   * Protein: hypothetical protein, Protein ID: KAL6950329.1
+   * Protein: hypothetical protein, Protein ID: KAL6950330.1
+   * Protein: hypothetical protein, Protein ID: KAL6950344.1
+   * Protein: hypothetical protein, Protein ID: KAL6950366.1
+   * Protein: hypothetical protein, Protein ID: KAL6950377.1
+   * Protein: hypothetical protein, Protein ID: KAL6950398.1
+   * Protein: hypothetical protein, Protein ID: KAL6950407.1
+   * Protein: hypothetical protein, Protein ID: KAL6950413.1
+   * Protein: hypothetical protein, Protein ID: KAL6950423.1
+   * Protein: H(+)-transporting V1 sector ATPase subunit D, Protein ID: KAL6950430.1
+   * Protein: hypothetical protein, Protein ID: KAL6950434.1
+   * Protein: hypothetical protein, Protein ID: KAL6950436.1
+   * Protein: hypothetical protein, Protein ID: KAL6950455.1
+   * Protein: hypothetical protein, Protein ID: KAL6950459.1
+   * Protein: hypothetical protein, Protein ID: KAL6950464.1
+   * Protein: Rab GTPase ypt31, Protein ID: KAL6950469.1
+   * Protein: hypothetical protein, Protein ID: KAL6950470.1
+   * Protein: hypothetical protein, Protein ID: KAL6950494.1
+   * Protein: hypothetical protein, Protein ID: KAL6950495.1
+   * Protein: hypothetical protein, Protein ID: KAL6950495.1
+   * Protein: hypothetical protein, Protein ID: KAL6950513.1
+   * Protein: hypothetical protein, Protein ID: KAL6950523.1
+   * Protein: hypothetical protein, Protein ID: KAL6950536.1
+   * Protein: hypothetical protein, Protein ID: KAL6950538.1
+   * Protein: hypothetical protein, Protein ID: KAL6950544.1
+   * Protein: hypothetical protein, Protein ID: KAL6950558.1
+   * Protein: hypothetical protein, Protein ID: KAL6950559.1
+   * Protein: hypothetical protein, Protein ID: KAL6950565.1
+   * Protein: hypothetical protein, Protein ID: KAL6950570.1
+   * Protein: Major facilitator superfamily transporter, Protein ID: KAL6950604.1
+   * Protein: Major facilitator superfamily transporter, Protein ID: KAL6950605.1
+   * Protein: hypothetical protein, Protein ID: KAL6950615.1
+   * Protein: hypothetical protein, Protein ID: KAL6950628.1
+   * Protein: hypothetical protein, Protein ID: KAL6950630.1
+   * Protein: hypothetical protein, Protein ID: KAL6950649.1
+   * Protein: hypothetical protein, Protein ID: KAL6950649.1
+   * Protein: hypothetical protein, Protein ID: KAL6950666.1
+   * Protein: ATPase with role in protein import into the ER, Protein ID: KAL6950669.1
+   * Protein: hypothetical protein, Protein ID: KAL6950681.1
+   * Protein: hypothetical protein, Protein ID: KAL6950686.1
+   * Protein: hypothetical protein, Protein ID: KAL6950688.1
+   * Protein: hypothetical protein, Protein ID: KAL6950692.1
+   * Protein: hypothetical protein, Protein ID: KAL6950697.1
+   * Protein: hypothetical protein, Protein ID: KAL6950701.1
+   * Protein: hypothetical protein, Protein ID: KAL6950702.1
+   * Protein: hypothetical protein, Protein ID: KAL6950705.1
+   * Protein: hypothetical protein, Protein ID: KAL6949132.1
+   * Protein: C-8 sterol isomerase, Protein ID: KAL6949138.1
+   * Protein: hypothetical protein, Protein ID: KAL6949153.1
+   * Protein: hypothetical protein, Protein ID: KAL6949156.1
+   * Protein: hypothetical protein, Protein ID: KAL6949162.1
+   * Protein: hypothetical protein, Protein ID: KAL6949164.1
+   * Protein: palmitoyltransferase, Protein ID: KAL6949183.1
+   * Protein: hypothetical protein, Protein ID: KAL6949190.1
+   * Protein: hypothetical protein, Protein ID: KAL6949211.1
+   * Protein: Golgi Transport, Protein ID: KAL6949214.1
+   * Protein: hypothetical protein, Protein ID: KAL6949226.1
+   * Protein: hypothetical protein, Protein ID: KAL6949226.1
+   * Protein: hypothetical protein, Protein ID: KAL6949226.1
+   * Protein: hypothetical protein, Protein ID: KAL6949231.1
+   * Protein: hypothetical protein, Protein ID: KAL6949247.1
+   * Protein: hypothetical protein, Protein ID: KAL6949249.1
+   * Protein: hypothetical protein, Protein ID: KAL6949262.1
+   * Protein: hypothetical protein, Protein ID: KAL6949264.1
+   * Protein: hypothetical protein, Protein ID: KAL6949265.1
+   * Protein: hypothetical protein, Protein ID: KAL6949278.1
+   * Protein: hypothetical protein, Protein ID: KAL6949282.1
+   * Protein: hypothetical protein, Protein ID: KAL6949300.1
+   * Protein: hypothetical protein, Protein ID: KAL6949300.1
+   * Protein: hypothetical protein, Protein ID: KAL6949310.1
+   * Protein: hypothetical protein, Protein ID: KAL6949315.1
+   * Protein: hypothetical protein, Protein ID: KAL6949316.1
+   * Protein: hypothetical protein, Protein ID: KAL6949317.1
+   * Protein: hypothetical protein, Protein ID: KAL6949333.1
+   * Protein: hypothetical protein, Protein ID: KAL6949339.1
+   * Protein: Squalene epoxidase, Protein ID: KAL6949351.1
+   * Protein: Elongation of fatty acids protein, Protein ID: KAL6949369.1
+   * Protein: Ubiquitin-conjugating enzyme E2 7, Protein ID: KAL6949387.1
+   * Protein: hypothetical protein, Protein ID: KAL6949401.1
+   * Protein: hypothetical protein, Protein ID: KAL6949404.1
+   * Protein: hypothetical protein, Protein ID: KAL6949424.1
+   * Protein: Oxysterol-binding protein 7, Protein ID: KAL6949442.1
+   * Protein: hypothetical protein, Protein ID: KAL6949446.1
+   * Protein: hypothetical protein, Protein ID: KAL6949472.1
+   * Protein: hypothetical protein, Protein ID: KAL6949493.1
+   * Protein: hypothetical protein, Protein ID: KAL6949503.1
+   * Protein: hypothetical protein, Protein ID: KAL6949505.1
+   * Protein: hypothetical protein, Protein ID: KAL6949506.1
+   * Protein: hypothetical protein, Protein ID: KAL6949518.1
+   * Protein: hypothetical protein, Protein ID: KAL6949536.1
+   * Protein: hypothetical protein, Protein ID: KAL6949537.1
+   * Protein: hypothetical protein, Protein ID: KAL6949542.1
+   * Protein: hypothetical protein, Protein ID: KAL6949555.1
+   * Protein: Fatty acyl-CoA elongase/Polyunsaturated fatty acid specific elongation enzyme, Protein ID: KAL6949576.1
+   * Protein: hypothetical protein, Protein ID: KAL6949611.1
+   * Protein: hypothetical protein, Protein ID: KAL6949612.1
+   * Protein: hypothetical protein, Protein ID: KAL6949627.1
+   * Protein: hypothetical protein, Protein ID: KAL6949630.1
+   * Protein: hypothetical protein, Protein ID: KAL6949674.1
+   * Protein: hypothetical protein, Protein ID: KAL6949675.1
+   * Protein: hypothetical protein, Protein ID: KAL6949679.1
+   * Protein: hypothetical protein, Protein ID: KAL6949680.1
+   * Protein: hypothetical protein, Protein ID: KAL6949681.1
+   * Protein: hypothetical protein, Protein ID: KAL6949681.1
+   * Protein: hypothetical protein, Protein ID: KAL6949681.1
+   * Protein: hypothetical protein, Protein ID: KAL6949693.1
+   * Protein: saccharopepsin, Protein ID: KAL6947815.1
+   * Protein: hypothetical protein, Protein ID: KAL6947818.1
+   * Protein: hypothetical protein, Protein ID: KAL6947831.1
+   * Protein: hypothetical protein, Protein ID: KAL6947837.1
+   * Protein: hypothetical protein, Protein ID: KAL6947846.1
+   * Protein: hypothetical protein, Protein ID: KAL6947855.1
+   * Protein: hypothetical protein, Protein ID: KAL6947873.1
+   * Protein: hypothetical protein, Protein ID: KAL6947877.1
+   * Protein: hypothetical protein, Protein ID: KAL6947894.1
+   * Protein: hypothetical protein, Protein ID: KAL6947906.1
+   * Protein: hypothetical protein, Protein ID: KAL6947908.1
+   * Protein: hypothetical protein, Protein ID: KAL6947911.1
+   * Protein: hypothetical protein, Protein ID: KAL6947919.1
+   * Protein: Golgi mannosyltransferase complex subunit, Protein ID: KAL6947926.1
+   * Protein: hypothetical protein, Protein ID: KAL6947927.1
+   * Protein: hypothetical protein, Protein ID: KAL6947928.1
+   * Protein: hypothetical protein, Protein ID: KAL6947935.1
+   * Protein: hypothetical protein, Protein ID: KAL6947936.1
+   * Protein: hypothetical protein, Protein ID: KAL6947943.1
+   * Protein: hypothetical protein, Protein ID: KAL6947956.1
+   * Protein: hypothetical protein, Protein ID: KAL6947961.1
+   * Protein: hypothetical protein, Protein ID: KAL6947964.1
+   * Protein: hypothetical protein, Protein ID: KAL6947996.1
+   * Protein: hypothetical protein, Protein ID: KAL6947999.1
+   * Protein: hypothetical protein, Protein ID: KAL6948009.1
+   * Protein: hypothetical protein, Protein ID: KAL6948009.1
+   * Protein: hypothetical protein, Protein ID: KAL6948013.1
+   * Protein: hypothetical protein, Protein ID: KAL6948024.1
+   * Protein: ditrans,polycis-polyprenyl diphosphate synthase, Protein ID: KAL6948026.1
+   * Protein: hypothetical protein, Protein ID: KAL6948032.1
+   * Protein: hypothetical protein, Protein ID: KAL6948043.1
+   * Protein: AAA ATPase cdc48, Protein ID: KAL6948046.1
+   * Protein: hypothetical protein, Protein ID: KAL6948098.1
+   * Protein: hypothetical protein, Protein ID: KAL6948109.1
+   * Protein: hypothetical protein, Protein ID: KAL6948109.1
+   * Protein: vacuolar transporter chaperone, Protein ID: KAL6948115.1
+   * Protein: hypothetical protein, Protein ID: KAL6948120.1
+   * Protein: hypothetical protein, Protein ID: KAL6948123.1
+   * Protein: hypothetical protein, Protein ID: KAL6948131.1
+   * Protein: hypothetical protein, Protein ID: KAL6948139.1
+   * Protein: hypothetical protein, Protein ID: KAL6948156.1
+   * Protein: hypothetical protein, Protein ID: KAL6948157.1
+   * Protein: hypothetical protein, Protein ID: KAL6948198.1
+   * Protein: hypothetical protein, Protein ID: KAL6948201.1
+   * Protein: hypothetical protein, Protein ID: KAL6948208.1
+   * Protein: hypothetical protein, Protein ID: KAL6948220.1
+   * Protein: hypothetical protein, Protein ID: KAL6948223.1
+   * Protein: hypothetical protein, Protein ID: KAL6948224.1
+   * Protein: hypothetical protein, Protein ID: KAL6948231.1
+   * Protein: hypothetical protein, Protein ID: KAL6948235.1
+   * Protein: hypothetical protein, Protein ID: KAL6948237.1
+   * Protein: hypothetical protein, Protein ID: KAL6948261.1
+   * Protein: hypothetical protein, Protein ID: KAL6948294.1
+   * Protein: hypothetical protein, Protein ID: KAL6948298.1
+   * Protein: hypothetical protein, Protein ID: KAL6948302.1
+   * Protein: hypothetical protein, Protein ID: KAL6948315.1
+   * Protein: hypothetical protein, Protein ID: KAL6948330.1
+   * Protein: hypothetical protein, Protein ID: KAL6948356.1
+   * Protein: hypothetical protein, Protein ID: KAL6948357.1
+   * Protein: hypothetical protein, Protein ID: KAL6948360.1
+   * Protein: hypothetical protein, Protein ID: KAL6948361.1
+   * Protein: hypothetical protein, Protein ID: KAL6948366.1
+   * Protein: hypothetical protein, Protein ID: KAL6948369.1
+   * Protein: hypothetical protein, Protein ID: KAL6948372.1
+   * Protein: hypothetical protein, Protein ID: KAL6948383.1
+   * Protein: hypothetical protein, Protein ID: KAL6948388.1
+   * Protein: hypothetical protein, Protein ID: KAL6948392.1
+   * Protein: putative cation-transporting ATPase 1, Protein ID: KAL6948399.1
+   * Protein: Mannan polymerase II complex anp1 subunit, Protein ID: KAL6948402.1
+   * Protein: hypothetical protein, Protein ID: KAL6948410.1
+   * Protein: hypothetical protein, Protein ID: KAL6948410.1
+   * Protein: hypothetical protein, Protein ID: KAL6948445.1
+   * Protein: hypothetical protein, Protein ID: KAL6948455.1
+   * Protein: Delta(24)-sterol C-methyltransferase, Protein ID: KAL6945546.1
+   * Protein: Delta(24)-sterol C-methyltransferase, Protein ID: KAL6945546.1
+   * Protein: hypothetical protein, Protein ID: KAL6945556.1
+   * Protein: hypothetical protein, Protein ID: KAL6945560.1
+   * Protein: hypothetical protein, Protein ID: KAL6945562.1
+   * Protein: hypothetical protein, Protein ID: KAL6945576.1
+   * Protein: hypothetical protein, Protein ID: KAL6945589.1
+   * Protein: hypothetical protein, Protein ID: KAL6945596.1
+   * Protein: hypothetical protein, Protein ID: KAL6945596.1
+   * Protein: hypothetical protein, Protein ID: KAL6945603.1
+   * Protein: hypothetical protein, Protein ID: KAL6945609.1
+   * Protein: serine palmitoyltransferase component, Protein ID: KAL6945633.1
+   * Protein: hypothetical protein, Protein ID: KAL6945638.1
+   * Protein: hypothetical protein, Protein ID: KAL6945647.1
+   * Protein: hypothetical protein, Protein ID: KAL6945660.1
+   * Protein: hypothetical protein, Protein ID: KAL6945699.1
+   * Protein: hypothetical protein, Protein ID: KAL6945702.1
+   * Protein: hypothetical protein, Protein ID: KAL6945706.1
+   * Protein: hypothetical protein, Protein ID: KAL6945708.1
+   * Protein: hypothetical protein, Protein ID: KAL6945714.1
+   * Protein: hypothetical protein, Protein ID: KAL6945737.1
+   * Protein: hypothetical protein, Protein ID: KAL6945750.1
+   * Protein: hypothetical protein, Protein ID: KAL6945786.1
+   * Protein: 3-keto-sterol reductase, Protein ID: KAL6945797.1
+   * Protein: hypothetical protein, Protein ID: KAL6945812.1
+   * Protein: hypothetical protein, Protein ID: KAL6945825.1
+   * Protein: hypothetical protein, Protein ID: KAL6945834.1
+   * Protein: Protein ccc1, Protein ID: KAL6945850.1
+   * Protein: hypothetical protein, Protein ID: KAL6945855.1
+   * Protein: hypothetical protein, Protein ID: KAL6945857.1
+   * Protein: hypothetical protein, Protein ID: KAL6945863.1
+   * Protein: hypothetical protein, Protein ID: KAL6945863.1
+   * Protein: hypothetical protein, Protein ID: KAL6945866.1
+   * Protein: hypothetical protein, Protein ID: KAL6945872.1
+   * Protein: hypothetical protein, Protein ID: KAL6945884.1
+   * Protein: Arf GTPase arl1, Protein ID: KAL6945892.1
+   * Protein: hypothetical protein, Protein ID: KAL6945897.1
+   * Protein: hypothetical protein, Protein ID: KAL6945900.1
+   * Protein: hypothetical protein, Protein ID: KAL6945924.1
+   * Protein: hypothetical protein, Protein ID: KAL6945939.1
+   * Protein: hypothetical protein, Protein ID: KAL6945956.1
+   * Protein: hypothetical protein, Protein ID: KAL6945959.1
+   * Protein: hypothetical protein, Protein ID: KAL6945962.1
+   * Protein: hypothetical protein, Protein ID: KAL6945963.1
+   * Protein: hypothetical protein, Protein ID: KAL6945977.1
+   * Protein: p24 complex component, Protein ID: KAL6945979.1
+   * Protein: hypothetical protein, Protein ID: KAL6945986.1
+   * Protein: hypothetical protein, Protein ID: KAL6946007.1
+   * Protein: hypothetical protein, Protein ID: KAL6946014.1
+   * Protein: hypothetical protein, Protein ID: KAL6946020.1
+   * Protein: C-24(28) sterol reductase, Protein ID: KAL6946024.1
+   * Protein: hypothetical protein, Protein ID: KAL6946046.1
+   * Protein: hypothetical protein, Protein ID: KAL6946059.1
+   * Protein: hypothetical protein, Protein ID: KAL6946070.1
+   * Protein: hypothetical protein, Protein ID: KAL6946070.1
+   * Protein: hypothetical protein, Protein ID: KAL6946085.1
+   * Protein: hypothetical protein, Protein ID: KAL6946085.1
+   * Protein: hypothetical protein, Protein ID: KAL6946086.1
+   * Protein: hypothetical protein, Protein ID: KAL6946087.1
+   * Protein: hypothetical protein, Protein ID: KAL6946090.1
+   * Protein: hypothetical protein, Protein ID: KAL6946107.1
+   * Protein: hypothetical protein, Protein ID: KAL6946125.1
+   * Protein: hypothetical protein, Protein ID: KAL6946133.1
+   * Protein: hypothetical protein, Protein ID: KAL6946138.1
+   * Protein: hypothetical protein, Protein ID: KAL6946139.1
+   * Protein: hypothetical protein, Protein ID: KAL6946144.1
+   * Protein: hypothetical protein, Protein ID: KAL6946150.1
+   * Protein: hypothetical protein, Protein ID: KAL6946157.1
+   * Protein: Vacuolar protein sorting-associated protein 74, Protein ID: KAL6946162.1
+   * Protein: hypothetical protein, Protein ID: KAL6946179.1
+   * Protein: hypothetical protein, Protein ID: KAL6946188.1
+   * Protein: hypothetical protein, Protein ID: KAL6946194.1
+   * Protein: hypothetical protein, Protein ID: KAL6946208.1
+   * Protein: hypothetical protein, Protein ID: KAL6943331.1
+   * Protein: hypothetical protein, Protein ID: KAL6943346.1
+   * Protein: hypothetical protein, Protein ID: KAL6943347.1
+   * Protein: hypothetical protein, Protein ID: KAL6943352.1
+   * Protein: hypothetical protein, Protein ID: KAL6943355.1
+   * Protein: translocon subunit, Protein ID: KAL6943365.1
+   * Protein: hypothetical protein, Protein ID: KAL6943372.1
+   * Protein: hypothetical protein, Protein ID: KAL6943384.1
+   * Protein: hypothetical protein, Protein ID: KAL6943406.1
+   * Protein: hypothetical protein, Protein ID: KAL6943455.1
+   * Protein: hypothetical protein, Protein ID: KAL6943460.1
+   * Protein: hypothetical protein, Protein ID: KAL6943478.1
+   * Protein: hypothetical protein, Protein ID: KAL6943478.1
+   * Protein: hypothetical protein, Protein ID: KAL6943497.1
+   * Protein: hypothetical protein, Protein ID: KAL6943497.1
+   * Protein: alpha-1,2-mannosyltransferase ktr1, Protein ID: KAL6943509.1
+   * Protein: hypothetical protein, Protein ID: KAL6943512.1
+   * Protein: hypothetical protein, Protein ID: KAL6943530.1
+   * Protein: hypothetical protein, Protein ID: KAL6943553.1
+   * Protein: hypothetical protein, Protein ID: KAL6943559.1
+   * Protein: hypothetical protein, Protein ID: KAL6943565.1
+   * Protein: Prenylated Rab acceptor 1, Protein ID: KAL6943566.1
+   * Protein: hypothetical protein, Protein ID: KAL6943571.1
+   * Protein: hypothetical protein, Protein ID: KAL6943571.1
+   * Protein: hypothetical protein, Protein ID: KAL6943575.1
+   * Protein: hypothetical protein, Protein ID: KAL6943588.1
+   * Protein: hypothetical protein, Protein ID: KAL6943593.1
+   * Protein: hypothetical protein, Protein ID: KAL6943611.1
+   * Protein: hypothetical protein, Protein ID: KAL6943620.1
+   * Protein: hypothetical protein, Protein ID: KAL6943638.1
+   * Protein: hypothetical protein, Protein ID: KAL6943641.1
+   * Protein: Golgi to ER traffic-related protein, Protein ID: KAL6943648.1
+   * Protein: hypothetical protein, Protein ID: KAL6943652.1
+   * Protein: hypothetical protein, Protein ID: KAL6943681.1
+   * Protein: hypothetical protein, Protein ID: KAL6943687.1
+   * Protein: hypothetical protein, Protein ID: KAL6943687.1
+   * Protein: hypothetical protein, Protein ID: KAL6943697.1
+   * Protein: fatty acid alpha-hydroxylase, Protein ID: KAL6943700.1
+   * Protein: hypothetical protein, Protein ID: KAL6943713.1
+   * Protein: hypothetical protein, Protein ID: KAL6943734.1
+   * Protein: Dolichyl-phosphate-mannose--protein mannosyltransferase 2, Protein ID: KAL6943735.1
+   * Protein: hypothetical protein, Protein ID: KAL6943752.1
+   * Protein: hypothetical protein, Protein ID: KAL6943758.1
+   * Protein: hypothetical protein, Protein ID: KAL6943759.1
+   * Protein: hypothetical protein, Protein ID: KAL6943761.1
+   * Protein: hypothetical protein, Protein ID: KAL6943761.1
+   * Protein: hypothetical protein, Protein ID: KAL6943769.1
+   * Protein: hypothetical protein, Protein ID: KAL6943777.1
+   * Protein: hypothetical protein, Protein ID: KAL6943790.1
+   * Protein: hypothetical protein, Protein ID: KAL6943803.1
+   * Protein: hypothetical protein, Protein ID: KAL6943812.1
+   * Protein: hypothetical protein, Protein ID: KAL6943817.1
+   * Protein: hypothetical protein, Protein ID: KAL6943824.1
+   * Protein: hypothetical protein, Protein ID: KAL6943846.1
+   * Protein: hypothetical protein, Protein ID: KAL6943847.1
+   * Protein: hypothetical protein, Protein ID: KAL6943869.1
+   * Protein: hypothetical protein, Protein ID: KAL6943881.1
+   * Protein: hypothetical protein, Protein ID: KAL6943885.1
+   * Protein: hypothetical protein, Protein ID: KAL6943887.1
+   * Protein: hypothetical protein, Protein ID: KAL6943904.1
+   * Protein: hypothetical protein, Protein ID: KAL6943940.1
+   * Protein: COPII coat GTPase, Protein ID: KAL6943943.1
+   * Protein: hypothetical protein, Protein ID: KAL6943947.1
+   * Protein: hypothetical protein, Protein ID: KAL6943967.1
+   * Protein: hypothetical protein, Protein ID: KAL6943973.1
+   * Protein: hypothetical protein, Protein ID: KAL6943974.1
+   * Protein: Rab GTPase ypt7, Protein ID: KAL6943987.1
+   * Protein: hypothetical protein, Protein ID: KAL6943990.1
+   * Protein: COPII-coated vesicle protein, Protein ID: KAL6944009.1
+   * Protein: stearoyl-CoA 9-desaturase, Protein ID: KAL6944013.1
+   * Protein: hypothetical protein, Protein ID: KAL6944028.1
+   * Protein: hypothetical protein, Protein ID: KAL6944029.1
+   * Protein: hypothetical protein, Protein ID: KAL6944043.1
+   * Protein: hypothetical protein, Protein ID: KAL6944045.1
+   * Protein: hypothetical protein, Protein ID: KAL6944052.1
+   * Protein: hypothetical protein, Protein ID: KAL6944056.1
+   * Protein: hypothetical protein, Protein ID: KAL6944059.1
+   * Protein: hypothetical protein, Protein ID: KAL6944069.1
+   * Protein: hypothetical protein, Protein ID: KAL6944075.1
+   * Protein: erg24, C-14 sterol reductase, Protein ID: KAL6944079.1
+   * Protein: hypothetical protein, Protein ID: KAL6944080.1
+   * Protein: hypothetical protein, Protein ID: KAL6944093.1
+   * Protein: hypothetical protein, Protein ID: KAL6944096.1
+   * Protein: hypothetical protein, Protein ID: KAL6944100.1
+   * Protein: hypothetical protein, Protein ID: KAL6944114.1
+   * Protein: hypothetical protein, Protein ID: KAL6944117.1
+   * Protein: beta-glucan synthesis-associated protein, Protein ID: KAL6944119.1
+   * Protein: hypothetical protein, Protein ID: KAL6944147.1
+   * Protein: Scramblase any1, Protein ID: KAL6944148.1
+   * Protein: hypothetical protein, Protein ID: KAL6944170.1
+   * Protein: hypothetical protein, Protein ID: KAL6944171.1
+   * Protein: hypothetical protein, Protein ID: KAL6944175.1
+   * Protein: hypothetical protein, Protein ID: KAL6944190.1
+
+> /quit
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                          │
+│  Agent powering down. Goodbye!                                                                                                           │
+│                                                                                                                                          │
+│  Interaction Summary                                                                                                                     │
+│  Session ID:                 13326eb0-72ac-4378-9f18-1ecb5722403e                                                                        │
+│  Tool Calls:                 18 ( ✓ 18 x 0 )                                                                                             │
+│  Success Rate:               100.0%                                                                                                      │
+│  User Agreement:             100.0% (18 reviewed)                                                                                        │
+│                                                                                                                                          │
+│  Performance                                                                                                                             │
+│  Wall Time:                  13m 29s                                                                                                     │
+│  Agent Active:               8m 58s                                                                                                      │
+│    » API Time:               7m 27s (83.2%)                                                                                              │
+│    » Tool Time:              1m 30s (16.8%)                                                                                              │
+│                                                                                                                                          │
+│                                                                                                                                          │
+│  Model Usage                  Reqs   Input Tokens  Output Tokens                                                                         │
+│  ───────────────────────────────────────────────────────────────                                                                         │
+│  gemini-2.5-flash-lite           6          8,741            455                                                                         │
+│  gemini-2.5-flash               26      9,059,683         22,003                                                                         │
+│  gemini-2.5-pro                  7      3,952,700          2,096                                                                         │
+│                                                                                                                                          │
+│  Savings Highlight: 9,574,548 (73.5%) of input tokens were served from the cache, reducing costs.                                        │
+│                                                                                                                                          │
+│  » Tip: For a full token breakdown, run `/stats model`.                                                                                  │
+│                                                                                                                                          │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
