@@ -936,7 +936,7 @@ def get_chromosomes_info(gffpath: str) -> list:
 
 @tool
 def get_chromosome_summary(gffpath: str, chrom: str = None) -> dict:
-    """Calculate per-chromosome feature analysis with counts and statistics.
+    """Calculate per-chromosome feature analysis with counts and statistics. Includes gene and feature density.
 
     Args:
         gffpath (str): Path to the GFF file
@@ -953,7 +953,8 @@ def get_chromosome_summary(gffpath: str, chrom: str = None) -> dict:
                           ...
                       },
                       'chromosome_length': int,
-                      'feature_density': float  # features per kb
+                      'feature_density': str,
+                      'gene_density': str
                   },
                   ...
               }
@@ -989,7 +990,7 @@ def get_chromosome_summary(gffpath: str, chrom: str = None) -> dict:
                 'total_features': 0,
                 'feature_types': {},
                 'chromosome_length': 0,
-                'feature_density': 0.0
+                'feature_density': ""
             }
             
             # Get all features for this chromosome
@@ -1032,10 +1033,15 @@ def get_chromosome_summary(gffpath: str, chrom: str = None) -> dict:
                 
                 chrom_stats['feature_types'][feature_type] = type_stats
             
-            # Calculate feature density (features per kb)
+            # Calculate feature density (features per Mb)
             if chrom_stats['chromosome_length'] > 0:
-                chrom_stats['feature_density'] = round(chrom_stats['total_features'] / (chrom_stats['chromosome_length'] / 1000), 2)
-            
+                feature_density = round(chrom_stats['total_features'] / (chrom_stats['chromosome_length'] / 1000000), 2)
+                chrom_stats['feature_density'] = f"{feature_density} features/Mb"
+
+            if chrom_stats['chromosome_length'] > 0:
+                gene_density = round(chrom_stats['feature_types']['gene']['count'] / (chrom_stats['chromosome_length'] / 1000000), 2)
+                chrom_stats['gene_density'] = f"{gene_density} genes/Mb"
+
             summary[chromosome] = chrom_stats
         
         return summary
@@ -1555,7 +1561,7 @@ def get_intergenic_regions(gffpath: str, chrom: str = None, min_length: int = 0,
 
 
 @tool
-def get_feature_density(gffpath: str, chrom: str, window_size: int, feature_type: str = None) -> list:
+def get_feature_density(gffpath: str, chrom: str, window_size: int = 1000000, feature_type: str = None) -> list:
     """Calculate feature density in genomic windows across a chromosome.
 
     Args:
@@ -1565,14 +1571,14 @@ def get_feature_density(gffpath: str, chrom: str, window_size: int, feature_type
         feature_type (str, optional): Filter by feature type (e.g., 'gene', 'exon'). If None, counts all features.
 
     Returns:
-        list: List of dictionaries containing density information for each window
+        list: List of dictionaries containing density information for each window, the density information is per kb.
               Format: [
                   {
                       'chrom': str,
                       'window_start': int,
                       'window_end': int,
                       'feature_count': int,
-                      'density': float  # features per kb
+                      'feature_density': str
                   },
                   ...
               ]
@@ -1618,16 +1624,16 @@ def get_feature_density(gffpath: str, chrom: str, window_size: int, feature_type
                 if feature_type is None or feature.featuretype == feature_type:
                     feature_count += 1
             
-            # Calculate density (features per kb)
+            # Calculate density (features per Mb)
             actual_window_size = window_end - current_start + 1
-            density = (feature_count / actual_window_size) * 1000  # per kb
-            
+            density = (feature_count / actual_window_size) * 1000000  # per Mb
+            density = round(density, 4)
             window_data = {
                 'chrom': chrom,
                 'window_start': current_start,
                 'window_end': window_end,
                 'feature_count': feature_count,
-                'density': round(density, 4)
+                'feature_density': f"{density} per Mb",
             }
             windows.append(window_data)
             

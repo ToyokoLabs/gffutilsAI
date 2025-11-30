@@ -4,6 +4,7 @@ import requests
 import time
 from importlib import resources
 from dotenv import load_dotenv
+from importlib.metadata import version
 
 from strands import Agent
 from strands.models.ollama import OllamaModel
@@ -26,6 +27,9 @@ from .gff_tools import (
     get_tools_list, get_organism_info, get_chromosomes_info, 
     search_genes_by_go_function_attribute
 )
+
+
+__version__ = version("gffutilsai")
 
 # Global variable to store tool call information for debugging
 tool_call_log = []
@@ -95,7 +99,7 @@ Examples:
     parser.add_argument(
         "--version", "-v",
         action="version",
-        version="gffutilsai 0.1.14"
+        version=__version__
     )
     
     parser.add_argument(
@@ -360,7 +364,15 @@ Examples:
             # Execute the query
             result = local_agent(args.query)
             if args.debug:
-                print(result)
+                print("**DEBUG****************************")
+                metrics = result.metrics
+                for tool_name, tool_metric in metrics.tool_metrics.items():
+                    tool_data = tool_metric.tool     
+                    print(f"Tool Name: {tool_data['name']}")
+                    print(f"Parameters: {tool_data['input']}")
+                    print(f"Execution Time: {tool_metric.total_time:.4f}s")
+                    print("-------------------------")
+
                 print("***********************************")
                 
         except Exception as e:
@@ -422,6 +434,7 @@ Examples:
             print(f"✅ Successful: {successful}/{len(queries)}")
             print(f"❌ Failed: {failed}/{len(queries)}")
             print('='*60)
+            print(f"Version: {__version__}")
             
         except FileNotFoundError:
             print(f"❌ Error: File not found: {args.batch}")
