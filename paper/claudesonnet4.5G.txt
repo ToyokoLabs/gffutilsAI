@@ -1,0 +1,166 @@
+🔧 Loaded environment variables from: .env
+🤖 GFF Analysis AI Agent
+📊 Model: claude-sonnet-4-5
+🌐 Provider: Anthropic
+🌡️ Temperature: 0.1
+--------------------------------------------------
+📝 System prompt loaded from package resources
+🤖 Using Anthropic Claude model: claude-sonnet-4-5
+🔒 Anthropic: file_read tool disabled for security
+📋 Batch mode - Processing queries from: batch6.txt
+--------------------------------------------------
+📊 Found 6 queries to process
+
+
+============================================================
+Query 1/6: I want a list of all attributes in GCA_050947715.1_ASM5094771v1_genomic.gff
+============================================================
+I'll get the list of all attributes from that GFF file for you.
+Tool #1: get_all_attributes
+Here's the complete list of all attributes found in the GFF file **GCA_050947715.1_ASM5094771v1_genomic.gff**:
+
+1. **ID** - Feature identifier
+2. **Name** - Feature name
+3. **Parent** - Parent feature reference
+4. **Dbxref** - Database cross-reference
+5. **Note** - Additional notes/descriptions
+6. **Ontology_term** - Ontology term references
+7. **gbkey** - GenBank key
+8. **gene** - Gene name
+9. **gene_biotype** - Gene biotype classification
+10. **locus_tag** - Locus tag identifier
+11. **product** - Product description
+12. **protein_id** - Protein identifier
+13. **orig_protein_id** - Original protein identifier
+14. **orig_transcript_id** - Original transcript identifier
+15. **go_function** - Gene Ontology molecular function
+16. **go_process** - Gene Ontology biological process
+17. **go_component** - Gene Ontology cellular component
+18. **genome** - Genome information
+19. **mol_type** - Molecule type
+20. **strain** - Strain information
+21. **isolation-source** - Isolation source
+22. **country** - Country of origin
+23. **collection-date** - Collection date
+24. **chromosome** - Chromosome information
+25. **partial** - Partial feature indicator
+26. **start_range** - Start range information
+27. **end_range** - End range information
+
+This GFF file contains **27 different attribute types** that provide various types of information about the genomic features, including identifiers, functional annotations (GO terms), structural information, and metadata about the organism.
+============================================================
+Query 2/6: Tell me which species it is
+============================================================
+I'll look up the species information using the accession number from the GFF file.
+Tool #2: get_organism_info
+The species is **Hanseniaspora uvarum**, a budding yeast.
+
+**Details:**
+- **Scientific name:** Hanseniaspora uvarum
+- **Common classification:** Budding yeasts & allies
+- **NCBI Taxonomy ID:** 29833
+- **Accession:** GCA_050947715.1
+
+Hanseniaspora uvarum is a yeast species commonly found on grapes and in wine fermentation. It's known for its role in the early stages of wine fermentation and can contribute to the aromatic profile of wines.
+============================================================
+Query 3/6: What is the geographical origin of this genome?
+============================================================
+Let me search for the geographical information in the GFF file attributes. I saw that "country" is one of the available attributes, so let me find features that contain this information.
+Tool #3: get_features_with_attribute
+Perfect! Here's the geographical origin and additional metadata for this genome:
+
+**Geographical Origin:** **Australia**
+
+**Additional Information:**
+- **Strain:** AWRI5759_A6
+- **Collection date:** 2014
+- **Isolation source:** FOODON_00001071 (food-related source)
+- **Molecule type:** Genomic DNA
+
+This Hanseniaspora uvarum strain was isolated from Australia in 2014, likely from a food source (given the FOODON ontology reference, which is a food ontology database). The AWRI in the strain name likely refers to the Australian Wine Research Institute, suggesting this yeast was isolated from a wine or grape-related source.
+============================================================
+Query 4/6: Give me the number of chromosomes
+============================================================
+I'll get the chromosome information from the GFF file.
+Tool #4: get_chromosomes_info
+This *Hanseniaspora uvarum* genome has **7 chromosomes**.
+
+**Chromosome identifiers:**
+1. CM116924.1
+2. CM116925.1
+3. CM116926.1
+4. CM116927.1
+5. CM116928.1
+6. CM116929.1
+7. CM116930.1
+
+This is consistent with typical Hanseniaspora species, which generally have relatively small genomes with a small number of chromosomes compared to other yeasts like Saccharomyces cerevisiae (which has 16 chromosomes).
+============================================================
+Query 5/6: Give me the number of genes on each chromosome
+============================================================
+I'll get the per-chromosome statistics to show you the number of genes on each chromosome.
+Tool #5: get_chromosome_summary
+Here's the **number of genes on each chromosome** of *Hanseniaspora uvarum*:
+
+| Chromosome | Number of Genes | Chromosome Length (bp) | Gene Density (genes/kb) |
+|------------|----------------|------------------------|-------------------------|
+| CM116924.1 | 294 | 616,678 | 0.477 |
+| CM116925.1 | 434 | 971,298 | 0.447 |
+| CM116926.1 | 478 | 1,013,274 | 0.472 |
+| CM116927.1 | 594 | 1,293,909 | 0.459 |
+| CM116928.1 | 699 | 1,486,871 | 0.470 |
+| CM116929.1 | 710 | 1,575,313 | 0.451 |
+| CM116930.1 | 905 | 1,922,076 | 0.471 |
+| **TOTAL** | **4,114** | **8,879,419** | **0.463** |
+
+**Key observations:**
+- The genome contains a total of **4,114 genes**
+- Chromosome CM116930.1 is the largest and has the most genes (905)
+- Chromosome CM116924.1 is the smallest and has the fewest genes (294)
+- Gene density is relatively consistent across all chromosomes (~0.45-0.48 genes per kilobase)
+- The genome size is approximately **8.88 Mb**, which is typical for Hanseniaspora species
+============================================================
+Query 6/6: List all vacuolar proteins and their protein_id
+============================================================
+I'll search for genes that encode vacuolar proteins by looking for the GO component term related to vacuole.
+Tool #6: search_features_by_attribute
+cycle failed
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 189, in event_loop_cycle
+    async for tool_event in tool_events:
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 531, in _handle_tool_execution
+    async for event in events:
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 277, in recurse_event_loop
+    async for event in events:
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 152, in event_loop_cycle
+    async for model_event in model_events:
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 396, in _handle_model_execution
+    raise e
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/event_loop.py", line 337, in _handle_model_execution
+    async for event in stream_messages(
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/streaming.py", line 454, in stream_messages
+    async for event in process_stream(chunks, start_time):
+  File "/usr/local/lib/python3.12/dist-packages/strands/event_loop/streaming.py", line 388, in process_stream
+    async for chunk in chunks:
+  File "/usr/local/lib/python3.12/dist-packages/strands/models/anthropic.py", line 415, in stream
+    raise error
+  File "/usr/local/lib/python3.12/dist-packages/strands/models/anthropic.py", line 399, in stream
+    async with self.client.messages.stream(**request) as stream:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/anthropic/lib/streaming/_messages.py", line 295, in __aenter__
+    raw_stream = await self.__api_request
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/anthropic/_base_client.py", line 1902, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/anthropic/_base_client.py", line 1702, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'prompt is too long: 215282 tokens > 200000 maximum'}, 'request_id': 'req_011CUy9rkYawvjeDomFWqB4T'}
+❌ Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'prompt is too long: 215282 tokens > 200000 maximum'}, 'request_id': 'req_011CUy9rkYawvjeDomFWqB4T'}
+
+============================================================
+📊 Batch Processing Summary
+============================================================
+✅ Successful: 5/6
+❌ Failed: 1/6
+============================================================

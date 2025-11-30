@@ -2,6 +2,11 @@
 
 A comprehensive bioinformatics AI agent for analyzing GFF (General Feature Format) files using natural language queries. This project extends a basic GFF analysis agent with advanced querying capabilities, statistical analysis, and data export features.
 
+<a target="_blank" href="https://colab.research.google.com/github/ToyokoLabs/gffutilsAI/blob/main/notebooks/gffai.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
+
 ## Overview
 
 This AI agent provides an intuitive interface for bioinformatics researchers to analyze GFF files without writing complex code. Users can ask questions in natural language, and the agent will select and execute the appropriate analysis tools to provide comprehensive answers.
