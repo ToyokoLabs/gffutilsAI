@@ -11,9 +11,24 @@ authors:
   given-names: "Virginia"
   orcid: "https://orcid.org/0000-0002-1725-001X"
 title: "gffutilsAI: An AI-Agent for Interactive Genomic Feature Exploration in GFF files"
-version: 2.0.4
+version: 0.1.16
 doi: 10.64898/2025.12.02.690645
 date-released: 2025-12-5
 url: "https://github.com/ToyokoLabs/gffutilsAI"
-eprint: "https://www.biorxiv.org/content/early/2025/12/05/2025.12.02.690645.full.pdf"
-journal: "bioRxiv"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Bassi"
+    given-names: "Sebastian"
+    orcid: "https://orcid.org/0000-0002-2241-2001"
+  - family-names: "Yang"
+    given-names: "Tristan"
+    orcid: "https://orcid.org/0009-0008-6930-2919"
+  - family-names: "Gonzalez"
+    given-names: "Virginia"
+    orcid: "https://orcid.org/0000-0002-1725-001X"
+  doi: "10.64898/2025.12.02.690645"
+  journal: "bioRxiv"
+  title: "gffutilsAI: An AI-Agent for Interactive Genomic Feature Exploration in GFF files"
+  year: 2025
+  eprint: "https://www.biorxiv.org/content/early/2025/12/05/2025.12.02.690645.full.pdf"
