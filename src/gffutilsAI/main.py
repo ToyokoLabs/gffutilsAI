@@ -25,7 +25,7 @@ from .gff_tools import (
     get_intergenic_regions, get_feature_density, get_strand_distribution,
     export_features_to_csv, get_feature_summary_report, get_genes_and_features_from_attribute,
     get_tools_list, get_organism_info, get_chromosomes_info, 
-    search_genes_by_go_function_attribute
+    search_genes_by_go_function_attribute, extract_genes_to_gff
 )
 
 
@@ -332,7 +332,7 @@ Examples:
         get_intergenic_regions, get_feature_density, get_strand_distribution,
         export_features_to_csv, get_feature_summary_report, get_tools_list, 
         get_genes_and_features_from_attribute, get_organism_info, get_chromosomes_info,
-        search_genes_by_go_function_attribute
+        search_genes_by_go_function_attribute, extract_genes_to_gff
     ]
     
     # Add file_read tool only for local server (security restriction for cloud/anthropic/gemini/openai)
@@ -454,6 +454,12 @@ Examples:
                 
                 if user_input.lower() in ['quit', 'exit', 'q']:
                     print("👋 Goodbye!")
+                    print("\n" + "=" * 80)
+                    print("To cite this program, use this:")
+                    print("gffutilsAI: An AI-Agent for Interactive Genomic Feature Exploration in GFF files")
+                    print("Sebastian Bassi, Tristan Yang, Virginia Gonzalez, bioRxiv 2025.12.02.690645;")
+                    print("doi: https://doi.org/10.64898/2025.12.02.690645")
+                    print("=" * 80)
                     break
                 
                 if not user_input:
@@ -470,6 +476,12 @@ Examples:
                 
             except KeyboardInterrupt:
                 print("\n👋 Goodbye!")
+                print("\n" + "=" * 80)
+                print("To cite this program, use this:")
+                print("gffutilsAI: An AI-Agent for Interactive Genomic Feature Exploration in GFF files")
+                print("Sebastian Bassi, Tristan Yang, Virginia Gonzalez, bioRxiv 2025.12.02.690645;")
+                print("doi: https://doi.org/10.64898/2025.12.02.690645")
+                print("=" * 80)
                 break
             except Exception as e:
                 print(f"❌ Error: {str(e)}")

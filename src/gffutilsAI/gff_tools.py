@@ -7,9 +7,87 @@ These functions are decorated with @tool to be used by the AI agent.
 
 import os
 import csv
+
 from strands import tool
 import gffutils
+from gffutils.exceptions import FeatureNotFoundError
 from Bio import Entrez
+from typing import List
+
+
+
+@tool
+def extract_genes_to_gff(gene_ids: List[str], gff_file: str, output_file: str = "subset.gff", db_file: str = "annotations.db") -> str:
+    """
+    Extracts a specific list of genes and their associated features (mRNA, exons, CDS) 
+    from a GFF3 file and saves them to a new file.
+
+    Args:
+        gene_ids (List[str]): A list of Gene IDs to extract (e.g., ['gene1', 'gene2']).
+        gff_file (str): Path to the source GFF3 annotation file.
+        output_file (str): Path where the extracted GFF should be saved.
+        db_file (str): Path to the sqlite3 database file (created if not exists).
+
+    Returns:
+        str: A summary message indicating how many genes were found and saved.
+    """
+    
+    # 1. Initialize or Load Database
+    if not os.path.exists(db_file):
+        try:
+            print(f"Creating database from {gff_file}...")
+            db = gffutils.create_db(gff_file, db_file, force=True, keep_order=True,
+                                    merge_strategy='create_unique', sort_attribute_values=True)
+        except Exception as e:
+            return f"Error creating database: {str(e)}"
+    else:
+        db = gffutils.FeatureDB(db_file, keep_order=True)
+
+    found_count = 0
+    missing_ids = []
+
+    try:
+        with open(output_file, 'w') as out_handle:
+            # Write GFF directives (headers) so the file is valid for tools like JBrowse
+            for directive in db.directives:
+                out_handle.write(f'##{directive}\n')
+
+            for gene_id in gene_ids:
+                try:
+                    # Retrieve the parent gene
+                    gene = db[gene_id]
+                    out_handle.write(str(gene) + '\n')                    
+                    # Retrieve all children recursively (mRNA, exon, CDS, UTR)
+                    # order_by='start' ensures they are written in genomic order
+                    for child in db.children(gene, order_by='start'):
+                        out_handle.write(str(child) + '\n')
+                    
+                    found_count += 1
+                    
+                except gffutils.feature.FeatureNotFoundError:
+                    missing_ids.append(gene_id)
+
+    except IOError as e:
+        return f"Error writing to file {output_file}: {str(e)}"
+
+    result_msg = f"Success. Extracted {found_count} genes to '{output_file}'."
+    
+    if missing_ids:
+        result_msg += f" Warning: {len(missing_ids)} IDs were not found: {', '.join(missing_ids)}"
+        
+    return result_msg
+
+
+
+    my_target_list = ['AT1G01010', 'AT1G01020', 'NON_EXISTENT_ID']
+    response = extract_genes_to_gff(
+        gene_ids=my_target_list,
+        gff_file="your_annotation.gff",
+        output_file="agent_selection.gff"
+    )
+    
+    print(response)
+
 
 
 def get_db_filename(gffpath: str) -> str:
@@ -159,8 +237,7 @@ def get_organism_info(accession: str = None, taxonomy_id: str = None) -> dict:
         if uids:
             uid = uids[0]  # take the first match
             summary = get_assembly_summary(uid)
-            docsum = summary['DocumentSummarySet']['DocumentSummary'][0]
-            
+            docsum = summary['DocumentSummarySet']['DocumentSummary'][0]            
             organism = docsum.get('Organism', 'N/A')
             taxonomy_id_result = docsum.get('Taxid', 'N/A')
             species = docsum.get('SpeciesName', 'N/A')
@@ -2012,7 +2089,8 @@ def get_tools_list() -> list:
         ("get_strand_distribution", "Analyze strand distribution of features"),
         ("export_features_to_csv", "Export feature data to CSV format"),
         ("get_feature_summary_report", "Generate human-readable GFF summary report"),
-        ("get_tools_list", "Get list of all available tools with descriptions")
+        ("get_tools_list", "Get list of all available tools with descriptions"),
+        ("extract_genes_to_gff", "Extract gene information to a new gff file")
     ]
     
     return tools_info
