@@ -1,12 +1,19 @@
-@software {Bassi2025.12.02.690645,
-	author = {Bassi, Sebastian and Yang, Tristan and Gonzalez, Claudia},
-	title = {gffutilsAI: An AI-Agent for Interactive Genomic Feature Exploration in GFF files},
-	elocation-id = {2025.12.02.690645},
-	year = {2025},
-	doi = {10.64898/2025.12.02.690645},
-	publisher = {Cold Spring Harbor Laboratory},
-	abstract = {The General Feature Format (GFF) is widely used to represent genomic annotations, but its hierarchical, multi-attribute structure makes manual querying and analysis challenging. Existing libraries such as gffutils provide programmatic interfaces, yet they require coding proficiency. gffutilsAI is a novel AI-powered command-line agent that enables researchers to perform interactive, natural-language-driven exploration of GFF files. Built on top the gffutils library and the Strands AI agent framework, gffutilsAI integrates local and cloud-based large language models (LLMs) such as Llama 3.1, GPT-5, and Claude 3.5 to translate human queries into executable actions. The tool supports coordinate-based queries, attribute and GO searches, hierarchical traversal, statistical summaries, and CSV export, offering a new paradigm for accessible conversational genomics.Competing Interest StatementThe authors have declared no competing interest.},
-	URL = {https://www.biorxiv.org/content/early/2025/12/05/2025.12.02.690645},
-	eprint = {https://www.biorxiv.org/content/early/2025/12/05/2025.12.02.690645.full.pdf},
-	journal = {bioRxiv}
-}
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Bassi"
+  given-names: "Sebastian"
+  orcid: "https://orcid.org/0000-0002-2241-2001"
+- family-names: "Yang"
+  given-names: "Tristan"
+  orcid: "https://orcid.org/0009-0008-6930-2919"
+- family-names: "Gonzalez"
+  given-names: "Virginia"
+  orcid: "https://orcid.org/0000-0002-1725-001X"
+title: "gffutilsAI: An AI-Agent for Interactive Genomic Feature Exploration in GFF files"
+version: 2.0.4
+doi: 10.64898/2025.12.02.690645
+date-released: 2025-12-5
+url: "https://github.com/ToyokoLabs/gffutilsAI"
+eprint: "https://www.biorxiv.org/content/early/2025/12/05/2025.12.02.690645.full.pdf"
+journal: "bioRxiv"
