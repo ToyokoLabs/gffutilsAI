@@ -1,4 +1,4 @@
-@article {Bassi2025.12.02.690645,
+@software {Bassi2025.12.02.690645,
 	author = {Bassi, Sebastian and Yang, Tristan and Gonzalez, Claudia},
 	title = {gffutilsAI: An AI-Agent for Interactive Genomic Feature Exploration in GFF files},
 	elocation-id = {2025.12.02.690645},
