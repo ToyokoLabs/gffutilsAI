@@ -6,6 +6,9 @@ A comprehensive bioinformatics AI agent for analyzing GFF (General Feature Forma
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
+## How to Cite
+gffutilsAI: an AI-agent for interactive genomic feature exploration in GFF files. Virginia Gonzalez, Tristan Yang, Sebastian Bassi
+bioRxiv 2025.12.02.690645; doi: [https://doi.org/10.64898/2025.12.02.690645](https://doi.org/10.64898/2025.12.02.690645)
 
 ## Overview
 
