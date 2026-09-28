@@ -758,6 +758,14 @@ GPL-3.0
 - Powered by [Strands](https://github.com/weaviate/strands) AI agent framework
 - Uses [Ollama](https://ollama.ai) for local LLM inference
 
+## Related Resources
+
+- **OmicsContainers** — https://github.com/DNALinux/OmicsContainers
+- **DNALinux Docker Hub** — https://hub.docker.com/u/dnalinux
+- **DNALinux** — https://dnalinux.com/
+- **Toyoko Bio** — https://toyoko.io/
+- **BioContainers** — https://github.com/BioContainers/containers
+
 ## Support
 
 For issues and questions:
