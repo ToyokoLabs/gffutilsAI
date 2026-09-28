@@ -14,6 +14,12 @@ bioRxiv 2025.12.02.690645; doi: [https://doi.org/10.64898/2025.12.02.690645](htt
 
 This AI agent provides an intuitive interface for bioinformatics researchers to analyze GFF files without writing complex code. Users can ask questions in natural language, and the agent will select and execute the appropriate analysis tools to provide comprehensive answers.
 
+<figure>
+    <img src="paper/gffutilsai.jpg" width="450"
+         alt="GFFUtilsAI Agent Workflow">
+    <figcaption>GFFUtilsAI Agent Workflow: The agent uses the model to select a tool, executes the tool, retrieves the output, and feeds it back to the model to generate the result..</figcaption>
+</figure>
+
 ## Features
 
 ### 🧬 Coordinate-based Queries
